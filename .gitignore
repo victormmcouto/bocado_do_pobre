@@ -1,1 +1,4 @@
-~$BOCADO_DO_POBRE.xlsm
+~*.xlsm
+*.jpeg
+*.png
+*.pdf
