@@ -23,15 +23,46 @@ Private Sub EspecificacaoProgGovFed_KeyPress(ByVal KeyAscii As MSForms.ReturnInt
 End Sub
 
 Private Sub UserForm_Initialize()
-    Image1.Picture = LoadPicture(vbNullString)
-    
-    With Me.ComboBox9
-        For i = 1 To 20
-            .AddItem i
-        Next i
-    End With
+    Call PopulateComboBoxes 'Popula as combo box com os valores armazenados nas tabelas de dados
+
+    imAutorizacao.Picture = LoadPicture(vbNullString)
 End Sub
 
 Private Sub OptBttProgramaGovFedNAO_Click()
     Image1.Picture = LoadPicture(Application.GetOpenFilename(, , "Selecione a declaração"))
+End Sub
+
+Public Sub PopulateComboBoxes()
+    Dim tblProfissoes As ListObject
+    Dim tblEstadosCivis As ListObject
+    Dim tblEscolaridades As ListObject
+    Dim tblProgramaGov As ListObject
+    Dim arrTbls As Variant
+    Dim arrCombDadosPessoais As Variant
+    
+    With ThisWorkbook
+        Set tblProfissoes = wksPROFISSOES.ListObjects(1)
+        Set tblEstadosCivis = wksESTADOS_CIVIS.ListObjects(1)
+        Set tblEscolaridades = wksESCOLARIDADES.ListObjects(1)
+        Set tblProgramaGov = wksPROGRAMAS_GOV.ListObjects(1)
+    End With
+    
+    Populate tblProfissoes, combProfissaoAssistido
+    Populate tblProfissoes, combProfissaoConjugue
+    
+    Populate tblEstadosCivis, combEstadoCivilAssistido
+    Populate tblEstadosCivis, combEstadoCivilConjugue
+    
+    Populate tblEscolaridades, combEscolaridadeAssistido
+    Populate tblEscolaridades, combEscolaridadeConjugue
+    
+    Populate tblProgramaGov, combEspecificacaoProgGov
+End Sub
+
+Private Sub Populate(ByRef tbl As ListObject, ByRef comb As ComboBox)
+    Dim item As Range
+    
+    For Each item In tbl.DataBodyRange.Cells
+        comb.AddItem item.Value
+    Next item
 End Sub
