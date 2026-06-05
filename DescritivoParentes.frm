@@ -4,7 +4,7 @@ Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} DescritivoParentes
    ClientHeight    =   2355
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   6915
+   ClientWidth     =   7185
    OleObjectBlob   =   "DescritivoParentes.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -17,24 +17,31 @@ Option Explicit
 
 Private count As Integer
 
-Private Sub CommandButton1_Click()
-    If count = total Then count = 1 Else count = count + 1
-    Me.Frame1.Caption = "Parente " & count
+Private Sub cbttAdd_Click()
+    With cadastro.parentes(CInt(SpinButtonParente))
+        .Nome = txtbNomeParente.Value
+        .Escolaridade = combEscolaridadeParente.Value
+        .GrauParentesco = combGrauParentescoParente.Value
+        .DataNascimento = txtbDataNascimentoParente.Value
+    End With
 End Sub
 
-Private Sub CommandButton2_Click()
-    If count <= 1 Then count = total Else count = count - 1
-    Me.Frame1.Caption = "Parente " & count
-End Sub
-
-Private Sub SpinButton1_Change()
-    Me.Frame1.Caption = "Parente " & SpinButton1.Value
+Private Sub SpinButtonParente_Change()
+    Me.Frame1.Caption = "Parente " & SpinButtonParente.Value
+    
+    With cadastro.parentes(CInt(SpinButtonParente))
+        txtbNomeParente.Value = .Nome
+        combEscolaridadeParente.Value = .Escolaridade
+        combGrauParentescoParente.Value = .GrauParentesco
+        txtbDataNascimentoParente.Value = .DataNascimento
+    End With
 End Sub
 
 Private Sub UserForm_Initialize()
+    If ParentesInicializado(cadastro.parentes) Then ReDim cadastro.parentes(1 To total)
+    
     count = 1
-    SpinButton1.Value = count
-    SpinButton1.Min = count
-    SpinButton1.Max = total
-    Me.Frame1.Caption = "Parente " & SpinButton1.Value
+    SpinButtonParente.Value = count
+    SpinButtonParente.Min = count
+    SpinButtonParente.Max = total
 End Sub

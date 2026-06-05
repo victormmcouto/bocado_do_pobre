@@ -2,3 +2,5 @@
 *.jpeg
 *.png
 *.pdf
+!Images/
+!Images/**
