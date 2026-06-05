@@ -44,4 +44,21 @@ Private Sub UserForm_Initialize()
     SpinButtonParente.Value = count
     SpinButtonParente.Min = count
     SpinButtonParente.Max = total
+    
+    Call PopulateComboBoxes
 End Sub
+
+Private Sub PopulateComboBoxes()
+    Dim tblEscolaridadeParente As ListObject
+    Dim tblGrausParentesco As ListObject
+    
+    With ThisWorkbook
+        Set tblEscolaridadeParente = wksESTADOS_CIVIS.ListObjects(1)
+        Set tblGrausParentesco = wksGRAUS_PARENTESCO.ListObjects(1)
+    End With
+    
+    Populate tblEscolaridadeParente, combEscolaridadeParente
+    
+    Populate tblGrausParentesco, combGrauParentescoParente
+End Sub
+
