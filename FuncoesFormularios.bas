@@ -9,6 +9,8 @@ Public Type Conjugue
     Profissao As String
     EstadoCivil As String
     Escolaridade As String
+    Telefone As String
+    CPF As String
 End Type
 
 Public Type parente
@@ -24,6 +26,8 @@ Public Type Assistido
     EstadoCivil As String
     Profissao As String
     Escolaridade As String
+    Telefone As String
+    CPF As String
     Conjugue As Conjugue
 End Type
 
@@ -55,6 +59,7 @@ End Type
 
 Public Enum errors
     errFormatoDataInvalida = vbObjectError + 1
+    errFormatoNumeroTelefoneInvalido = vbObjectError + 2
 End Enum
 
 Public total As Integer
@@ -77,7 +82,7 @@ Public Function ParentesInicializado(parentes() As parente) As Boolean
     Dim lb As Long
     lb = LBound(parentes)
 
-    ParentesInicializado = (Err.Number <> 0)
+    ParentesInicializado = (Err.Number = 0)
 
     On Error GoTo 0
 End Function
@@ -112,25 +117,17 @@ Public Function ValidarMaiorDeIdade(ByVal strBirthDate As String) As Boolean
     ValidarMaiorDeIdade = True
 End Function
 
-Sub teste()
-    On Error Resume Next
-    Debug.Print ValidarData("13/11")
-    If Err.Number <> 0 Then Debug.Print Err.Description
-    On Error GoTo 0
-    On Error Resume Next
-    Debug.Print ValidarData("2000")
-    If Err.Number <> 0 Then Debug.Print Err.Description
-    On Error GoTo 0
-    On Error Resume Next
-    Debug.Print ValidarData("32/11/2001")
-    If Err.Number <> 0 Then Debug.Print Err.Description
-    On Error GoTo 0
-    On Error Resume Next
-    Debug.Print ValidarData("12/04/2015")
-    If Err.Number <> 0 Then Debug.Print Err.Description
-    On Error GoTo 0
-    On Error Resume Next
-    Debug.Print ValidarData("12/04/2007")
-    If Err.Number <> 0 Then Debug.Print Err.Description
-    On Error GoTo 0
-End Sub
+Public Function ValidarFormatacaoNumTel(ByVal strNumTel As String) As Boolean
+    Dim regexNumTel As New RegExp
+    
+    regexNumTel.Pattern = "^\(?[0-9]{2}\)?\s?9?\s?[0-9]{4}\s?-?\s?[0-9]{4}$"
+    
+    If Not regexNumTel.Test(strNumTel) Then
+        Err.Raise errFormatoNumeroTelefoneInvalido, _
+                  "Formato telefônico errado!", _
+                  "Formato de número telefônico errado! Formato válido: DDD X XXXX-XXXX ou DDD XXXX-XXXX"
+    End If
+    
+    ValidarFormatacaoNumTel = True
+End Function
+

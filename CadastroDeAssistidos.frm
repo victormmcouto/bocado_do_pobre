@@ -59,6 +59,38 @@ ErrHandler:
     End With
 End Sub
 
+Private Sub txtbTelefoneAssistido_AfterUpdate()
+    With txtbTelefoneAssistido
+        If .Value = "" Then Exit Sub
+        On Error GoTo ErrHandler
+        
+        If ValidarFormatacaoNumTel(.Value) Then
+            cadastro.Assistido.Telefone = .Value
+        End If
+        
+        Exit Sub
+ErrHandler:
+        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
+        .Value = ""
+    End With
+End Sub
+
+Private Sub txtbTelefoneConjugue_AfterUpdate()
+    With txtbTelefoneConjugue
+        If .Value = "" Then Exit Sub
+        On Error GoTo ErrHandler
+        
+        If ValidarFormatacaoNumTel(.Value) Then
+            cadastro.Assistido.Conjugue.Telefone = .Value
+        End If
+        
+        Exit Sub
+ErrHandler:
+        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
+        .Value = ""
+    End With
+End Sub
+
 Private Sub UserForm_Initialize()
     Call PopulateComboBoxes 'Popula as combo box com os valores armazenados nas tabelas de dados
     With txtbDataSindicancia
