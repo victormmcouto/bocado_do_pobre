@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} CadastroDeAssistidos 
    Caption         =   "FICHA CADASTRAL DOS ASSISTIDOS"
-   ClientHeight    =   7770
+   ClientHeight    =   6345
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   12450
+   ClientWidth     =   12375
    OleObjectBlob   =   "CadastroDeAssistidos.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -13,19 +13,59 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
-Private Sub CommandButton1_Click()
-    total = CInt(ComboBox9.Value)
-    call_ total
+Private Sub cbttAddParentes_Click()
+    'If CInt(txtbNPessoasNaCasa.Value) > 1 Then
+        call_ CInt(txtbNPessoasNaCasa.Value)
+    'End If
 End Sub
 
-Private Sub EspecificacaoProgGovFed_KeyPress(ByVal KeyAscii As MSForms.ReturnInteger)
-    EspecificacaoProgGovFed.DropDown
+Private Sub SpinButtonNPessoas_Change()
+    txtbNPessoasNaCasa.Value = SpinButtonNPessoas.Value
+End Sub
+
+Private Sub txtbNomeAssistido_Change()
+    cadastro.Assistido.Nome = txtbNomeAssistido.Value
+End Sub
+
+Private Sub txtbDataNascimentoAssistido_AfterUpdate()
+    With txtbDataNascimentoAssistido
+        If .Value = "" Then Exit Sub
+        On Error GoTo ErrHandler
+        
+        If ValidarMaiorDeIdade(.Value) Then
+            cadastro.Assistido.DataNascimento = Format(.Value, "dd/mm/yyyy")
+        End If
+        
+        Exit Sub
+ErrHandler:
+        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
+        .Value = ""
+    End With
+End Sub
+
+Private Sub txtbDataDeNascimentoConjugue_AfterUpdate()
+    With txtbDataDeNascimentoConjugue
+        If .Value = "" Then Exit Sub
+        On Error GoTo ErrHandler
+        
+        If ValidarMaiorDeIdade(.Value) Then
+            cadastro.Conjugue.DataNascimento = Format(.Value, "dd/mm/yyyy")
+        End If
+        
+        Exit Sub
+ErrHandler:
+        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
+        .Value = ""
+    End With
 End Sub
 
 Private Sub UserForm_Initialize()
     Call PopulateComboBoxes 'Popula as combo box com os valores armazenados nas tabelas de dados
-
-    imAutorizacao.Picture = LoadPicture(vbNullString)
+    With txtbDataSindicancia
+        .Value = Format(Date, "dd/mm/yyyy")
+        .Enabled = False
+    End With
+    txtbNPessoasNaCasa.Value = 1
 End Sub
 
 Private Sub OptBttProgramaGovFedNAO_Click()
@@ -37,14 +77,14 @@ Public Sub PopulateComboBoxes()
     Dim tblEstadosCivis As ListObject
     Dim tblEscolaridades As ListObject
     Dim tblProgramaGov As ListObject
-    Dim arrTbls As Variant
-    Dim arrCombDadosPessoais As Variant
+    Dim tblTipoMoradia As ListObject
     
     With ThisWorkbook
         Set tblProfissoes = wksPROFISSOES.ListObjects(1)
         Set tblEstadosCivis = wksESTADOS_CIVIS.ListObjects(1)
         Set tblEscolaridades = wksESCOLARIDADES.ListObjects(1)
         Set tblProgramaGov = wksPROGRAMAS_GOV.ListObjects(1)
+        Set tblTipoMoradia = wksTIPO_MORADIA.ListObjects(1)
     End With
     
     Populate tblProfissoes, combProfissaoAssistido
@@ -56,13 +96,7 @@ Public Sub PopulateComboBoxes()
     Populate tblEscolaridades, combEscolaridadeAssistido
     Populate tblEscolaridades, combEscolaridadeConjugue
     
-    Populate tblProgramaGov, combEspecificacaoProgGov
-End Sub
-
-Private Sub Populate(ByRef tbl As ListObject, ByRef comb As ComboBox)
-    Dim item As Range
+    Populate tblProgramaGov, combProgramaGov
     
-    For Each item In tbl.DataBodyRange.Cells
-        comb.AddItem item.Value
-    Next item
+    Populate tblTipoMoradia, combTipoMoradia
 End Sub

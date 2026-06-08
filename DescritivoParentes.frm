@@ -37,6 +37,22 @@ Private Sub SpinButtonParente_Change()
     End With
 End Sub
 
+Private Sub txtbDataNascimentoParente_AfterUpdate()
+    With txtbDataNascimentoParente
+        If .Value = "" Then Exit Sub
+        On Error GoTo ErrHandler
+        
+        If ValidarMaiorDeIdade(.Value) Then
+            cadastro.parentes(CInt(SpinButtonParente.Value)).DataNascimento = Format(.Value, "dd/mm/yyyy")
+        End If
+        
+        Exit Sub
+ErrHandler:
+        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
+        .Value = ""
+    End With
+End Sub
+
 Private Sub UserForm_Initialize()
     If ParentesInicializado(cadastro.parentes) Then ReDim cadastro.parentes(1 To total)
     
