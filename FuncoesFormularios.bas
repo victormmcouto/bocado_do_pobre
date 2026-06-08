@@ -65,8 +65,8 @@ End Enum
 
 Public total As Integer
 
-Public Sub call_(total_ As Integer)
-    total = total_
+Public Sub AdicionarParentes(NParentesTotais As Integer)
+    total = NParentesTotais
     DescritivoParentes.Show
 End Sub
 
@@ -200,8 +200,8 @@ Private Function ValidarDigitosCPF(ByVal strCPF) As Boolean
                         (DV2 = Val(Mid$(strCPF, 11, 1)))
 End Function
 
-Public Sub EnableFrameControls(ByRef frm As MsForms.Frame, boolEnable As Boolean)
-    Dim ctrl As MsForms.control
+Public Sub EnableFrameControls(ByRef frm As MSForms.Frame, boolEnable As Boolean)
+    Dim ctrl As MSForms.control
     
     frm.Enabled = boolEnable
     
@@ -213,4 +213,12 @@ Public Sub EnableFrameControls(ByRef frm As MsForms.Frame, boolEnable As Boolean
             ctrl.Enabled = boolEnable
         End If
     Next ctrl
+End Sub
+
+Public Sub EidatarComoCampoPrioritario(ByRef ctrl As MSForms.control)
+    With ctrl
+        .BorderColor = &HFF&
+        .BorderStyle = fmBorderStyleSingle
+        .SpecialEffect = fmSpecialEffectFlat
+    End With
 End Sub

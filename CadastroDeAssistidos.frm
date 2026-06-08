@@ -14,13 +14,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cbttAddParentes_Click()
-    'If CInt(txtbNPessoasNaCasa.Value) > 1 Then
-        call_ CInt(txtbNPessoasNaCasa.Value)
-    'End If
-End Sub
-
-Private Sub cbttCadastrar_Click()
-    
+    Call AdicionarParentes(CInt(txtbNPessoasNaCasa.Value))
 End Sub
 
 Private Sub combEstadoCivilAssistido_Change()
@@ -145,6 +139,12 @@ Private Sub UserForm_Initialize()
     End With
     txtbNPessoasNaCasa.Value = 1
     EnableFrameControls FrameConjugue, False
+    
+    Call EidatarComoCampoPrioritario(txtbNomeAssistido)
+    Call EidatarComoCampoPrioritario(txtbBairro)
+    Call EidatarComoCampoPrioritario(txtbLogradouro)
+    Call EidatarComoCampoPrioritario(txtbNumeroLogradouro)
+    Call EidatarComoCampoPrioritario(txtbTelefoneAssistido)
 End Sub
 
 Private Sub OptBttProgramaGovFedNAO_Click()
