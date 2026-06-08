@@ -19,6 +19,20 @@ Private Sub cbttAddParentes_Click()
     'End If
 End Sub
 
+Private Sub cbttCadastrar_Click()
+    
+End Sub
+
+Private Sub combEstadoCivilAssistido_Change()
+    With combEstadoCivilAssistido
+        If Not .Value Like "*Casado*" Or .Value = "" Then
+            Call EnableFrameControls(FrameConjugue, False)
+        Else
+            Call EnableFrameControls(FrameConjugue, True)
+        End If
+    End With
+End Sub
+
 Private Sub SpinButtonNPessoas_Change()
     txtbNPessoasNaCasa.Value = SpinButtonNPessoas.Value
 End Sub
@@ -130,6 +144,7 @@ Private Sub UserForm_Initialize()
         .Enabled = False
     End With
     txtbNPessoasNaCasa.Value = 1
+    EnableFrameControls FrameConjugue, False
 End Sub
 
 Private Sub OptBttProgramaGovFedNAO_Click()

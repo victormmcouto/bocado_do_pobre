@@ -200,7 +200,17 @@ Private Function ValidarDigitosCPF(ByVal strCPF) As Boolean
                         (DV2 = Val(Mid$(strCPF, 11, 1)))
 End Function
 
-Sub teste()
-    ValidarCPF "118.782.536-03"
+Public Sub EnableFrameControls(ByRef frm As MsForms.Frame, boolEnable As Boolean)
+    Dim ctrl As MsForms.control
     
+    frm.Enabled = boolEnable
+    
+    For Each ctrl In frm.Controls
+        If TypeName(ctrl) = "Frame" Then
+            EnableFrameControls ctrl, boolEnable
+            ctrl.Enabled = boolEnable
+        Else
+            ctrl.Enabled = boolEnable
+        End If
+    Next ctrl
 End Sub
