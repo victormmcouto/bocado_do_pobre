@@ -60,6 +60,7 @@ End Type
 Public Enum errors
     errFormatoDataInvalida = vbObjectError + 1
     errFormatoNumeroTelefoneInvalido = vbObjectError + 2
+    errValidacaoCPF = vbObjectError + 3
 End Enum
 
 Public total As Integer
@@ -98,9 +99,9 @@ End Sub
 Public Function ValidarDataCompleta(ByVal strDate As String) As Boolean
     Dim regexDate As New RegExp
     
-    regexDate.Pattern = "[0-9]{2}/[0-9]{2}/[0-9]{4}"
+    regexDate.Pattern = "^\d{2}/\d{2}/\d{4}$"
     
-    If Not (IsDate(strDate) And regexDate.Test(strDate)) Then
+    If Not (IsDate(Trim(strDate)) And regexDate.Test(Trim(strDate))) Then
         Err.Raise errFormatoDataInvalida, "Foratação Errada!", "Formato de data errado! Formato válido: (dd/mm/aaaa)"
     End If
     
@@ -120,14 +121,86 @@ End Function
 Public Function ValidarFormatacaoNumTel(ByVal strNumTel As String) As Boolean
     Dim regexNumTel As New RegExp
     
-    regexNumTel.Pattern = "^\(?[0-9]{2}\)?\s?9?\s?[0-9]{4}\s?-?\s?[0-9]{4}$"
+    regexNumTel.Pattern = "^\(?\d{2}\)?\s?9?\s?\d{4}\s?-?\s?\d{4}$"
     
-    If Not regexNumTel.Test(strNumTel) Then
+    If Not regexNumTel.Test(Trim(strNumTel)) Then
         Err.Raise errFormatoNumeroTelefoneInvalido, _
                   "Formato telefônico errado!", _
-                  "Formato de número telefônico errado! Formato válido: DDD X XXXX-XXXX ou DDD XXXX-XXXX"
+                  "Formato de número telefônico errado! Formatos válidos: DDD X XXXX-XXXX ou DDD XXXX-XXXX"
     End If
     
     ValidarFormatacaoNumTel = True
 End Function
 
+Public Function ValidarCPF(ByVal strCPF As String) As Boolean
+    Dim regexCPF As New RegExp
+    Dim index As Integer
+    
+    regexCPF.Pattern = "^((\d{11})|(\d{3}\.){2}\d{3}-\d{2})$"
+    
+    If Not regexCPF.Test(Trim(strCPF)) Then
+        Err.Raise errValidacaoCPF, "Formato de CPF Inválido!", _
+                  "A formatação do CPF não está correta! Formatos válidos: XXX.XXX.XXX-XX ou XXXXXXXXXXX"
+    End If
+    If Not ValidarDigitosCPF(Trim(strCPF)) Then
+        Err.Raise errValidacaoCPF, "CPF Inválido!", _
+                  "O valor inserido para o CPF não é válido!"
+    End If
+    
+    ValidarCPF = True
+End Function
+
+Private Function ValidarDigitosCPF(ByVal strCPF) As Boolean
+    Dim i As Long
+    Dim Soma As Long
+    Dim DV1 As Long
+    Dim DV2 As Long
+    Dim Resto As Long
+    Dim primeiroCaracter As String
+    
+    strCPF = Trim(Replace(Replace(strCPF, ".", ""), "-", ""))
+    
+    primeiroCaracter = Mid$(strCPF, 1, 1)
+    
+    For i = 1 To Len(strCPF)
+        If Mid$(strCPF, i, 1) <> primeiroCaracter Then
+            Exit For
+        Else
+            If i = Len(strCPF) Then Exit Function
+        End If
+    Next i
+    
+    For i = 1 To 9
+        Soma = Soma + Val(Mid$(strCPF, i, 1)) * (11 - i)
+    Next i
+
+    Resto = Soma Mod 11
+
+    If Resto < 2 Then
+        DV1 = 0
+    Else
+        DV1 = 11 - Resto
+    End If
+
+    Soma = 0
+
+    For i = 1 To 10
+        Soma = Soma + Val(Mid$(strCPF, i, 1)) * (12 - i)
+    Next i
+
+    Resto = Soma Mod 11
+
+    If Resto < 2 Then
+        DV2 = 0
+    Else
+        DV2 = 11 - Resto
+    End If
+    
+    ValidarDigitosCPF = (DV1 = Val(Mid$(strCPF, 10, 1))) And _
+                        (DV2 = Val(Mid$(strCPF, 11, 1)))
+End Function
+
+Sub teste()
+    ValidarCPF "118.782.536-03"
+    
+End Sub

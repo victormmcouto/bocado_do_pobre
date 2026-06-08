@@ -91,6 +91,38 @@ ErrHandler:
     End With
 End Sub
 
+Private Sub txtbCPFAssistido_AfterUpdate()
+    With txtbCPFAssistido
+        If .Value = "" Then Exit Sub
+        On Error GoTo ErrHandler
+        
+        If ValidarCPF(.Value) Then
+            cadastro.Assistido.CPF = .Value
+        End If
+        
+        Exit Sub
+ErrHandler:
+        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
+        .Value = ""
+    End With
+End Sub
+
+Private Sub txtbCPFConjugue_AfterUpdate()
+    With txtbCPFConjugue
+        If .Value = "" Then Exit Sub
+        On Error GoTo ErrHandler
+        
+        If ValidarCPF(.Value) Then
+            cadastro.Assistido.Conjugue.CPF = .Value
+        End If
+        
+        Exit Sub
+ErrHandler:
+        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
+        .Value = ""
+    End With
+End Sub
+
 Private Sub UserForm_Initialize()
     Call PopulateComboBoxes 'Popula as combo box com os valores armazenados nas tabelas de dados
     With txtbDataSindicancia
