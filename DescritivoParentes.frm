@@ -54,7 +54,11 @@ ErrHandler:
 End Sub
 
 Private Sub UserForm_Initialize()
-    If ParentesInicializado(cadastro.parentes) Then ReDim cadastro.parentes(1 To total)
+    If Not ParentesInicializado(cadastro.parentes) Then 'Inicializa o array de parentes caso não tenha sido inicializado
+        ReDim cadastro.parentes(1 To total)
+    ElseIf UBound(cadastro.parentes) < total Then 'Redimenciona o array de parentes caso o total mude
+        ReDim Preserve cadastro.parentes(1 To total)
+    End If
     
     count = 1
     SpinButtonParente.Value = count
