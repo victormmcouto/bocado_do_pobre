@@ -22,7 +22,19 @@ End Sub
 Private Sub cbttCadastrar_Click()
     On Error GoTo ErrHandler
     If CamposObrigatoriosPreenchidos(arrCamposObrigatorios) Then
+        Dim result As VbMsgBoxResult
         
+        'Call RealizarCadastro
+        
+        result = MsgBox("Cadastro Realizado! Deseja realizar outro cadastro?", _
+                        vbInformation + vbYesNo + vbMsgBoxSetForeground, _
+                        "Cadastro Realizado!")
+        
+        If result = vbYes Then
+            Call LimparEntradas(Me)
+        Else
+            Unload Me
+        End If
     End If
     
     Exit Sub

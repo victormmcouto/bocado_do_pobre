@@ -201,7 +201,7 @@ Private Function ValidarDigitosCPF(ByVal strCPF) As Boolean
                         (DV2 = Val(Mid$(strCPF, 11, 1)))
 End Function
 
-Public Sub EnableFrameControls(ByRef frm As MSForms.Frame, boolEnable As Boolean)
+Public Sub EnableFrameControls(ByRef frm As MSForms.frame, boolEnable As Boolean)
     Dim ctrl As MSForms.control
     
     frm.Enabled = boolEnable
@@ -236,3 +236,29 @@ Public Function CamposObrigatoriosPreenchidos(ByRef arrCampos() As MSForms.contr
     
     CamposObrigatoriosPreenchidos = True
 End Function
+
+Public Sub LimparEntradas(ByRef form As CadastroDeAssistidos)
+    Dim ctrl As MSForms.control
+    
+    On Error Resume Next
+    For Each ctrl In form.Controls
+        If TypeName(ctrl) = "Frame" Then
+            ClearFrameControls ctrl
+        Else
+            ctrl.Value = ""
+        End If
+    Next ctrl
+    On Error GoTo 0
+End Sub
+
+Public Sub ClearFrameControls(ByRef frm As MSForms.frame)
+    Dim ctrl As MSForms.control
+    
+    For Each ctrl In frm.Controls
+        If TypeName(ctrl) = "Frame" Then
+            ClearFrameControls ctrl
+        Else
+            ctrl.Value = ""
+        End If
+    Next ctrl
+End Sub
