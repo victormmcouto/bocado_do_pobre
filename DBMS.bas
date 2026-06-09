@@ -13,12 +13,16 @@ Public Sub RealizarCadastro()
     
     If ParentesInicializado() Then
         With tblParentes
-            keyParentesAtual = .ListColumns("KeyParente").DataBodyRange.Cells(.DataBodyRange.Rows.count).Value + 1
+            If Not boolCadastrar Then
+                keyParentesAtual = CInt(keyParenteAntesDeletar)
+            Else
+                keyParentesAtual = .ListColumns("KeyParente").DataBodyRange.Cells(.DataBodyRange.Rows.Count).Value + 1
+            End If
             
             For index = 1 To UBound(Cadastro.parentes)
                 AddRow tblParentes
                 
-                totalRows = .DataBodyRange.Rows.count
+                totalRows = .DataBodyRange.Rows.Count
                 
                 With Cadastro.parentes(index)
                     tblParentes.ListColumns("KeyParente").DataBodyRange.Cells(totalRows).Value = keyParentesAtual
@@ -34,7 +38,7 @@ Public Sub RealizarCadastro()
     With Cadastro
         AddRow tblCadastros
         
-        totalRows = tblCadastros.DataBodyRange.Rows.count
+        totalRows = tblCadastros.DataBodyRange.Rows.Count
         
         With .Assistido
             tblCadastros.ListColumns("NomeAssistido").DataBodyRange.Cells(totalRows).Value = .Nome
@@ -163,6 +167,29 @@ Public Sub PopulateTypeCadastro()
     End With
 End Sub
 
+Public Sub DeletarCadastro()
+    InitializeTables
+
+    Dim numParentes As Integer
+    
+    numParentes = CInt(listRowComparativo.Range(1, tblCadastros.ListColumns("NPessoas").index).Value)
+
+    keyParenteAntesDeletar = listRowComparativo.Range(1, tblCadastros.ListColumns("KeyParente").index).Value
+    listRowComparativo.Delete
+    
+    If numParentes > 0 Then
+        Dim index As Integer
+        
+        With tblParentes
+            For index = .ListRows.Count To 1 Step -1
+                If .ListRows(index).Range(1, .ListColumns("KeyParente").index).Value = keyParenteAntesDeletar Then
+                    .ListRows(index).Delete
+                End If
+            Next index
+        End With
+    End If
+End Sub
+
 Private Sub InitializeTables()
     Dim totalRows As Integer
     If tblCadastros Is Nothing Then
@@ -174,13 +201,13 @@ Private Sub InitializeTables()
         
     On Error Resume Next
     With tblCadastros
-        totalRows = .DataBodyRange.Rows.count
+        totalRows = .DataBodyRange.Rows.Count
         If Err.Number <> 0 Then .ListRows.Add
     End With
     On Error GoTo 0
     On Error Resume Next
     With tblParentes
-        totalRows = .DataBodyRange.Rows.count
+        totalRows = .DataBodyRange.Rows.Count
         If Err.Number <> 0 Then .ListRows.Add
     End With
     On Error GoTo 0
@@ -188,7 +215,7 @@ End Sub
 
 Private Sub AddRow(ByRef tbl As ListObject)
     With tbl.ListRows
-        If Application.WorksheetFunction.CountBlank(.item(.count).Range.Cells) <> .item(.count).Range.Cells.count Then
+        If Application.WorksheetFunction.CountBlank(.item(.Count).Range.Cells) <> .item(.Count).Range.Cells.Count Then
             .Add
         End If
     End With

@@ -4,6 +4,8 @@ Option Explicit
 'Public cadastroComparativo As Cadastro
 Public listRowComparativo As ListRow
 Public boolCadastrar As Boolean
+'Public nomeAssistido As String
+Public keyParenteAntesDeletar As String
 
 Public Sub Cadastrar()
     Dim formCadastro As New CadastroDeAssistidos

@@ -24,22 +24,28 @@ Private Sub cbttCadastrar_Click()
     If CamposObrigatoriosPreenchidos(arrCamposObrigatorios) Then
         Dim result As VbMsgBoxResult
         
-        result = MsgBox("Deseja seguir com a realizaçã do cadastro?", _
-                        vbYesNo, _
-                        "Deseja prosseguir?")
-        
-        If result = vbNo Then Exit Sub
-        
-        Call RealizarCadastro
-        
-        result = MsgBox("Cadastro Realizado! Deseja realizar outro cadastro?", _
-                        vbInformation + vbYesNo + vbMsgBoxSetForeground, _
-                        "Cadastro Realizado!")
-        
-        If result = vbYes Then
-            Call LimparEntradas(frmDadosCadastrais)
-            Cadastro = CadastroVazio
+        If boolCadastrar Then
+            result = MsgBox("Deseja seguir com a realização do cadastro?", _
+                            vbYesNo, _
+                            "Deseja prosseguir?")
+            
+            If result = vbNo Then Exit Sub
+            
+            Call RealizarCadastro
+            
+            result = MsgBox("Cadastro Realizado! Deseja realizar outro cadastro?", _
+                            vbInformation + vbYesNo + vbMsgBoxSetForeground, _
+                            "Cadastro Realizado!")
+            
+            If result = vbYes Then
+                Call LimparEntradas(frmDadosCadastrais)
+                Cadastro = CadastroVazio
+            Else
+                Unload Me
+            End If
         Else
+            Call DeletarCadastro
+            Call RealizarCadastro
             Unload Me
         End If
     End If
@@ -296,7 +302,9 @@ Private Sub UserForm_Initialize()
             Cadastro.DemaisInfo.DataSindicancia = .Value
         End With
         lblNPessoasNaCasa.Caption = 0
+        cbttCadastrar.Caption = "CADASTRAR"
     Else
+        cbttCadastrar.Caption = "ATUALIZAR"
         Call PreencherCampos(Me)
     End If
     

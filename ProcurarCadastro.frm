@@ -32,6 +32,7 @@ Private Sub cbttProcurar_Click()
         If nomeAtual = nomeAProcurar Then
             Set listRowComparativo = lr
             bolEcontrado = True
+            Exit For
         End If
     Next lr
     
@@ -40,6 +41,7 @@ Private Sub cbttProcurar_Click()
         Set listRowComparativo = Nothing
     Else
         Me.Hide
+        'nomeAssistido = nomeAProcurar
         Call PopulateTypeCadastro
     End If
 End Sub
