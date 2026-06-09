@@ -7,27 +7,29 @@ Private tblParentes As ListObject
 Public Sub RealizarCadastro()
     Dim index As Integer
     Dim totalRows As Integer
-    Dim keyParentesAnterior As Integer
+    Dim keyParentesAtual As Integer
     
     InitializeTables
     
-    With tblParentes
-        keyParentesAnterior = .ListColumns("KeyParente").DataBodyRange.Cells(.DataBodyRange.Rows.count).Value
-        
-        For index = 1 To UBound(cadastro.parentes)
-            AddRow tblParentes
+    If ParentesInicializado() Then
+        With tblParentes
+            keyParentesAtual = .ListColumns("KeyParente").DataBodyRange.Cells(.DataBodyRange.Rows.count).Value + 1
             
-            totalRows = .DataBodyRange.Rows.count
-            
-            With cadastro.parentes(index)
-                tblParentes.ListColumns("KeyParente").DataBodyRange.Cells(totalRows).Value = keyParentesAnterior + 1
-                tblParentes.ListColumns("NomeParente").DataBodyRange.Cells(totalRows).Value = .Nome
-                tblParentes.ListColumns("GrauParentescoParente").DataBodyRange.Cells(totalRows).Value = .GrauParentesco
-                tblParentes.ListColumns("DataNascimentoParente").DataBodyRange.Cells(totalRows).Value = .DataNascimento
-                tblParentes.ListColumns("EscolaridadeParente").DataBodyRange.Cells(totalRows).Value = .Escolaridade
-            End With
-        Next index
-    End With
+            For index = 1 To UBound(cadastro.parentes)
+                AddRow tblParentes
+                
+                totalRows = .DataBodyRange.Rows.count
+                
+                With cadastro.parentes(index)
+                    tblParentes.ListColumns("KeyParente").DataBodyRange.Cells(totalRows).Value = keyParentesAtual
+                    tblParentes.ListColumns("NomeParente").DataBodyRange.Cells(totalRows).Value = .Nome
+                    tblParentes.ListColumns("GrauParentescoParente").DataBodyRange.Cells(totalRows).Value = .GrauParentesco
+                    tblParentes.ListColumns("DataNascimentoParente").DataBodyRange.Cells(totalRows).Value = .DataNascimento
+                    tblParentes.ListColumns("EscolaridadeParente").DataBodyRange.Cells(totalRows).Value = .Escolaridade
+                End With
+            Next index
+        End With
+    End If
     
     With cadastro
         AddRow tblCadastros
@@ -72,7 +74,11 @@ Public Sub RealizarCadastro()
         End With
     End With
     
-    tblCadastros.ListColumns("KeyParentes").DataBodyRange.Cells(totalRows).Value = keyParentesAnterior + 1
+    If keyParentesAtual = 0 Then
+        tblCadastros.ListColumns("KeyParentes").DataBodyRange.Cells(totalRows).Value = "-"
+    Else
+        tblCadastros.ListColumns("KeyParentes").DataBodyRange.Cells(totalRows).Value = keyParentesAtual
+    End If
 End Sub
 
 Private Sub InitializeTables()
