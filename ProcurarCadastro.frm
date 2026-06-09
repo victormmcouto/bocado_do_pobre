@@ -40,9 +40,10 @@ Private Sub cbttProcurar_Click()
         MsgBox "Não encontrado"
         Set listRowComparativo = Nothing
     Else
-        Me.Hide
-        'nomeAssistido = nomeAProcurar
-        Call PopulateTypeCadastro
+        If Not boolCadastrar Then
+            Me.Hide
+            Call PopulateTypeCadastro
+        End If
     End If
 End Sub
 
