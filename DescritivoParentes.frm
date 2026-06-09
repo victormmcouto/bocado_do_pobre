@@ -73,7 +73,7 @@ Private Sub PopulateComboBoxes()
     Dim tblGrausParentesco As ListObject
     
     With ThisWorkbook
-        Set tblEscolaridadeParente = wksESTADOS_CIVIS.ListObjects(1)
+        Set tblEscolaridadeParente = wksESCOLARIDADES.ListObjects(1)
         Set tblGrausParentesco = wksGRAUS_PARENTESCO.ListObjects(1)
     End With
     
