@@ -16,7 +16,7 @@ Attribute VB_Exposed = False
 Private arrCamposObrigatorios() As MSForms.control
 
 Private Sub cbttAddParentes_Click()
-    Call AdicionarParentes(CInt(txtbNPessoasNaCasa.Value))
+    DescritivoParentes.Show
 End Sub
 
 Private Sub cbttCadastrar_Click()
@@ -24,7 +24,7 @@ Private Sub cbttCadastrar_Click()
     If CamposObrigatoriosPreenchidos(arrCamposObrigatorios) Then
         Dim result As VbMsgBoxResult
         
-        'Call RealizarCadastro
+        Call RealizarCadastro
         
         result = MsgBox("Cadastro Realizado! Deseja realizar outro cadastro?", _
                         vbInformation + vbYesNo + vbMsgBoxSetForeground, _
@@ -32,6 +32,7 @@ Private Sub cbttCadastrar_Click()
         
         If result = vbYes Then
             Call LimparEntradas(Me)
+            cadastro = CadastroVazio
         Else
             Unload Me
         End If
@@ -43,12 +44,19 @@ ErrHandler:
     MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
 End Sub
 
+' ============================================================================================================
+' ASSISTIDO
+' ============================================================================================================
+
 Private Sub combEstadoCivilAssistido_Change()
     With combEstadoCivilAssistido
-        If Not .Value Like "*Casado*" Or .Value = "" Then
+        If Not (.Value Like "*Casado*" Or .Value = "") Then
             Call EnableFrameControls(FrameConjugue, False)
+            combEstadoCivilConjugue.Value = ""
         Else
             Call EnableFrameControls(FrameConjugue, True)
+            combEstadoCivilConjugue.Value = combEstadoCivilAssistido.Value
+            combEstadoCivilConjugue.Enabled = False
         End If
     End With
 End Sub
@@ -57,33 +65,21 @@ Private Sub SpinButtonNPessoas_Change()
     txtbNPessoasNaCasa.Value = SpinButtonNPessoas.Value
 End Sub
 
-Private Sub txtbNomeAssistido_Change()
-    cadastro.Assistido.Nome = txtbNomeAssistido.Value
+Private Sub combProfissaoAssistido_Change()
+    cadastro.Assistido.Profissao = combProfissaoAssistido.Value
 End Sub
 
-Private Sub txtbDataNascimentoAssistido_AfterUpdate()
-    With txtbDataNascimentoAssistido
+Private Sub combEscolaridadeAssistido_Change()
+    cadastro.Assistido.Escolaridade = combEscolaridadeAssistido.Value
+End Sub
+
+Private Sub txtbCPFAssistido_AfterUpdate()
+    With txtbCPFAssistido
         If .Value = "" Then Exit Sub
         On Error GoTo ErrHandler
         
-        If ValidarMaiorDeIdade(.Value) Then
-            cadastro.Assistido.DataNascimento = Format(.Value, "dd/mm/yyyy")
-        End If
-        
-        Exit Sub
-ErrHandler:
-        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
-        .Value = ""
-    End With
-End Sub
-
-Private Sub txtbDataDeNascimentoConjugue_AfterUpdate()
-    With txtbDataDeNascimentoConjugue
-        If .Value = "" Then Exit Sub
-        On Error GoTo ErrHandler
-        
-        If ValidarMaiorDeIdade(.Value) Then
-            cadastro.Conjugue.DataNascimento = Format(.Value, "dd/mm/yyyy")
+        If ValidarCPF(.Value) Then
+            cadastro.Assistido.CPF = .Value
         End If
         
         Exit Sub
@@ -109,13 +105,13 @@ ErrHandler:
     End With
 End Sub
 
-Private Sub txtbTelefoneConjugue_AfterUpdate()
-    With txtbTelefoneConjugue
+Private Sub txtbDataNascimentoAssistido_AfterUpdate()
+    With txtbDataNascimentoAssistido
         If .Value = "" Then Exit Sub
         On Error GoTo ErrHandler
         
-        If ValidarFormatacaoNumTel(.Value) Then
-            cadastro.Assistido.Conjugue.Telefone = .Value
+        If ValidarMaiorDeIdade(.Value) Then
+            cadastro.Assistido.DataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -125,20 +121,24 @@ ErrHandler:
     End With
 End Sub
 
-Private Sub txtbCPFAssistido_AfterUpdate()
-    With txtbCPFAssistido
-        If .Value = "" Then Exit Sub
-        On Error GoTo ErrHandler
-        
-        If ValidarCPF(.Value) Then
-            cadastro.Assistido.CPF = .Value
-        End If
-        
-        Exit Sub
-ErrHandler:
-        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
-        .Value = ""
-    End With
+' ============================================================================================================
+' CÔNJUGUE
+' ============================================================================================================
+
+Private Sub txtbNomeConjugue_Change()
+    cadastro.Conjugue.Nome = txtbNomeConjugue.Value
+End Sub
+
+Private Sub combProfissaoConjugue_Change()
+    cadastro.Conjugue.Profissao = combProfissaoConjugue.Value
+End Sub
+
+Private Sub combEstadoCivilConjugue_Change()
+    cadastro.Conjugue.EstadoCivil = combEstadoCivilConjugue.Value
+End Sub
+
+Private Sub combEscolaridadeConjugue_Change()
+    cadastro.Conjugue.Escolaridade = combEscolaridadeConjugue.Value
 End Sub
 
 Private Sub txtbCPFConjugue_AfterUpdate()
@@ -147,7 +147,7 @@ Private Sub txtbCPFConjugue_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarCPF(.Value) Then
-            cadastro.Assistido.Conjugue.CPF = .Value
+            cadastro.Conjugue.CPF = .Value
         End If
         
         Exit Sub
@@ -157,12 +157,99 @@ ErrHandler:
     End With
 End Sub
 
+Private Sub txtbTelefoneConjugue_AfterUpdate()
+    With txtbTelefoneConjugue
+        If .Value = "" Then Exit Sub
+        On Error GoTo ErrHandler
+        
+        If ValidarFormatacaoNumTel(.Value) Then
+            cadastro.Conjugue.Telefone = .Value
+        End If
+        
+        Exit Sub
+ErrHandler:
+        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
+        .Value = ""
+    End With
+End Sub
+
+Private Sub txtbDataDeNascimentoConjugue_AfterUpdate()
+    With txtbDataDeNascimentoConjugue
+        If .Value = "" Then Exit Sub
+        On Error GoTo ErrHandler
+        
+        If ValidarMaiorDeIdade(.Value) Then
+            cadastro.Conjugue.DataNascimento = Format(.Value, "dd/mm/yyyy")
+        End If
+        
+        Exit Sub
+ErrHandler:
+        MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
+        .Value = ""
+    End With
+End Sub
+
+' ============================================================================================================
+' DEMAIS INFORMAÇÕES
+' ============================================================================================================
+
+Private Sub optParticipaProgramaGovSIM_Change()
+    cadastro.DemaisInfo.ParticipaProgramaGov = optParticipaProgramaGovSIM.Value
+End Sub
+
+Private Sub combProgramaGov_Change()
+    cadastro.DemaisInfo.ProgramaGov = combProgramaGov.Value
+End Sub
+
+Private Sub combTipoMoradia_Change()
+    cadastro.DemaisInfo.TipoMoradia = combTipoMoradia.Value
+End Sub
+
+Private Sub txtbNPessoasNaCasa_Change()
+    cadastro.DemaisInfo.NPessoasNaCasa = txtbNPessoasNaCasa.Value
+End Sub
+
+Private Sub optRecebeCestaSIM_Change()
+    cadastro.DemaisInfo.RecebeCesta = optRecebeCestaSIM.Value
+End Sub
+
+Private Sub txtbDataSindicancia_Change()
+    cadastro.DemaisInfo.DataSindicancia = txtbDataSindicancia.Value
+End Sub
+
+Private Sub txtbNomeVisitador_Change()
+    cadastro.DemaisInfo.NomeVisitador = txtbNomeVisitador.Value
+End Sub
+
+' ============================================================================================================
+' ENDEREÇO
+' ============================================================================================================
+
+Private Sub txtbLogradouro_Change()
+    cadastro.Endereco.Logradouro = txtbLogradouro.Value
+End Sub
+
+Private Sub txtbNumeroLogradouro_Change()
+    cadastro.Endereco.NumeroCasa = txtbNumeroLogradouro.Value
+End Sub
+
+Private Sub txtbBairro_Change()
+    cadastro.Endereco.Bairro = txtbBairro.Value
+End Sub
+
+Private Sub txtbCidade_Change()
+    cadastro.Endereco.Cidade = txtbCidade.Value
+End Sub
+
 Private Sub UserForm_Initialize()
     Call PopulateComboBoxes 'Popula as combo box com os valores armazenados nas tabelas de dados
     With txtbDataSindicancia
         .Value = Format(Date, "dd/mm/yyyy")
         .Enabled = False
+        cadastro.DemaisInfo.DataSindicancia = .Value
     End With
+    
+    cadastro.DemaisInfo.DataSindicancia = txtbDataSindicancia.Value
     txtbNPessoasNaCasa.Value = 1
     EnableFrameControls FrameConjugue, False
     

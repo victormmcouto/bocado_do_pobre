@@ -15,17 +15,6 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Private count As Integer
-
-Private Sub cbttAdd_Click()
-    With cadastro.parentes(CInt(SpinButtonParente))
-        .Nome = txtbNomeParente.Value
-        .Escolaridade = combEscolaridadeParente.Value
-        .GrauParentesco = combGrauParentescoParente.Value
-        .DataNascimento = txtbDataNascimentoParente.Value
-    End With
-End Sub
-
 Private Sub SpinButtonParente_Change()
     Me.Frame1.Caption = "Parente " & SpinButtonParente.Value
     
@@ -33,7 +22,11 @@ Private Sub SpinButtonParente_Change()
         txtbNomeParente.Value = .Nome
         combEscolaridadeParente.Value = .Escolaridade
         combGrauParentescoParente.Value = .GrauParentesco
-        txtbDataNascimentoParente.Value = .DataNascimento
+        If .DataNascimento = 0 Then
+            txtbDataNascimentoParente.Value = ""
+        Else
+            txtbDataNascimentoParente.Value = .DataNascimento
+        End If
     End With
 End Sub
 
@@ -53,17 +46,31 @@ ErrHandler:
     End With
 End Sub
 
+Private Sub txtbNomeParente_Change()
+    cadastro.parentes(SpinButtonParente.Value).Nome = txtbNomeParente.Value
+End Sub
+
+Private Sub combEscolaridadeParente_Change()
+    cadastro.parentes(SpinButtonParente.Value).Escolaridade = combEscolaridadeParente.Value
+End Sub
+
+Private Sub combGrauParentescoParente_Change()
+    cadastro.parentes(SpinButtonParente.Value).GrauParentesco = combGrauParentescoParente.Value
+End Sub
+
 Private Sub UserForm_Initialize()
+    Dim totalPessoas As Integer
+    
+    totalPessoas = cadastro.DemaisInfo.NPessoasNaCasa
+
     If Not ParentesInicializado(cadastro.parentes) Then 'Inicializa o array de parentes caso não tenha sido inicializado
-        ReDim cadastro.parentes(1 To total)
-    ElseIf UBound(cadastro.parentes) < total Then 'Redimenciona o array de parentes caso o total mude
-        ReDim Preserve cadastro.parentes(1 To total)
+        ReDim cadastro.parentes(1 To totalPessoas)
+    ElseIf UBound(cadastro.parentes) < totalPessoas Then 'Redimenciona o array de parentes caso o total mude
+        ReDim Preserve cadastro.parentes(1 To totalPessoas)
     End If
     
-    count = 1
-    SpinButtonParente.Value = count
-    SpinButtonParente.Min = count
-    SpinButtonParente.Max = total
+    SpinButtonParente.Min = 1
+    SpinButtonParente.Max = totalPessoas
     
     Call PopulateComboBoxes
 End Sub
