@@ -24,6 +24,12 @@ Private Sub cbttCadastrar_Click()
     If CamposObrigatoriosPreenchidos(arrCamposObrigatorios) Then
         Dim result As VbMsgBoxResult
         
+        result = MsgBox("Deseja seguir com a realizaçã do cadastro?", _
+                        vbYesNo, _
+                        "Deseja prosseguir?")
+        
+        If result = vbNo Then Exit Sub
+        
         Call RealizarCadastro
         
         result = MsgBox("Cadastro Realizado! Deseja realizar outro cadastro?", _
@@ -48,21 +54,8 @@ End Sub
 ' ASSISTIDO
 ' ============================================================================================================
 
-Private Sub combEstadoCivilAssistido_Change()
-    With combEstadoCivilAssistido
-        If Not (.Value Like "*Casado*" Or .Value = "") Then
-            Call EnableFrameControls(FrameConjugue, False)
-            combEstadoCivilConjugue.Value = ""
-        Else
-            Call EnableFrameControls(FrameConjugue, True)
-            combEstadoCivilConjugue.Value = combEstadoCivilAssistido.Value
-            combEstadoCivilConjugue.Enabled = False
-        End If
-    End With
-End Sub
-
-Private Sub SpinButtonNPessoas_Change()
-    txtbNPessoasNaCasa.Value = SpinButtonNPessoas.Value
+Private Sub txtbNomeAssistido_Change()
+    cadastro.Assistido.Nome = txtbNomeAssistido.Value
 End Sub
 
 Private Sub combProfissaoAssistido_Change()
@@ -119,6 +112,21 @@ ErrHandler:
         MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
         .Value = ""
     End With
+End Sub
+
+Private Sub combEstadoCivilAssistido_Change()
+    With combEstadoCivilAssistido
+        If Not (.Value Like "*Casado*" Or .Value = "") Then
+            Call EnableFrameControls(FrameConjugue, False)
+            combEstadoCivilConjugue.Value = ""
+        Else
+            Call EnableFrameControls(FrameConjugue, True)
+            combEstadoCivilConjugue.Value = combEstadoCivilAssistido.Value
+            Call EnableFrameControls(frmEstadoCivilConjugue, False)
+        End If
+    End With
+    
+    cadastro.Assistido.EstadoCivil = combEstadoCivilAssistido.Value
 End Sub
 
 ' ============================================================================================================
@@ -193,8 +201,17 @@ End Sub
 ' DEMAIS INFORMAÇÕES
 ' ============================================================================================================
 
-Private Sub optParticipaProgramaGovSIM_Change()
+Private Sub optParticipaProgramaGovSIM_Click()
     cadastro.DemaisInfo.ParticipaProgramaGov = optParticipaProgramaGovSIM.Value
+    If optParticipaProgramaGovNAO Then
+        Call EnableFrameControls(frmProgGov, False)
+    Else
+        Call EnableFrameControls(frmProgGov, True)
+    End If
+End Sub
+
+Private Sub optParticipaProgramaGovNAO_Click()
+    optParticipaProgramaGovSIM_Click
 End Sub
 
 Private Sub combProgramaGov_Change()
@@ -209,8 +226,12 @@ Private Sub txtbNPessoasNaCasa_Change()
     cadastro.DemaisInfo.NPessoasNaCasa = txtbNPessoasNaCasa.Value
 End Sub
 
-Private Sub optRecebeCestaSIM_Change()
+Private Sub optRecebeCestaSIM_Click()
     cadastro.DemaisInfo.RecebeCesta = optRecebeCestaSIM.Value
+End Sub
+
+Private Sub optRecebeCestaNAO_Click()
+    optRecebeCestaSIM_Click
 End Sub
 
 Private Sub txtbDataSindicancia_Change()
@@ -219,6 +240,11 @@ End Sub
 
 Private Sub txtbNomeVisitador_Change()
     cadastro.DemaisInfo.NomeVisitador = txtbNomeVisitador.Value
+End Sub
+
+
+Private Sub SpinButtonNPessoas_Change()
+    txtbNPessoasNaCasa.Value = SpinButtonNPessoas.Value
 End Sub
 
 ' ============================================================================================================
