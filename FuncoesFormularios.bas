@@ -1,7 +1,7 @@
 Attribute VB_Name = "FuncoesFormularios"
 Option Explicit
 
-Public cadastro As cadastro
+Public Cadastro As Cadastro
 
 Public Type Conjugue
     Nome As String
@@ -47,7 +47,7 @@ Public Type DemaisInfo
     NomeVisitador As String
 End Type
 
-Public Type cadastro
+Public Type Cadastro
     Assistido As Assistido
     Conjugue As Conjugue
     parentes() As parente
@@ -62,29 +62,23 @@ Public Enum errors
     errCamposObrigatorios = vbObjectError + 4
 End Enum
 
-Public total As Integer
+'Public total As Integer
 
-Public Sub Main()
-    Dim formCadastro As New CadastroDeAssistidos
-    
-    formCadastro.Show
-End Sub
-
-Public Function ParentesInicializado(parentes() As parente) As Boolean
+Public Function ParentesInicializado() As Boolean
     On Error Resume Next
 
     Dim lb As Long
-    lb = LBound(parentes)
+    lb = LBound(Cadastro.parentes)
 
     ParentesInicializado = (Err.Number = 0)
 
     On Error GoTo 0
 End Function
 
-Public Sub Populate(ByRef tbl As ListObject, ByRef comb As ComboBox)
+Public Sub Populate(ByRef data As Range, ByRef comb As ComboBox)
     Dim item As Range
     
-    For Each item In tbl.DataBodyRange.Cells
+    For Each item In data.Cells
         comb.AddItem item.Value
     Next item
 End Sub
@@ -250,7 +244,44 @@ Public Sub LimparEntradas(ByRef frm As MSForms.frame)
     Next ctrl
 End Sub
 
-Public Function CadastroVazio() As cadastro
-    Dim newCadastro As cadastro
+Public Function CadastroVazio() As Cadastro
+    Dim newCadastro As Cadastro
     CadastroVazio = newCadastro
 End Function
+
+Public Sub PreencherCampos(ByRef form As CadastroDeAssistidos)
+    With form
+        .txtbNomeAssistido.Value = Cadastro.Assistido.Nome
+        .txtbDataNascimentoAssistido.Value = Cadastro.Assistido.DataNascimento
+        .combEstadoCivilAssistido.Value = Cadastro.Assistido.EstadoCivil
+        .combProfissaoAssistido.Value = Cadastro.Assistido.Profissao
+        .combEscolaridadeAssistido.Value = Cadastro.Assistido.Escolaridade
+        .txtbCPFAssistido.Value = Cadastro.Assistido.CPF
+        .txtbTelefoneAssistido.Value = Cadastro.Assistido.Telefone
+    
+        .txtbNomeConjugue.Value = Cadastro.Conjugue.Nome
+        .txtbDataDeNascimentoConjugue.Value = Cadastro.Conjugue.DataNascimento
+        .combEstadoCivilConjugue.Value = Cadastro.Conjugue.EstadoCivil
+        .combProfissaoConjugue.Value = Cadastro.Conjugue.Profissao
+        .combEscolaridadeConjugue.Value = Cadastro.Conjugue.Escolaridade
+        .txtbCPFConjugue.Value = Cadastro.Conjugue.CPF
+        .txtbTelefoneConjugue.Value = Cadastro.Conjugue.Telefone
+        
+        .optParticipaProgramaGovNAO.Value = Not Cadastro.DemaisInfo.ParticipaProgramaGov
+        .optParticipaProgramaGovSIM.Value = Cadastro.DemaisInfo.ParticipaProgramaGov
+        .combProgramaGov.Value = Cadastro.DemaisInfo.ProgramaGov
+        .combTipoMoradia.Value = Cadastro.DemaisInfo.TipoMoradia
+        .lblNPessoasNaCasa.Caption = Cadastro.DemaisInfo.NPessoasNaCasa
+        .SpinButtonNPessoas.Value = Cadastro.DemaisInfo.NPessoasNaCasa
+        .optRecebeCestaSIM.Value = Cadastro.DemaisInfo.RecebeCesta
+        .optRecebeCestaNAO.Value = Not Cadastro.DemaisInfo.RecebeCesta
+        
+        .txtbDataSindicancia.Value = Cadastro.DemaisInfo.DataSindicancia
+        .txtbNomeVisitador.Value = Cadastro.DemaisInfo.NomeVisitador
+        
+        .txtbLogradouro.Value = Cadastro.Endereco.Logradouro
+        .txtbNumeroLogradouro.Value = Cadastro.Endereco.NumeroCasa
+        .txtbBairro.Value = Cadastro.Endereco.Bairro
+        .txtbCidade.Value = Cadastro.Endereco.Cidade
+    End With
+End Sub

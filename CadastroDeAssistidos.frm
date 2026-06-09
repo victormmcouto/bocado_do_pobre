@@ -38,7 +38,7 @@ Private Sub cbttCadastrar_Click()
         
         If result = vbYes Then
             Call LimparEntradas(frmDadosCadastrais)
-            cadastro = CadastroVazio
+            Cadastro = CadastroVazio
         Else
             Unload Me
         End If
@@ -55,15 +55,15 @@ End Sub
 ' ============================================================================================================
 
 Private Sub txtbNomeAssistido_Change()
-    cadastro.Assistido.Nome = txtbNomeAssistido.Value
+    Cadastro.Assistido.Nome = txtbNomeAssistido.Value
 End Sub
 
 Private Sub combProfissaoAssistido_Change()
-    cadastro.Assistido.Profissao = combProfissaoAssistido.Value
+    Cadastro.Assistido.Profissao = combProfissaoAssistido.Value
 End Sub
 
 Private Sub combEscolaridadeAssistido_Change()
-    cadastro.Assistido.Escolaridade = combEscolaridadeAssistido.Value
+    Cadastro.Assistido.Escolaridade = combEscolaridadeAssistido.Value
 End Sub
 
 Private Sub txtbCPFAssistido_AfterUpdate()
@@ -72,7 +72,7 @@ Private Sub txtbCPFAssistido_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarCPF(.Value) Then
-            cadastro.Assistido.CPF = .Value
+            Cadastro.Assistido.CPF = .Value
         End If
         
         Exit Sub
@@ -88,7 +88,7 @@ Private Sub txtbTelefoneAssistido_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarFormatacaoNumTel(.Value) Then
-            cadastro.Assistido.Telefone = .Value
+            Cadastro.Assistido.Telefone = .Value
         End If
         
         Exit Sub
@@ -104,7 +104,7 @@ Private Sub txtbDataNascimentoAssistido_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarMaiorDeIdade(.Value) Then
-            cadastro.Assistido.DataNascimento = Format(.Value, "dd/mm/yyyy")
+            Cadastro.Assistido.DataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -126,7 +126,7 @@ Private Sub combEstadoCivilAssistido_Change()
         End If
     End With
     
-    cadastro.Assistido.EstadoCivil = combEstadoCivilAssistido.Value
+    Cadastro.Assistido.EstadoCivil = combEstadoCivilAssistido.Value
 End Sub
 
 ' ============================================================================================================
@@ -134,19 +134,19 @@ End Sub
 ' ============================================================================================================
 
 Private Sub txtbNomeConjugue_Change()
-    cadastro.Conjugue.Nome = txtbNomeConjugue.Value
+    Cadastro.Conjugue.Nome = txtbNomeConjugue.Value
 End Sub
 
 Private Sub combProfissaoConjugue_Change()
-    cadastro.Conjugue.Profissao = combProfissaoConjugue.Value
+    Cadastro.Conjugue.Profissao = combProfissaoConjugue.Value
 End Sub
 
 Private Sub combEstadoCivilConjugue_Change()
-    cadastro.Conjugue.EstadoCivil = combEstadoCivilConjugue.Value
+    Cadastro.Conjugue.EstadoCivil = combEstadoCivilConjugue.Value
 End Sub
 
 Private Sub combEscolaridadeConjugue_Change()
-    cadastro.Conjugue.Escolaridade = combEscolaridadeConjugue.Value
+    Cadastro.Conjugue.Escolaridade = combEscolaridadeConjugue.Value
 End Sub
 
 Private Sub txtbCPFConjugue_AfterUpdate()
@@ -155,7 +155,7 @@ Private Sub txtbCPFConjugue_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarCPF(.Value) Then
-            cadastro.Conjugue.CPF = .Value
+            Cadastro.Conjugue.CPF = .Value
         End If
         
         Exit Sub
@@ -171,7 +171,7 @@ Private Sub txtbTelefoneConjugue_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarFormatacaoNumTel(.Value) Then
-            cadastro.Conjugue.Telefone = .Value
+            Cadastro.Conjugue.Telefone = .Value
         End If
         
         Exit Sub
@@ -187,7 +187,7 @@ Private Sub txtbDataDeNascimentoConjugue_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarMaiorDeIdade(.Value) Then
-            cadastro.Conjugue.DataNascimento = Format(.Value, "dd/mm/yyyy")
+            Cadastro.Conjugue.DataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -202,7 +202,7 @@ End Sub
 ' ============================================================================================================
 
 Private Sub optParticipaProgramaGovSIM_Click()
-    cadastro.DemaisInfo.ParticipaProgramaGov = optParticipaProgramaGovSIM.Value
+    Cadastro.DemaisInfo.ParticipaProgramaGov = optParticipaProgramaGovSIM.Value
     If optParticipaProgramaGovNAO Then
         Call EnableFrameControls(frmProgGov, False)
     Else
@@ -215,19 +215,19 @@ Private Sub optParticipaProgramaGovNAO_Click()
 End Sub
 
 Private Sub combProgramaGov_Change()
-    cadastro.DemaisInfo.ProgramaGov = combProgramaGov.Value
+    Cadastro.DemaisInfo.ProgramaGov = combProgramaGov.Value
 End Sub
 
 Private Sub combTipoMoradia_Change()
-    cadastro.DemaisInfo.TipoMoradia = combTipoMoradia.Value
+    Cadastro.DemaisInfo.TipoMoradia = combTipoMoradia.Value
 End Sub
 
 Private Sub txtbNPessoasNaCasa_Change()
-    cadastro.DemaisInfo.NPessoasNaCasa = txtbNPessoasNaCasa.Value
+    Cadastro.DemaisInfo.NPessoasNaCasa = txtbNPessoasNaCasa.Value
 End Sub
 
 Private Sub optRecebeCestaSIM_Click()
-    cadastro.DemaisInfo.RecebeCesta = optRecebeCestaSIM.Value
+    Cadastro.DemaisInfo.RecebeCesta = optRecebeCestaSIM.Value
 End Sub
 
 Private Sub optRecebeCestaNAO_Click()
@@ -235,11 +235,11 @@ Private Sub optRecebeCestaNAO_Click()
 End Sub
 
 Private Sub txtbDataSindicancia_Change()
-    cadastro.DemaisInfo.DataSindicancia = txtbDataSindicancia.Value
+    Cadastro.DemaisInfo.DataSindicancia = txtbDataSindicancia.Value
 End Sub
 
 Private Sub txtbNomeVisitador_Change()
-    cadastro.DemaisInfo.NomeVisitador = txtbNomeVisitador.Value
+    Cadastro.DemaisInfo.NomeVisitador = txtbNomeVisitador.Value
 End Sub
 
 Private Sub SpinButtonNPessoas_Change()
@@ -251,18 +251,18 @@ Private Sub SpinButtonNPessoas_Change()
     
     If totalPessoas > 0 Then
         If Not ParentesInicializado() Then 'Inicializa o array de parentes caso não tenha sido inicializado
-            ReDim cadastro.parentes(1 To totalPessoas)
-        ElseIf UBound(cadastro.parentes) < totalPessoas Then 'Redimenciona o array de parentes caso o total mude
-            ReDim Preserve cadastro.parentes(1 To totalPessoas)
+            ReDim Cadastro.parentes(1 To totalPessoas)
+        ElseIf UBound(Cadastro.parentes) < totalPessoas Then 'Redimenciona o array de parentes caso o total mude
+            ReDim Preserve Cadastro.parentes(1 To totalPessoas)
         End If
         
         cbttAddParentes.Enabled = True
     Else
         cbttAddParentes.Enabled = False
-        Erase cadastro.parentes
+        Erase Cadastro.parentes
     End If
     
-    cadastro.DemaisInfo.NPessoasNaCasa = totalPessoas
+    Cadastro.DemaisInfo.NPessoasNaCasa = totalPessoas
 End Sub
 
 ' ============================================================================================================
@@ -270,34 +270,47 @@ End Sub
 ' ============================================================================================================
 
 Private Sub txtbLogradouro_Change()
-    cadastro.Endereco.Logradouro = txtbLogradouro.Value
+    Cadastro.Endereco.Logradouro = txtbLogradouro.Value
 End Sub
 
 Private Sub txtbNumeroLogradouro_Change()
-    cadastro.Endereco.NumeroCasa = txtbNumeroLogradouro.Value
+    Cadastro.Endereco.NumeroCasa = txtbNumeroLogradouro.Value
 End Sub
 
 Private Sub txtbBairro_Change()
-    cadastro.Endereco.Bairro = txtbBairro.Value
+    Cadastro.Endereco.Bairro = txtbBairro.Value
 End Sub
 
 Private Sub txtbCidade_Change()
-    cadastro.Endereco.Cidade = txtbCidade.Value
+    Cadastro.Endereco.Cidade = txtbCidade.Value
 End Sub
 
 Private Sub UserForm_Initialize()
-    Call PopulateComboBoxes 'Popula as combo box com os valores armazenados nas tabelas de dados
-    With txtbDataSindicancia
-        .Value = Format(Date, "dd/mm/yyyy")
-        .Enabled = False
-        cadastro.DemaisInfo.DataSindicancia = .Value
-    End With
+    Call PopulateComboBoxes                                 'Popula as combo box com os valores armazenados nas tabelas de dados
+    txtbDataSindicancia.Enabled = False
+    CamposObrigatorios
     
-    cadastro.DemaisInfo.DataSindicancia = txtbDataSindicancia.Value
-    lblNPessoasNaCasa.Caption = 0
-    cbttAddParentes.Enabled = False
-    EnableFrameControls FrameConjugue, False
+    If boolCadastrar Then
+        With txtbDataSindicancia
+            .Value = Format(Date, "dd/mm/yyyy")
+            Cadastro.DemaisInfo.DataSindicancia = .Value
+        End With
+        lblNPessoasNaCasa.Caption = 0
+    Else
+        Call PreencherCampos(Me)
+    End If
     
+    If Not Cadastro.Assistido.EstadoCivil Like "*Casado*" Then
+        EnableFrameControls FrameConjugue, False
+    End If
+    If Cadastro.DemaisInfo.NPessoasNaCasa = 0 Then
+        cbttAddParentes.Enabled = False
+    Else
+        cbttAddParentes.Enabled = True
+    End If
+End Sub
+
+Private Sub CamposObrigatorios()
     ReDim arrCamposObrigatorios(1 To 5)
     
     Set arrCamposObrigatorios(1) = txtbNomeAssistido
@@ -311,13 +324,6 @@ Private Sub UserForm_Initialize()
     For index = 1 To UBound(arrCamposObrigatorios)
         Call EidatarComoCampoPrioritario(arrCamposObrigatorios(index))
     Next index
-    
-    txtbNomeAssistido.Value = "Victor"
-    txtbDataNascimentoAssistido.Value = "13/11/2001"
-    txtbTelefoneAssistido.Value = "31972110555"
-    txtbLogradouro.Value = "Rua Projeto Fred"
-    txtbNumeroLogradouro = "290"
-    txtbBairro.Value = "Arpoador"
 End Sub
 
 Private Sub OptBttProgramaGovFedNAO_Click()
@@ -339,16 +345,16 @@ Public Sub PopulateComboBoxes()
         Set tblTipoMoradia = wksTIPO_MORADIA.ListObjects(1)
     End With
     
-    Populate tblProfissoes, combProfissaoAssistido
-    Populate tblProfissoes, combProfissaoConjugue
+    Populate tblProfissoes.DataBodyRange, combProfissaoAssistido
+    Populate tblProfissoes.DataBodyRange, combProfissaoConjugue
     
-    Populate tblEstadosCivis, combEstadoCivilAssistido
-    Populate tblEstadosCivis, combEstadoCivilConjugue
+    Populate tblEstadosCivis.DataBodyRange, combEstadoCivilAssistido
+    Populate tblEstadosCivis.DataBodyRange, combEstadoCivilConjugue
     
-    Populate tblEscolaridades, combEscolaridadeAssistido
-    Populate tblEscolaridades, combEscolaridadeConjugue
+    Populate tblEscolaridades.DataBodyRange, combEscolaridadeAssistido
+    Populate tblEscolaridades.DataBodyRange, combEscolaridadeConjugue
     
-    Populate tblProgramaGov, combProgramaGov
+    Populate tblProgramaGov.DataBodyRange, combProgramaGov
     
-    Populate tblTipoMoradia, combTipoMoradia
+    Populate tblTipoMoradia.DataBodyRange, combTipoMoradia
 End Sub

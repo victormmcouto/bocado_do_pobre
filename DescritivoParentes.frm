@@ -18,7 +18,7 @@ Option Explicit
 Private Sub SpinButtonParente_Change()
     Me.Frame1.Caption = "Parente " & SpinButtonParente.Value
     
-    With cadastro.parentes(SpinButtonParente.Value)
+    With Cadastro.parentes(SpinButtonParente.Value)
         txtbNomeParente.Value = .Nome
         combEscolaridadeParente.Value = .Escolaridade
         combGrauParentescoParente.Value = .GrauParentesco
@@ -36,7 +36,7 @@ Private Sub txtbDataNascimentoParente_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarMaiorDeIdade(.Value) Then
-            cadastro.parentes(SpinButtonParente.Value).DataNascimento = Format(.Value, "dd/mm/yyyy")
+            Cadastro.parentes(SpinButtonParente.Value).DataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -47,15 +47,15 @@ ErrHandler:
 End Sub
 
 Private Sub txtbNomeParente_Change()
-    cadastro.parentes(SpinButtonParente.Value).Nome = txtbNomeParente.Value
+    Cadastro.parentes(SpinButtonParente.Value).Nome = txtbNomeParente.Value
 End Sub
 
 Private Sub combEscolaridadeParente_Change()
-    cadastro.parentes(SpinButtonParente.Value).Escolaridade = combEscolaridadeParente.Value
+    Cadastro.parentes(SpinButtonParente.Value).Escolaridade = combEscolaridadeParente.Value
 End Sub
 
 Private Sub combGrauParentescoParente_Change()
-    cadastro.parentes(SpinButtonParente.Value).GrauParentesco = combGrauParentescoParente.Value
+    Cadastro.parentes(SpinButtonParente.Value).GrauParentesco = combGrauParentescoParente.Value
 End Sub
 
 Private Sub UserForm_Initialize()
@@ -63,7 +63,7 @@ Private Sub UserForm_Initialize()
     
     SpinButtonParente.Value = 1
     SpinButtonParente.Min = 1
-    SpinButtonParente.Max = cadastro.DemaisInfo.NPessoasNaCasa
+    SpinButtonParente.Max = Cadastro.DemaisInfo.NPessoasNaCasa
     
     Call PopulateComboBoxes
 End Sub
@@ -77,8 +77,8 @@ Private Sub PopulateComboBoxes()
         Set tblGrausParentesco = wksGRAUS_PARENTESCO.ListObjects(1)
     End With
     
-    Populate tblEscolaridadeParente, combEscolaridadeParente
+    Populate tblEscolaridadeParente.DataBodyRange, combEscolaridadeParente
     
-    Populate tblGrausParentesco, combGrauParentescoParente
+    Populate tblGrausParentesco.DataBodyRange, combGrauParentescoParente
 End Sub
 
