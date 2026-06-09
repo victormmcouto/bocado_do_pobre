@@ -1,10 +1,10 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} CadastroDeAssistidos 
    Caption         =   "FICHA CADASTRAL DOS ASSISTIDOS"
-   ClientHeight    =   6345
+   ClientHeight    =   6705
    ClientLeft      =   120
    ClientTop       =   465
-   ClientWidth     =   12375
+   ClientWidth     =   12585
    OleObjectBlob   =   "CadastroDeAssistidos.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
@@ -30,14 +30,14 @@ Private Sub cbttCadastrar_Click()
         
         If result = vbNo Then Exit Sub
         
-        Call RealizarCadastro
+        'Call RealizarCadastro
         
         result = MsgBox("Cadastro Realizado! Deseja realizar outro cadastro?", _
                         vbInformation + vbYesNo + vbMsgBoxSetForeground, _
                         "Cadastro Realizado!")
         
         If result = vbYes Then
-            Call LimparEntradas(Me)
+            Call LimparEntradas(frmDadosCadastrais)
             cadastro = CadastroVazio
         Else
             Unload Me
@@ -242,9 +242,26 @@ Private Sub txtbNomeVisitador_Change()
     cadastro.DemaisInfo.NomeVisitador = txtbNomeVisitador.Value
 End Sub
 
-
 Private Sub SpinButtonNPessoas_Change()
-    txtbNPessoasNaCasa.Value = SpinButtonNPessoas.Value
+    Dim totalPessoas As Integer
+    
+    totalPessoas = SpinButtonNPessoas.Value
+     
+    lblNPessoasNaCasa.Caption = totalPessoas
+    
+    If totalPessoas > 0 Then
+        If Not ParentesInicializado(cadastro.parentes) Then 'Inicializa o array de parentes caso não tenha sido inicializado
+            ReDim cadastro.parentes(1 To totalPessoas)
+        ElseIf UBound(cadastro.parentes) < totalPessoas Then 'Redimenciona o array de parentes caso o total mude
+            ReDim Preserve cadastro.parentes(1 To totalPessoas)
+        End If
+        
+        cbttAddParentes.Enabled = True
+    Else
+        cbttAddParentes.Enabled = False
+    End If
+    
+    cadastro.DemaisInfo.NPessoasNaCasa = totalPessoas
 End Sub
 
 ' ============================================================================================================
@@ -276,7 +293,8 @@ Private Sub UserForm_Initialize()
     End With
     
     cadastro.DemaisInfo.DataSindicancia = txtbDataSindicancia.Value
-    txtbNPessoasNaCasa.Value = 1
+    lblNPessoasNaCasa.Caption = 0
+    cbttAddParentes.Enabled = False
     EnableFrameControls FrameConjugue, False
     
     ReDim arrCamposObrigatorios(1 To 5)
@@ -292,6 +310,13 @@ Private Sub UserForm_Initialize()
     For index = 1 To UBound(arrCamposObrigatorios)
         Call EidatarComoCampoPrioritario(arrCamposObrigatorios(index))
     Next index
+    
+    txtbNomeAssistido.Value = "Victor"
+    txtbDataNascimentoAssistido.Value = "13/11/2001"
+    txtbTelefoneAssistido.Value = "31972110555"
+    txtbLogradouro.Value = "Rua Projeto Fred"
+    txtbNumeroLogradouro = "290"
+    txtbBairro.Value = "Arpoador"
 End Sub
 
 Private Sub OptBttProgramaGovFedNAO_Click()

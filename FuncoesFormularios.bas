@@ -28,7 +28,6 @@ Public Type Assistido
     Escolaridade As String
     Telefone As String
     CPF As String
-    Conjugue As Conjugue
 End Type
 
 Public Type Endereco
@@ -36,7 +35,6 @@ Public Type Endereco
     NumeroCasa As String
     Bairro As String
     Cidade As String
-    PathAutorizacao As String
 End Type
 
 Public Type DemaisInfo
@@ -66,16 +64,10 @@ End Enum
 
 Public total As Integer
 
-Public Sub AdicionarParentes(NParentesTotais As Integer)
-    total = NParentesTotais
-    DescritivoParentes.Show
-End Sub
-
 Public Sub Main()
     Dim formCadastro As New CadastroDeAssistidos
     
     formCadastro.Show
-    
 End Sub
 
 Public Function ParentesInicializado(parentes() As parente) As Boolean
@@ -237,28 +229,28 @@ Public Function CamposObrigatoriosPreenchidos(ByRef arrCampos() As MSForms.contr
     CamposObrigatoriosPreenchidos = True
 End Function
 
-Public Sub LimparEntradas(ByRef form As CadastroDeAssistidos)
-    Dim ctrl As MSForms.control
-    
-    On Error Resume Next
-    For Each ctrl In form.Controls
-        If TypeName(ctrl) = "Frame" Then
-            ClearFrameControls ctrl
-        Else
-            ctrl.Value = ""
-        End If
-    Next ctrl
-    On Error GoTo 0
-End Sub
-
-Public Sub ClearFrameControls(ByRef frm As MSForms.frame)
+Public Sub LimparEntradas(ByRef frm As MSForms.frame)
     Dim ctrl As MSForms.control
     
     For Each ctrl In frm.Controls
+        Debug.Print ctrl.Name
         If TypeName(ctrl) = "Frame" Then
-            ClearFrameControls ctrl
-        Else
+            LimparEntradas ctrl
+        ElseIf TypeName(ctrl) = "Label" Then
+            ctrl.Caption = 0
+        ElseIf TypeName(ctrl) = "OptionButton" Then
+            ctrl.Value = False
+        ElseIf ctrl.Name = "txtbDataSindicancia" Then
+            ctrl.Value = Format(Date, "dd/mm/yyyy")
+        ElseIf TypeName(ctrl) = "SpinButton" Then
+            ctrl.Value = 0
+        ElseIf Not TypeName(ctrl) = "CommandButton" Then
             ctrl.Value = ""
         End If
     Next ctrl
 End Sub
+
+Public Function CadastroVazio() As cadastro
+    Dim newCadastro As cadastro
+    CadastroVazio = newCadastro
+End Function

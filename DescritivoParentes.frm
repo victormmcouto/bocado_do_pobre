@@ -18,7 +18,7 @@ Option Explicit
 Private Sub SpinButtonParente_Change()
     Me.Frame1.Caption = "Parente " & SpinButtonParente.Value
     
-    With cadastro.parentes(CInt(SpinButtonParente))
+    With cadastro.parentes(SpinButtonParente.Value)
         txtbNomeParente.Value = .Nome
         combEscolaridadeParente.Value = .Escolaridade
         combGrauParentescoParente.Value = .GrauParentesco
@@ -36,7 +36,7 @@ Private Sub txtbDataNascimentoParente_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarMaiorDeIdade(.Value) Then
-            cadastro.parentes(CInt(SpinButtonParente.Value)).DataNascimento = Format(.Value, "dd/mm/yyyy")
+            cadastro.parentes(SpinButtonParente.Value).DataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -61,16 +61,9 @@ End Sub
 Private Sub UserForm_Initialize()
     Dim totalPessoas As Integer
     
-    totalPessoas = cadastro.DemaisInfo.NPessoasNaCasa
-
-    If Not ParentesInicializado(cadastro.parentes) Then 'Inicializa o array de parentes caso não tenha sido inicializado
-        ReDim cadastro.parentes(1 To totalPessoas)
-    ElseIf UBound(cadastro.parentes) < totalPessoas Then 'Redimenciona o array de parentes caso o total mude
-        ReDim Preserve cadastro.parentes(1 To totalPessoas)
-    End If
-    
+    SpinButtonParente.Value = 1
     SpinButtonParente.Min = 1
-    SpinButtonParente.Max = totalPessoas
+    SpinButtonParente.Max = cadastro.DemaisInfo.NPessoasNaCasa
     
     Call PopulateComboBoxes
 End Sub
