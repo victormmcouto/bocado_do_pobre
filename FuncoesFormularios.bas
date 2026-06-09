@@ -61,6 +61,7 @@ Public Enum errors
     errFormatoDataInvalida = vbObjectError + 1
     errFormatoNumeroTelefoneInvalido = vbObjectError + 2
     errValidacaoCPF = vbObjectError + 3
+    errCamposObrigatorios = vbObjectError + 4
 End Enum
 
 Public total As Integer
@@ -222,3 +223,16 @@ Public Sub EidatarComoCampoPrioritario(ByRef ctrl As MSForms.control)
         .SpecialEffect = fmSpecialEffectFlat
     End With
 End Sub
+
+Public Function CamposObrigatoriosPreenchidos(ByRef arrCampos() As MSForms.control)
+    Dim index As Integer
+    
+    For index = 1 To UBound(arrCampos)
+        If arrCampos(index).Value = "" Then
+            Err.Raise errCamposObrigatorios, "Campos obirgatórios faltantes!", _
+                      "Há campos obrigatórios sem preenchimento! É impossível realizar um cadastro sem esse mínimo de informações!"
+        End If
+    Next index
+    
+    CamposObrigatoriosPreenchidos = True
+End Function

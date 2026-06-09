@@ -13,8 +13,22 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
+Private arrCamposObrigatorios() As MSForms.control
+
 Private Sub cbttAddParentes_Click()
     Call AdicionarParentes(CInt(txtbNPessoasNaCasa.Value))
+End Sub
+
+Private Sub cbttCadastrar_Click()
+    On Error GoTo ErrHandler
+    If CamposObrigatoriosPreenchidos(arrCamposObrigatorios) Then
+        
+    End If
+    
+    Exit Sub
+
+ErrHandler:
+    MsgBox Err.Description, vbCritical + vbMsgBoxSetForeground, Err.Source
 End Sub
 
 Private Sub combEstadoCivilAssistido_Change()
@@ -140,11 +154,19 @@ Private Sub UserForm_Initialize()
     txtbNPessoasNaCasa.Value = 1
     EnableFrameControls FrameConjugue, False
     
-    Call EidatarComoCampoPrioritario(txtbNomeAssistido)
-    Call EidatarComoCampoPrioritario(txtbBairro)
-    Call EidatarComoCampoPrioritario(txtbLogradouro)
-    Call EidatarComoCampoPrioritario(txtbNumeroLogradouro)
-    Call EidatarComoCampoPrioritario(txtbTelefoneAssistido)
+    ReDim arrCamposObrigatorios(1 To 5)
+    
+    Set arrCamposObrigatorios(1) = txtbNomeAssistido
+    Set arrCamposObrigatorios(2) = txtbBairro
+    Set arrCamposObrigatorios(3) = txtbLogradouro
+    Set arrCamposObrigatorios(4) = txtbNumeroLogradouro
+    Set arrCamposObrigatorios(5) = txtbTelefoneAssistido
+    
+    Dim index As Integer
+    
+    For index = 1 To UBound(arrCamposObrigatorios)
+        Call EidatarComoCampoPrioritario(arrCamposObrigatorios(index))
+    Next index
 End Sub
 
 Private Sub OptBttProgramaGovFedNAO_Click()
