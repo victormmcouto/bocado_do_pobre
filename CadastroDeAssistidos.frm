@@ -30,7 +30,7 @@ Private Sub cbttCadastrar_Click()
         
         If result = vbNo Then Exit Sub
         
-        'Call RealizarCadastro
+        Call RealizarCadastro
         
         result = MsgBox("Cadastro Realizado! Deseja realizar outro cadastro?", _
                         vbInformation + vbYesNo + vbMsgBoxSetForeground, _
@@ -250,7 +250,7 @@ Private Sub SpinButtonNPessoas_Change()
     lblNPessoasNaCasa.Caption = totalPessoas
     
     If totalPessoas > 0 Then
-        If Not ParentesInicializado(cadastro.parentes) Then 'Inicializa o array de parentes caso não tenha sido inicializado
+        If Not ParentesInicializado() Then 'Inicializa o array de parentes caso não tenha sido inicializado
             ReDim cadastro.parentes(1 To totalPessoas)
         ElseIf UBound(cadastro.parentes) < totalPessoas Then 'Redimenciona o array de parentes caso o total mude
             ReDim Preserve cadastro.parentes(1 To totalPessoas)
@@ -259,6 +259,7 @@ Private Sub SpinButtonNPessoas_Change()
         cbttAddParentes.Enabled = True
     Else
         cbttAddParentes.Enabled = False
+        Erase cadastro.parentes
     End If
     
     cadastro.DemaisInfo.NPessoasNaCasa = totalPessoas
