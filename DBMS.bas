@@ -15,12 +15,12 @@ Public Sub RealizarCadastro()
         With tblParentes
             keyParentesAtual = .ListColumns("KeyParente").DataBodyRange.Cells(.DataBodyRange.Rows.count).Value + 1
             
-            For index = 1 To UBound(cadastro.parentes)
+            For index = 1 To UBound(Cadastro.parentes)
                 AddRow tblParentes
                 
                 totalRows = .DataBodyRange.Rows.count
                 
-                With cadastro.parentes(index)
+                With Cadastro.parentes(index)
                     tblParentes.ListColumns("KeyParente").DataBodyRange.Cells(totalRows).Value = keyParentesAtual
                     tblParentes.ListColumns("NomeParente").DataBodyRange.Cells(totalRows).Value = .Nome
                     tblParentes.ListColumns("GrauParentescoParente").DataBodyRange.Cells(totalRows).Value = .GrauParentesco
@@ -31,7 +31,7 @@ Public Sub RealizarCadastro()
         End With
     End If
     
-    With cadastro
+    With Cadastro
         AddRow tblCadastros
         
         totalRows = tblCadastros.DataBodyRange.Rows.count
@@ -75,10 +75,92 @@ Public Sub RealizarCadastro()
     End With
     
     If keyParentesAtual = 0 Then
-        tblCadastros.ListColumns("KeyParentes").DataBodyRange.Cells(totalRows).Value = "-"
+        tblCadastros.ListColumns("KeyParente").DataBodyRange.Cells(totalRows).Value = "-"
     Else
-        tblCadastros.ListColumns("KeyParentes").DataBodyRange.Cells(totalRows).Value = keyParentesAtual
+        tblCadastros.ListColumns("KeyParente").DataBodyRange.Cells(totalRows).Value = keyParentesAtual
     End If
+End Sub
+
+Public Sub PopulateTypeCadastro()
+    Dim totalParentes As Integer
+    
+    InitializeTables
+        
+    totalParentes = CInt(listRowComparativo.Range(1, tblCadastros.ListColumns("NPessoas").index).Value)
+
+    With Cadastro
+        If totalParentes <> 0 Then
+            Dim index As Integer
+            Dim keyParentes As Integer
+            Dim lr As ListRow
+            Dim arrListRowParentes() As ListRow
+            
+            ReDim arrListRowParentes(1 To totalParentes)
+            ReDim Cadastro.parentes(1 To totalParentes)
+            
+            index = 1
+            
+            keyParentes = CInt(listRowComparativo.Range(1, tblCadastros.ListColumns("KeyParente").index).Value)
+            
+            For Each lr In tblParentes.ListRows
+                If lr.Range(1, tblParentes.ListColumns("KeyParente").index).Value = keyParentes Then
+                    Set arrListRowParentes(index) = lr
+                    index = index + 1
+                End If
+            Next lr
+            
+            For index = 1 To totalParentes
+                With arrListRowParentes(index)
+                    Cadastro.parentes(index).Nome = .Range(1, tblParentes.ListColumns("NomeParente").index).Value
+                    Cadastro.parentes(index).GrauParentesco = .Range(1, tblParentes.ListColumns("GrauParentescoParente").index).Value
+                    Cadastro.parentes(index).Escolaridade = .Range(1, tblParentes.ListColumns("EscolaridadeParente").index).Value
+                    On Error Resume Next
+                    Cadastro.parentes(index).DataNascimento = .Range(1, tblParentes.ListColumns("DataNascimentoParente").index).Value
+                    On Error GoTo 0
+                End With
+            Next index
+        End If
+        
+        With .Assistido
+            .Nome = listRowComparativo.Range(1, tblCadastros.ListColumns("NomeAssistido").index).Value
+            On Error Resume Next
+            .DataNascimento = listRowComparativo.Range(1, tblCadastros.ListColumns("DataNascimentoAssistido").index).Value
+            On Error GoTo 0
+            .EstadoCivil = listRowComparativo.Range(1, tblCadastros.ListColumns("EstadoCivilAssistido").index).Value
+            .Profissao = listRowComparativo.Range(1, tblCadastros.ListColumns("ProfissaoAssistido").index).Value
+            .Escolaridade = listRowComparativo.Range(1, tblCadastros.ListColumns("EscolaridadeAssistido").index).Value
+            .CPF = listRowComparativo.Range(1, tblCadastros.ListColumns("CPFAssistido").index).Value
+            .Telefone = listRowComparativo.Range(1, tblCadastros.ListColumns("TelefoneAssistido").index).Value
+        End With
+        With .Conjugue
+            .Nome = listRowComparativo.Range(1, tblCadastros.ListColumns("NomeConjugue").index).Value
+            On Error Resume Next
+            .DataNascimento = listRowComparativo.Range(1, tblCadastros.ListColumns("DataNascimentoConjugue").index).Value
+            On Error GoTo 0
+            .EstadoCivil = listRowComparativo.Range(1, tblCadastros.ListColumns("EstadoCivilConjugue").index).Value
+            .Profissao = listRowComparativo.Range(1, tblCadastros.ListColumns("ProfissaoConjugue").index).Value
+            .Escolaridade = listRowComparativo.Range(1, tblCadastros.ListColumns("EscolaridadeConjugue").index).Value
+            .CPF = listRowComparativo.Range(1, tblCadastros.ListColumns("CPFConjugue").index).Value
+            .Telefone = listRowComparativo.Range(1, tblCadastros.ListColumns("TelefoneConjugue").index).Value
+        End With
+        With .DemaisInfo
+            On Error Resume Next
+            .DataSindicancia = listRowComparativo.Range(1, tblCadastros.ListColumns("DataSindicancia").index).Value
+            On Error GoTo 0
+            .NomeVisitador = listRowComparativo.Range(1, tblCadastros.ListColumns("NomeVisitador").index).Value
+            .ParticipaProgramaGov = CBool(listRowComparativo.Range(1, tblCadastros.ListColumns("ParticipaProgGov?").index).Value)
+            .ProgramaGov = listRowComparativo.Range(1, tblCadastros.ListColumns("ProgGov").index).Value
+            .TipoMoradia = listRowComparativo.Range(1, tblCadastros.ListColumns("TipoMoradia").index).Value
+            .NPessoasNaCasa = listRowComparativo.Range(1, tblCadastros.ListColumns("NPessoas").index).Value
+            .RecebeCesta = CBool(listRowComparativo.Range(1, tblCadastros.ListColumns("RecebeCesta?").index).Value)
+        End With
+        With .Endereco
+            .Logradouro = listRowComparativo.Range(1, tblCadastros.ListColumns("Logradouro").index).Value
+            .NumeroCasa = listRowComparativo.Range(1, tblCadastros.ListColumns("Numero").index).Value
+            .Bairro = listRowComparativo.Range(1, tblCadastros.ListColumns("Bairro").index).Value
+            .Cidade = listRowComparativo.Range(1, tblCadastros.ListColumns("Cidade").index).Value
+        End With
+    End With
 End Sub
 
 Private Sub InitializeTables()
