@@ -24,6 +24,8 @@ Private Sub cbttProcurar_Click()
     Dim nomeAProcurar As String
     Dim nomeAtual As String
     
+    If combNomeAssistido.Text = "" Then Exit Sub
+    
     nomeAProcurar = Cadastro.Assistido.Nome
     
     For Each lr In tblCadastros.ListRows
@@ -37,11 +39,11 @@ Private Sub cbttProcurar_Click()
     Next lr
     
     If Not bolEcontrado Then
-        MsgBox "Não encontrado"
+        MsgBox "Ngit statusão encontrado"
         Set listRowComparativo = Nothing
     Else
+        Me.Hide
         If Not boolCadastrar Then
-            Me.Hide
             Call PopulateTypeCadastro
         End If
     End If

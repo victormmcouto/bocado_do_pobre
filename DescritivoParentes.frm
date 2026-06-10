@@ -35,7 +35,7 @@ Private Sub txtbDataNascimentoParente_AfterUpdate()
         If .Value = "" Then Exit Sub
         On Error GoTo ErrHandler
         
-        If ValidarMaiorDeIdade(.Value) Then
+        If ValidarDataCompleta(.Value) Then
             Cadastro.parentes(SpinButtonParente.Value).DataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         

@@ -123,12 +123,12 @@ End Sub
 Private Sub combEstadoCivilAssistido_Change()
     With combEstadoCivilAssistido
         If Not (.Value Like "*Casado*" Or .Value = "") Then
-            Call EnableFrameControls(FrameConjugue, False)
-            combEstadoCivilConjugue.Value = ""
+            Call EnableFrameControls(FrameConjuge, False)
+            combEstadoCivilConjuge.Value = ""
         Else
-            Call EnableFrameControls(FrameConjugue, True)
-            combEstadoCivilConjugue.Value = combEstadoCivilAssistido.Value
-            Call EnableFrameControls(frmEstadoCivilConjugue, False)
+            Call EnableFrameControls(FrameConjuge, True)
+            combEstadoCivilConjuge.Value = combEstadoCivilAssistido.Value
+            Call EnableFrameControls(frmEstadoCivilConjuge, False)
         End If
     End With
     
@@ -139,29 +139,29 @@ End Sub
 ' CÔNJUGUE
 ' ============================================================================================================
 
-Private Sub txtbNomeConjugue_Change()
-    Cadastro.Conjugue.Nome = txtbNomeConjugue.Value
+Private Sub txtbNomeconjuge_Change()
+    Cadastro.conjuge.Nome = txtbNomeConjuge.Value
 End Sub
 
-Private Sub combProfissaoConjugue_Change()
-    Cadastro.Conjugue.Profissao = combProfissaoConjugue.Value
+Private Sub combProfissaoconjuge_Change()
+    Cadastro.conjuge.Profissao = combProfissaoConjuge.Value
 End Sub
 
-Private Sub combEstadoCivilConjugue_Change()
-    Cadastro.Conjugue.EstadoCivil = combEstadoCivilConjugue.Value
+Private Sub combEstadoCivilconjuge_Change()
+    Cadastro.conjuge.EstadoCivil = combEstadoCivilConjuge.Value
 End Sub
 
-Private Sub combEscolaridadeConjugue_Change()
-    Cadastro.Conjugue.Escolaridade = combEscolaridadeConjugue.Value
+Private Sub combEscolaridadeconjuge_Change()
+    Cadastro.conjuge.Escolaridade = combEscolaridadeConjuge.Value
 End Sub
 
-Private Sub txtbCPFConjugue_AfterUpdate()
-    With txtbCPFConjugue
+Private Sub txtbCPFconjuge_AfterUpdate()
+    With txtbCPFConjuge
         If .Value = "" Then Exit Sub
         On Error GoTo ErrHandler
         
         If ValidarCPF(.Value) Then
-            Cadastro.Conjugue.CPF = .Value
+            Cadastro.conjuge.CPF = .Value
         End If
         
         Exit Sub
@@ -171,13 +171,13 @@ ErrHandler:
     End With
 End Sub
 
-Private Sub txtbTelefoneConjugue_AfterUpdate()
-    With txtbTelefoneConjugue
+Private Sub txtbTelefoneconjuge_AfterUpdate()
+    With txtbTelefoneConjuge
         If .Value = "" Then Exit Sub
         On Error GoTo ErrHandler
         
         If ValidarFormatacaoNumTel(.Value) Then
-            Cadastro.Conjugue.Telefone = .Value
+            Cadastro.conjuge.Telefone = .Value
         End If
         
         Exit Sub
@@ -187,13 +187,13 @@ ErrHandler:
     End With
 End Sub
 
-Private Sub txtbDataDeNascimentoConjugue_AfterUpdate()
-    With txtbDataDeNascimentoConjugue
+Private Sub txtbDataDeNascimentoconjuge_AfterUpdate()
+    With txtbDataDeNascimentoConjuge
         If .Value = "" Then Exit Sub
         On Error GoTo ErrHandler
         
         If ValidarMaiorDeIdade(.Value) Then
-            Cadastro.Conjugue.DataNascimento = Format(.Value, "dd/mm/yyyy")
+            Cadastro.conjuge.DataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -303,13 +303,14 @@ Private Sub UserForm_Initialize()
         End With
         lblNPessoasNaCasa.Caption = 0
         cbttCadastrar.Caption = "CADASTRAR"
+        EnableFrameControls frmParticipaDePrograma, False
     Else
         cbttCadastrar.Caption = "ATUALIZAR"
         Call PreencherCampos(Me)
     End If
     
     If Not Cadastro.Assistido.EstadoCivil Like "*Casado*" Then
-        EnableFrameControls FrameConjugue, False
+        EnableFrameControls FrameConjuge, False
     End If
     If Cadastro.DemaisInfo.NPessoasNaCasa = 0 Then
         cbttAddParentes.Enabled = False
@@ -354,13 +355,13 @@ Public Sub PopulateComboBoxes()
     End With
     
     Populate tblProfissoes.DataBodyRange, combProfissaoAssistido
-    Populate tblProfissoes.DataBodyRange, combProfissaoConjugue
+    Populate tblProfissoes.DataBodyRange, combProfissaoConjuge
     
     Populate tblEstadosCivis.DataBodyRange, combEstadoCivilAssistido
-    Populate tblEstadosCivis.DataBodyRange, combEstadoCivilConjugue
+    Populate tblEstadosCivis.DataBodyRange, combEstadoCivilConjuge
     
     Populate tblEscolaridades.DataBodyRange, combEscolaridadeAssistido
-    Populate tblEscolaridades.DataBodyRange, combEscolaridadeConjugue
+    Populate tblEscolaridades.DataBodyRange, combEscolaridadeConjuge
     
     Populate tblProgramaGov.DataBodyRange, combProgramaGov
     

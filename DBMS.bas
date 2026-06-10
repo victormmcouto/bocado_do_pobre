@@ -16,13 +16,13 @@ Public Sub RealizarCadastro()
             If Not boolCadastrar Then
                 keyParentesAtual = CInt(keyParenteAntesDeletar)
             Else
-                keyParentesAtual = .ListColumns("KeyParente").DataBodyRange.Cells(.DataBodyRange.Rows.Count).Value + 1
+                keyParentesAtual = .ListColumns("KeyParente").DataBodyRange.Cells(.DataBodyRange.Rows.count).Value + 1
             End If
             
             For index = 1 To UBound(Cadastro.parentes)
                 AddRow tblParentes
                 
-                totalRows = .DataBodyRange.Rows.Count
+                totalRows = .DataBodyRange.Rows.count
                 
                 With Cadastro.parentes(index)
                     tblParentes.ListColumns("KeyParente").DataBodyRange.Cells(totalRows).Value = keyParentesAtual
@@ -38,7 +38,7 @@ Public Sub RealizarCadastro()
     With Cadastro
         AddRow tblCadastros
         
-        totalRows = tblCadastros.DataBodyRange.Rows.Count
+        totalRows = tblCadastros.DataBodyRange.Rows.count
         
         With .Assistido
             tblCadastros.ListColumns("NomeAssistido").DataBodyRange.Cells(totalRows).Value = .Nome
@@ -50,14 +50,14 @@ Public Sub RealizarCadastro()
             tblCadastros.ListColumns("TelefoneAssistido").DataBodyRange.Cells(totalRows).Value = .Telefone
         End With
         
-        With .Conjugue
-            tblCadastros.ListColumns("NomeConjugue").DataBodyRange.Cells(totalRows).Value = .Nome
-            tblCadastros.ListColumns("DataNascimentoConjugue").DataBodyRange.Cells(totalRows).Value = .DataNascimento
-            tblCadastros.ListColumns("EstadoCivilConjugue").DataBodyRange.Cells(totalRows).Value = .EstadoCivil
-            tblCadastros.ListColumns("ProfissaoConjugue").DataBodyRange.Cells(totalRows).Value = .Profissao
-            tblCadastros.ListColumns("EscolaridadeConjugue").DataBodyRange.Cells(totalRows).Value = .Escolaridade
-            tblCadastros.ListColumns("CPFConjugue").DataBodyRange.Cells(totalRows).Value = .CPF
-            tblCadastros.ListColumns("TelefoneConjugue").DataBodyRange.Cells(totalRows).Value = .Telefone
+        With .conjuge
+            tblCadastros.ListColumns("Nomeconjuge").DataBodyRange.Cells(totalRows).Value = .Nome
+            tblCadastros.ListColumns("DataNascimentoconjuge").DataBodyRange.Cells(totalRows).Value = .DataNascimento
+            tblCadastros.ListColumns("EstadoCivilconjuge").DataBodyRange.Cells(totalRows).Value = .EstadoCivil
+            tblCadastros.ListColumns("Profissaoconjuge").DataBodyRange.Cells(totalRows).Value = .Profissao
+            tblCadastros.ListColumns("Escolaridadeconjuge").DataBodyRange.Cells(totalRows).Value = .Escolaridade
+            tblCadastros.ListColumns("CPFconjuge").DataBodyRange.Cells(totalRows).Value = .CPF
+            tblCadastros.ListColumns("Telefoneconjuge").DataBodyRange.Cells(totalRows).Value = .Telefone
         End With
         
         With .DemaisInfo
@@ -136,16 +136,16 @@ Public Sub PopulateTypeCadastro()
             .CPF = listRowComparativo.Range(1, tblCadastros.ListColumns("CPFAssistido").index).Value
             .Telefone = listRowComparativo.Range(1, tblCadastros.ListColumns("TelefoneAssistido").index).Value
         End With
-        With .Conjugue
-            .Nome = listRowComparativo.Range(1, tblCadastros.ListColumns("NomeConjugue").index).Value
+        With .conjuge
+            .Nome = listRowComparativo.Range(1, tblCadastros.ListColumns("Nomeconjuge").index).Value
             On Error Resume Next
-            .DataNascimento = listRowComparativo.Range(1, tblCadastros.ListColumns("DataNascimentoConjugue").index).Value
+            .DataNascimento = listRowComparativo.Range(1, tblCadastros.ListColumns("DataNascimentoconjuge").index).Value
             On Error GoTo 0
-            .EstadoCivil = listRowComparativo.Range(1, tblCadastros.ListColumns("EstadoCivilConjugue").index).Value
-            .Profissao = listRowComparativo.Range(1, tblCadastros.ListColumns("ProfissaoConjugue").index).Value
-            .Escolaridade = listRowComparativo.Range(1, tblCadastros.ListColumns("EscolaridadeConjugue").index).Value
-            .CPF = listRowComparativo.Range(1, tblCadastros.ListColumns("CPFConjugue").index).Value
-            .Telefone = listRowComparativo.Range(1, tblCadastros.ListColumns("TelefoneConjugue").index).Value
+            .EstadoCivil = listRowComparativo.Range(1, tblCadastros.ListColumns("EstadoCivilconjuge").index).Value
+            .Profissao = listRowComparativo.Range(1, tblCadastros.ListColumns("Profissaoconjuge").index).Value
+            .Escolaridade = listRowComparativo.Range(1, tblCadastros.ListColumns("Escolaridadeconjuge").index).Value
+            .CPF = listRowComparativo.Range(1, tblCadastros.ListColumns("CPFconjuge").index).Value
+            .Telefone = listRowComparativo.Range(1, tblCadastros.ListColumns("Telefoneconjuge").index).Value
         End With
         With .DemaisInfo
             On Error Resume Next
@@ -181,7 +181,7 @@ Public Sub DeletarCadastro()
         Dim index As Integer
         
         With tblParentes
-            For index = .ListRows.Count To 1 Step -1
+            For index = .ListRows.count To 1 Step -1
                 If .ListRows(index).Range(1, .ListColumns("KeyParente").index).Value = keyParenteAntesDeletar Then
                     .ListRows(index).Delete
                 End If
@@ -201,13 +201,13 @@ Private Sub InitializeTables()
         
     On Error Resume Next
     With tblCadastros
-        totalRows = .DataBodyRange.Rows.Count
+        totalRows = .DataBodyRange.Rows.count
         If Err.Number <> 0 Then .ListRows.Add
     End With
     On Error GoTo 0
     On Error Resume Next
     With tblParentes
-        totalRows = .DataBodyRange.Rows.Count
+        totalRows = .DataBodyRange.Rows.count
         If Err.Number <> 0 Then .ListRows.Add
     End With
     On Error GoTo 0
@@ -215,7 +215,7 @@ End Sub
 
 Private Sub AddRow(ByRef tbl As ListObject)
     With tbl.ListRows
-        If Application.WorksheetFunction.CountBlank(.item(.Count).Range.Cells) <> .item(.Count).Range.Cells.Count Then
+        If Application.WorksheetFunction.CountBlank(.item(.count).Range.Cells) <> .item(.count).Range.Cells.count Then
             .Add
         End If
     End With

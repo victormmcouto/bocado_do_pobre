@@ -3,7 +3,7 @@ Option Explicit
 
 Public Cadastro As Cadastro
 
-Public Type Conjugue
+Public Type conjuge
     Nome As String
     DataNascimento As Date
     Profissao As String
@@ -49,7 +49,7 @@ End Type
 
 Public Type Cadastro
     Assistido As Assistido
-    Conjugue As Conjugue
+    conjuge As conjuge
     parentes() As parente
     Endereco As Endereco
     DemaisInfo As DemaisInfo
@@ -259,13 +259,13 @@ Public Sub PreencherCampos(ByRef form As CadastroDeAssistidos)
         .txtbCPFAssistido.Value = Cadastro.Assistido.CPF
         .txtbTelefoneAssistido.Value = Cadastro.Assistido.Telefone
     
-        .txtbNomeConjugue.Value = Cadastro.Conjugue.Nome
-        .txtbDataDeNascimentoConjugue.Value = Cadastro.Conjugue.DataNascimento
-        .combEstadoCivilConjugue.Value = Cadastro.Conjugue.EstadoCivil
-        .combProfissaoConjugue.Value = Cadastro.Conjugue.Profissao
-        .combEscolaridadeConjugue.Value = Cadastro.Conjugue.Escolaridade
-        .txtbCPFConjugue.Value = Cadastro.Conjugue.CPF
-        .txtbTelefoneConjugue.Value = Cadastro.Conjugue.Telefone
+        .txtbNomeConjuge.Value = Cadastro.conjuge.Nome
+        .txtbDataDeNascimentoConjuge.Value = Cadastro.conjuge.DataNascimento
+        .combEstadoCivilConjuge.Value = Cadastro.conjuge.EstadoCivil
+        .combProfissaoConjuge.Value = Cadastro.conjuge.Profissao
+        .combEscolaridadeConjuge.Value = Cadastro.conjuge.Escolaridade
+        .txtbCPFConjuge.Value = Cadastro.conjuge.CPF
+        .txtbTelefoneConjuge.Value = Cadastro.conjuge.Telefone
         
         .optParticipaProgramaGovNAO.Value = Not Cadastro.DemaisInfo.ParticipaProgramaGov
         .optParticipaProgramaGovSIM.Value = Cadastro.DemaisInfo.ParticipaProgramaGov
