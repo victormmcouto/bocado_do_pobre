@@ -47,12 +47,28 @@ Public Type DemaisInfo
     NomeVisitador As String
 End Type
 
+Type AcompanhamentoMes
+    Jan As Boolean
+    Fev As Boolean
+    Mar As Boolean
+    Abr As Boolean
+    Mai As Boolean
+    Jun As Boolean
+    Jul As Boolean
+    Ago As Boolean
+    Set As Boolean
+    Out As Boolean
+    Nov As Boolean
+    Dez As Boolean
+End Type
+
 Public Type Cadastro
     Assistido As Assistido
     conjuge As conjuge
     parentes() As parente
     Endereco As Endereco
     DemaisInfo As DemaisInfo
+    Acompanhamento As AcompanhamentoMes
 End Type
 
 Public Enum errors
@@ -88,7 +104,7 @@ Public Function ValidarDataCompleta(ByVal strDate As String) As Boolean
     
     regexDate.Pattern = "^\d{2}/\d{2}/\d{4}$"
     
-    If Not (IsDate(Trim(strDate)) And regexDate.Test(Trim(strDate))) Then
+    If Not (IsDate(Trim(strDate)) And regexDate.test(Trim(strDate))) Then
         Err.Raise errFormatoDataInvalida, "Foratação Errada!", "Formato de data errado! Formato válido: (dd/mm/aaaa)"
     End If
     
@@ -110,7 +126,7 @@ Public Function ValidarFormatacaoNumTel(ByVal strNumTel As String) As Boolean
     
     regexNumTel.Pattern = "^\(?\d{2}\)?\s?9?\s?\d{4}\s?-?\s?\d{4}$"
     
-    If Not regexNumTel.Test(Trim(strNumTel)) Then
+    If Not regexNumTel.test(Trim(strNumTel)) Then
         Err.Raise errFormatoNumeroTelefoneInvalido, _
                   "Formato telefônico errado!", _
                   "Formato de número telefônico errado! Formatos válidos: DDD X XXXX-XXXX ou DDD XXXX-XXXX"
@@ -125,7 +141,7 @@ Public Function ValidarCPF(ByVal strCPF As String) As Boolean
     
     regexCPF.Pattern = "^((\d{11})|(\d{3}\.){2}\d{3}-\d{2})$"
     
-    If Not regexCPF.Test(Trim(strCPF)) Then
+    If Not regexCPF.test(Trim(strCPF)) Then
         Err.Raise errValidacaoCPF, "Formato de CPF Inválido!", _
                   "A formatação do CPF não está correta! Formatos válidos: XXX.XXX.XXX-XX ou XXXXXXXXXXX"
     End If
@@ -158,7 +174,7 @@ Private Function ValidarDigitosCPF(ByVal strCPF) As Boolean
     Next i
     
     For i = 1 To 9
-        Soma = Soma + Val(Mid$(strCPF, i, 1)) * (11 - i)
+        Soma = Soma + val(Mid$(strCPF, i, 1)) * (11 - i)
     Next i
 
     Resto = Soma Mod 11
@@ -172,7 +188,7 @@ Private Function ValidarDigitosCPF(ByVal strCPF) As Boolean
     Soma = 0
 
     For i = 1 To 10
-        Soma = Soma + Val(Mid$(strCPF, i, 1)) * (12 - i)
+        Soma = Soma + val(Mid$(strCPF, i, 1)) * (12 - i)
     Next i
 
     Resto = Soma Mod 11
@@ -183,8 +199,8 @@ Private Function ValidarDigitosCPF(ByVal strCPF) As Boolean
         DV2 = 11 - Resto
     End If
     
-    ValidarDigitosCPF = (DV1 = Val(Mid$(strCPF, 10, 1))) And _
-                        (DV2 = Val(Mid$(strCPF, 11, 1)))
+    ValidarDigitosCPF = (DV1 = val(Mid$(strCPF, 10, 1))) And _
+                        (DV2 = val(Mid$(strCPF, 11, 1)))
 End Function
 
 Public Sub EnableFrameControls(ByRef frm As MSForms.frame, boolEnable As Boolean)
@@ -232,7 +248,7 @@ Public Sub LimparEntradas(ByRef frm As MSForms.frame)
             LimparEntradas ctrl
         ElseIf TypeName(ctrl) = "Label" Then
             ctrl.Caption = 0
-        ElseIf TypeName(ctrl) = "OptionButton" Then
+        ElseIf TypeName(ctrl) = "OptionButton" Or TypeName(ctrl) = "CheckBox" Then
             ctrl.Value = False
         ElseIf ctrl.Name = "txtbDataSindicancia" Then
             ctrl.Value = Format(Date, "dd/mm/yyyy")
@@ -285,3 +301,7 @@ Public Sub PreencherCampos(ByRef form As CadastroDeAssistidos)
         .txtbCidade.Value = Cadastro.Endereco.Cidade
     End With
 End Sub
+
+Public Function Capitalize(str As String) As String
+    Capitalize = UCase(Mid(str, 1, 1)) & LCase(Mid(str, 2, Len(str)))
+End Function

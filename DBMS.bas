@@ -3,11 +3,13 @@ Option Explicit
 
 Private tblCadastros As ListObject
 Private tblParentes As ListObject
+Private tblAcompanhamento As ListObject
 
 Public Sub RealizarCadastro()
     Dim index As Integer
     Dim totalRows As Integer
     Dim keyParentesAtual As Integer
+    Dim keyAcompanhamentoAtual As Integer
     
     InitializeTables
     
@@ -76,6 +78,34 @@ Public Sub RealizarCadastro()
             tblCadastros.ListColumns("Bairro").DataBodyRange.Cells(totalRows).Value = .Bairro
             tblCadastros.ListColumns("Cidade").DataBodyRange.Cells(totalRows).Value = .Cidade
         End With
+        
+        With .Acompanhamento
+            Dim lr As ListRow
+            
+            With tblAcompanhamento
+                If Not boolCadastrar Then
+                    keyAcompanhamentoAtual = CInt(keyAcompanhamentoAntesDeletar)
+                Else
+                    keyAcompanhamentoAtual = .ListColumns("KeyAcompanhamento").DataBodyRange.Cells(.DataBodyRange.Rows.count).Value + 1
+                End If
+            End With
+            
+            Set lr = AddRow(tblAcompanhamento)
+            
+            SetTableCellValue lr, "KeyAcompanhamento", keyAcompanhamentoAtual
+            SetTableCellValue lr, "Jan", .Jan
+            SetTableCellValue lr, "Fev", .Fev
+            SetTableCellValue lr, "Mar", .Mar
+            SetTableCellValue lr, "Abr", .Abr
+            SetTableCellValue lr, "Mai", .Mai
+            SetTableCellValue lr, "Jun", .Jun
+            SetTableCellValue lr, "Jul", .Jul
+            SetTableCellValue lr, "Ago", .Ago
+            SetTableCellValue lr, "Set", .Set
+            SetTableCellValue lr, "Out", .Out
+            SetTableCellValue lr, "Nov", .Nov
+            SetTableCellValue lr, "Dez", .Dez
+        End With
     End With
     
     If keyParentesAtual = 0 Then
@@ -83,10 +113,14 @@ Public Sub RealizarCadastro()
     Else
         tblCadastros.ListColumns("KeyParente").DataBodyRange.Cells(totalRows).Value = keyParentesAtual
     End If
+    
+    tblCadastros.ListColumns("KeyAcompanhamento").DataBodyRange.Cells(totalRows).Value = keyAcompanhamentoAtual
 End Sub
 
 Public Sub PopulateTypeCadastro()
     Dim totalParentes As Integer
+    Dim keyAcompanhamento As String
+    Dim lr As ListRow
     
     InitializeTables
         
@@ -96,7 +130,7 @@ Public Sub PopulateTypeCadastro()
         If totalParentes <> 0 Then
             Dim index As Integer
             Dim keyParentes As Integer
-            Dim lr As ListRow
+            'Dim lr As ListRow
             Dim arrListRowParentes() As ListRow
             
             ReDim arrListRowParentes(1 To totalParentes)
@@ -164,6 +198,25 @@ Public Sub PopulateTypeCadastro()
             .Bairro = listRowComparativo.Range(1, tblCadastros.ListColumns("Bairro").index).Value
             .Cidade = listRowComparativo.Range(1, tblCadastros.ListColumns("Cidade").index).Value
         End With
+        With .Acompanhamento
+            keyAcompanhamento = listRowComparativo.Range(1, tblCadastros.ListColumns("KeyAcompanhamento").index).Value
+            For Each lr In tblAcompanhamento.ListRows
+                If lr.Range(1, tblAcompanhamento.ListColumns("KeyAcompanhamento").index).Value = keyAcompanhamento Then
+                    .Jan = CBool(GetTableCellValue(lr, "Jan"))
+                    .Fev = CBool(GetTableCellValue(lr, "Fev"))
+                    .Mar = CBool(GetTableCellValue(lr, "Mar"))
+                    .Abr = CBool(GetTableCellValue(lr, "Abr"))
+                    .Mai = CBool(GetTableCellValue(lr, "Mai"))
+                    .Jun = CBool(GetTableCellValue(lr, "Jun"))
+                    .Jul = CBool(GetTableCellValue(lr, "Jul"))
+                    .Ago = CBool(GetTableCellValue(lr, "Ago"))
+                    .Set = CBool(GetTableCellValue(lr, "Set"))
+                    .Out = CBool(GetTableCellValue(lr, "Out"))
+                    .Nov = CBool(GetTableCellValue(lr, "Nov"))
+                    .Dez = CBool(GetTableCellValue(lr, "Dez"))
+                End If
+            Next lr
+        End With
     End With
 End Sub
 
@@ -171,10 +224,13 @@ Public Sub DeletarCadastro()
     InitializeTables
 
     Dim numParentes As Integer
+    Dim lr As ListRow
     
     numParentes = CInt(listRowComparativo.Range(1, tblCadastros.ListColumns("NPessoas").index).Value)
 
     keyParenteAntesDeletar = listRowComparativo.Range(1, tblCadastros.ListColumns("KeyParente").index).Value
+    keyAcompanhamentoAntesDeletar = listRowComparativo.Range(1, tblCadastros.ListColumns("KeyAcompanhamento").index).Value
+    
     listRowComparativo.Delete
     
     If numParentes > 0 Then
@@ -188,6 +244,15 @@ Public Sub DeletarCadastro()
             Next index
         End With
     End If
+    
+    With tblAcompanhamento
+        For Each lr In .ListRows
+            If lr.Range(1, .ListColumns("KeyAcompanhamento").index).Value = keyAcompanhamentoAntesDeletar Then
+                lr.Delete
+                Exit For
+            End If
+        Next lr
+    End With
 End Sub
 
 Private Sub InitializeTables()
@@ -197,6 +262,9 @@ Private Sub InitializeTables()
     End If
     If tblParentes Is Nothing Then
         Set tblParentes = wksPARENTES.ListObjects(1)
+    End If
+    If tblAcompanhamento Is Nothing Then
+        Set tblAcompanhamento = wksACOMPANHAMENTO.ListObjects(1)
     End If
         
     On Error Resume Next
@@ -211,12 +279,66 @@ Private Sub InitializeTables()
         If Err.Number <> 0 Then .ListRows.Add
     End With
     On Error GoTo 0
+    On Error Resume Next
+    With tblAcompanhamento
+        totalRows = .DataBodyRange.Rows.count
+        If Err.Number <> 0 Then .ListRows.Add
+    End With
+    On Error GoTo 0
 End Sub
 
-Private Sub AddRow(ByRef tbl As ListObject)
+Private Function AddRow(ByRef tbl As ListObject) As ListRow
     With tbl.ListRows
         If Application.WorksheetFunction.CountBlank(.item(.count).Range.Cells) <> .item(.count).Range.Cells.count Then
             .Add
         End If
+            
+        Set AddRow = .item(.count)
     End With
+End Function
+
+'Private Function NormalizarDados(ByVal strDado As String, ByVal padrao As String, ByVal locate As String)
+'    If strDado = locate Then
+'        NormalizarDados = padrao
+'    Else
+'        NormalizarDados = strDado
+'    End If
+'End Function
+
+Public Function GetCadastroListRow(ByVal strNomeAssistido As String) As ListRow
+    InitializeTables
+    
+    Dim lr As ListRow
+    
+    For Each lr In tblCadastros.ListRows
+        If GetTableCellValue(lr, "NomeAssistido") = strNomeAssistido Then
+            Set GetCadastroListRow = lr
+            Exit Function
+        End If
+    Next lr
+    
+    Set GetCadastroListRow = Nothing
+End Function
+
+Public Function GetAcompanhamentoListRow(ByVal keyAcompanhamento As Integer) As ListRow
+    InitializeTables
+    
+    Dim lr As ListRow
+    
+    For Each lr In tblAcompanhamento.ListRows
+        If CInt(GetTableCellValue(lr, "KeyAcompanhamento")) = keyAcompanhamento Then
+            Set GetAcompanhamentoListRow = lr
+            Exit Function
+        End If
+    Next lr
+End Function
+
+Public Function GetTableCellValue(ByRef lr As ListRow, ByVal colName As String) As String
+    With lr
+        GetTableCellValue = lr.Range(1, lr.Parent.ListColumns(colName).index).Value
+    End With
+End Function
+
+Public Sub SetTableCellValue(ByRef lr As ListRow, ByVal colName As String, val As Variant)
+    lr.Range(1, lr.Parent.ListColumns(colName).index).Value = val
 End Sub

@@ -28,3 +28,7 @@ Public Function PROCINDICE(ByVal rngDados As Range, _
     
     PROCINDICE = "------"  ' não encontrou a ocorrência
 End Function
+
+Public Function RemoverEspacos(str As String) As String
+    RemoverEspacos = "31" & Replace(str, " ", "")
+End Function

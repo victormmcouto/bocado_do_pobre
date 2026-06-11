@@ -6,6 +6,7 @@ Public listRowComparativo As ListRow
 Public boolCadastrar As Boolean
 'Public nomeAssistido As String
 Public keyParenteAntesDeletar As String
+Public keyAcompanhamentoAntesDeletar As String
 
 Public Sub Cadastrar(ByVal control As IRibbonControl)
     Dim formCadastro As New CadastroDeAssistidos
@@ -76,4 +77,13 @@ Public Sub BuscarCadastro(ByVal control As IRibbonControl)
         wksFICHA_CADASTRAL.PrintPreview
     End If
 End Sub
+
+Public Sub AcompanhamentoMensal(ByVal control As IRibbonControl)
+    Dim formAcompanhamento As New Acompanhamento
+    
+    formAcompanhamento.Show
+    
+    Unload formAcompanhamento
+End Sub
+
 

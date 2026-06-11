@@ -49,7 +49,7 @@ Private Sub cbttProcurar_Click()
     End If
 End Sub
 
-Private Sub combNomeAssistido_change()
+Private Sub combNomeAssistido_Change()
     Cadastro.Assistido.Nome = combNomeAssistido.Value
 End Sub
 

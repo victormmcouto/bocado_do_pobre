@@ -20,7 +20,7 @@ Private Sub cbttAddParentes_Click()
 End Sub
 
 Private Sub cbttCadastrar_Click()
-    On Error GoTo ErrHandler
+    'On Error GoTo ErrHandler
     If CamposObrigatoriosPreenchidos(arrCamposObrigatorios) Then
         Dim result As VbMsgBoxResult
         
@@ -303,7 +303,7 @@ Private Sub UserForm_Initialize()
         End With
         lblNPessoasNaCasa.Caption = 0
         cbttCadastrar.Caption = "CADASTRAR"
-        EnableFrameControls frmParticipaDePrograma, False
+        EnableFrameControls frmProgGov, False
     Else
         cbttCadastrar.Caption = "ATUALIZAR"
         Call PreencherCampos(Me)
