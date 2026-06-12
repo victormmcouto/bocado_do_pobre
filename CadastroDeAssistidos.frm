@@ -20,7 +20,7 @@ Private Sub cbttAddParentes_Click()
 End Sub
 
 Private Sub cbttCadastrar_Click()
-    'On Error GoTo ErrHandler
+    On Error GoTo ErrHandler
     If CamposObrigatoriosPreenchidos(arrCamposObrigatorios) Then
         Dim result As VbMsgBoxResult
         
