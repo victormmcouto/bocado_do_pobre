@@ -30,7 +30,7 @@ Public Function Repository_factory(ByVal key As Integer) As Object
     tempArr = lr.Range.Value
     
     Set astd = astd.CreateFromArray(tempArr)
-    
+
     Dim qnt As Integer
     Dim arrAsso() As Variant
     Dim tblmgmtDpnt As New TableManagement
@@ -39,19 +39,37 @@ Public Function Repository_factory(ByVal key As Integer) As Object
     
     arrAsso = tblmgmtDpnt.getArrayAssociations(tblmgmt.getCellData(lr, "Key"), "KeyAssistido")
     
-    For qnt = 1 To UBound(arrAsso)
-        Dim dpnt As New dependente
-        
-        ReDim tempArr(1 To 1, 1 To UBound(arrAsso))
-        tempArr = arrAsso(qnt).Range.Value
-        
-        With astd.getDependentes
-            Set tempArr(1, tblmgmtDpnt.getListColumn("KeyAssistido").index) = astd
+    If UBound(arrAsso) <> 0 Then
+        For qnt = 1 To UBound(arrAsso)
+            Dim dpnt As New dependente
+            
+            ReDim tempArr(1 To 1, 1 To UBound(arrAsso))
+            tempArr = arrAsso(qnt).Range.Value
+            
+            With astd.getDependentes
+                 Set dpnt.setAssistido = astd
                 .Add dpnt.CreateFromArray(tempArr)
-        End With
+            End With
+            
+            Set dpnt = Nothing
+        Next qnt
+    End If
+    
+    Dim tblmgmtCnjg As New TableManagement
+    
+    Set tblmgmtCnjg = tblmgmtCnjg.Create(wksCONJUGE.ListObjects(1))
+    
+    arrAsso = tblmgmtCnjg.getArrayAssociations(tblmgmt.getCellData(lr, "KeyConjuge"), "Key")
+    
+    If UBound(arrAsso) <> 0 Then
+        ReDim tempArr(1 To 1, 1 To arrAsso(1).Range.count)
+        Dim cnjg As New conjuge
         
-        Set dpnt = Nothing
-    Next qnt
+        tempArr = arrAsso(1).Range.Value
+        
+        cnjg.CreateFromArray tempArr
+        Set astd.setConjuge = cnjg
+    End If
     
     Set Repository_factory = astd
 End Function

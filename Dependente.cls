@@ -37,7 +37,6 @@ Public Function CreateFromArray(ByVal arr As Variant) As dependente
     me_dataNascimento = arr(1, 3)
     me_escolaridade = arr(1, 4)
     me_parentesco = arr(1, 5)
-    Set me_assistido = arr(1, 6)
     
     Set CreateFromArray = Me
 End Function
@@ -84,6 +83,10 @@ End Property
 
 Public Property Get getAssistido() As assistido
     getAssistido = me_assistido
+End Property
+
+Public Property Set setAssistido(ByVal astd As assistido)
+    Set me_assistido = astd
 End Property
 
 Public Function toArray() As Variant

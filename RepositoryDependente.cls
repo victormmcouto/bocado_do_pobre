@@ -40,8 +40,8 @@ Public Function Repository_factory(ByVal key As Integer) As Object
     keyAstd = repoAstd.Repository_getTbl.getCellData(lr, "KeyAssistido")
     locInfo = tblmgmt.getListColumn("KeyAssistido").index
     
-    Set tempArr(1, locInfo) = repoAstd.Repository_factory(keyAstd)
-    
+    Set dpnt.setAssistido = repoAstd.Repository_factory(keyAstd)
+        
     Set Repository_factory = dpnt.CreateFromArray(tempArr)
 End Function
 

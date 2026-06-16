@@ -52,7 +52,6 @@ Public Function CreateFromArray(ByVal arr As Variant) As assistido
     me_profissao = arr(1, 6)
     me_cpf = arr(1, 7)
     me_telefone = arr(1, 8)
-    Set me_conjuge = arr(1, 9)
     
     Set CreateFromArray = Me
 End Function
@@ -126,10 +125,10 @@ Public Property Get getDependentes() As Collection
 End Property
 
 Public Property Get getConjuge() As conjuge
-    Set getKeyConjuge = me_keyConjuge
+    Set getConjuge = me_conjuge
 End Property
 
-Public Property Set setKeyConjuge(ByVal conjuge_ As conjuge)
+Public Property Set setConjuge(ByVal conjuge_ As conjuge)
     Set me_conjuge = conjuge_
 End Property
 
@@ -158,12 +157,12 @@ Public Function toString(Optional ByVal showExtra As Boolean = True) As String
                "CPF             = " & me_cpf & ", " & vbNewLine & _
                "Telefone        = " & me_telefone & vbNewLine
     
-    If Not me_conjuge Is Nothing Then
-        toString = toString & vbNewLine & vbTab & "CÔNJUGE" & vbNewLine & _
-                   me_conjuge.toString(False) & vbNewLine
-    End If
-    
     If showExtra Then
+        If Not me_conjuge Is Nothing Then
+            toString = toString & vbNewLine & vbTab & "CÔNJUGE" & vbNewLine & _
+                       me_conjuge.toString(False) & vbNewLine
+        End If
+        
         Dim dpnt As dependente
         Dim count As Integer
         
