@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Implements EnumInterface
+Implements Enums
 
 Const me_FILHO_A As Integer = 1
 Const me_NETO_A As Integer = 2
@@ -83,18 +83,18 @@ Public Property Get OUTRO() As Integer
     OUTRO = me_OUTRO
 End Property
 
-Public Function EnumInterface_getNome(ByVal num As Integer) As String
-    EnumInterface_getNome = arr(num)
+Public Function Enums_getNome(ByVal num As Integer) As String
+    Enums_getNome = arr(num)
 End Function
 
-Public Function EnumInterface_getNum(ByVal nome As String) As Integer
+Public Function Enums_getNum(ByVal nome As String) As Integer
     Dim index As Integer
     
     For index = 1 To UBound(arr)
-        If arr(index) = nome Then EnumInterface_getNum = index: Exit Function
+        If arr(index) = nome Then Enums_getNum = index: Exit Function
     Next index
 End Function
 
-Public Function EnumInterface_getArray() As Variant
-    EnumInterface_getArray = arr
+Public Function Enums_getArray() As Variant
+    Enums_getArray = arr
 End Function

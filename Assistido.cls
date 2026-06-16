@@ -11,8 +11,8 @@ Option Explicit
 
 Private me_nome As String
 Private me_dataNascimento As Date
-Private me_escolaridade As String
-Private me_estadoCivil As String
+Private me_escolaridade As Integer
+Private me_estadoCivil As Integer
 Private me_profissao As String
 Private me_cpf As String
 Private me_telefone As String
@@ -22,8 +22,8 @@ Private me_dependentes As New Collection
 
 Public Function Create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
-                       ByVal escolaridade As String, _
-                       ByVal estadoCivil As String, _
+                       ByVal escolaridade As Integer, _
+                       ByVal estadoCivil As Integer, _
                        ByVal profissao As String, _
                        ByVal cpf As String, _
                        ByVal telefone As String) As assistido
@@ -76,19 +76,19 @@ Public Property Let setDataNascimento(ByVal data As Date)
     me_dataNascimento = data
 End Property
 
-Public Property Get getEscolaridade() As String
+Public Property Get getEscolaridade() As Integer
     getEscolaridade = me_escolaridade
 End Property
 
-Public Property Let setEscolaridade(ByVal escolaridade As String)
+Public Property Let setEscolaridade(ByVal escolaridade As Integer)
     me_escolaridade = escolaridade
 End Property
 
-Public Property Get getEstadoCivil() As String
+Public Property Get getEstadoCivil() As Integer
     getEstadoCivil = me_estadoCivil
 End Property
 
-Public Property Let setEstadoCivil(ByVal estadoCivil As String)
+Public Property Let setEstadoCivil(ByVal estadoCivil As Integer)
     me_estadoCivil = estadoCivil
 End Property
 
@@ -136,12 +136,13 @@ End Function
 
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
     Dim escolaridade As New EnumEscolaridade
+    Dim estadoCivil As New EnumEstadoCivil
     
     toString = "Key             = " & me_key & ", " & vbNewLine & _
                "Nome            = " & me_nome & ", " & vbNewLine & _
                "Data Nascimento = " & me_dataNascimento & ", " & vbNewLine & _
                "Escolaridade    = " & escolaridade.Enums_getNome(me_escolaridade) & ", " & vbNewLine & _
-               "Estado Civil    = " & me_estadoCivil & ", " & vbNewLine & _
+               "Estado Civil    = " & estadoCivil.Enums_getNome(me_estadoCivil) & ", " & vbNewLine & _
                "Profissao       = " & me_profissao & ", " & vbNewLine & _
                "CPF             = " & me_cpf & ", " & vbNewLine & _
                "Telefone        = " & me_telefone & vbNewLine

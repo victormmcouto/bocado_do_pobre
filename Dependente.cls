@@ -11,15 +11,15 @@ Option Explicit
 
 Private me_nome As String
 Private me_dataNascimento As Date
-Private me_escolaridade As String
-Private me_parentesco As String
+Private me_escolaridade As Integer
+Private me_parentesco As Integer
 Private me_assistido As assistido
 Private me_key As Integer
 
 Public Function Create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
-                       ByVal escolaridade As String, _
-                       ByVal parentesco As String, _
+                       ByVal escolaridade As Integer, _
+                       ByVal parentesco As Integer, _
                        ByRef astd As assistido) As dependente
     
     me_nome = nome
@@ -66,19 +66,19 @@ Public Property Let setDataNascimento(ByVal data As Date)
     me_dataNascimento = data
 End Property
 
-Public Property Get getEscolaridade() As String
+Public Property Get getEscolaridade() As Integer
     getEscolaridade = me_escolaridade
 End Property
 
-Public Property Let setEscolaridade(ByVal escolaridade As String)
+Public Property Let setEscolaridade(ByVal escolaridade As Integer)
     me_escolaridade = escolaridade
 End Property
 
-Public Property Get getParentesco() As String
+Public Property Get getParentesco() As Integer
     getParentesco = me_parentesco
 End Property
 
-Public Property Let setParentesco(ByVal parentesco As String)
+Public Property Let setParentesco(ByVal parentesco As Integer)
     me_parentesco = parentesco
 End Property
 
@@ -93,8 +93,8 @@ Public Function toArray() As Variant
     toArray = Array(me_key, _
                     me_nome, _
                     me_dataNascimento, _
-                    enum_escolaridade.Enums_getNum(me_escolaridade), _
-                    enum_parentesco.Enums_getNum(me_parentesco), _
+                    me_escolaridade, _
+                    me_parentesco, _
                     me_assistido.getKey)
 End Function
 
