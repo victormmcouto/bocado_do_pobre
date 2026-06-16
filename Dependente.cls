@@ -31,6 +31,17 @@ Public Function Create(ByVal nome As String, _
     Set Create = Me
 End Function
 
+Public Function CreateFromArray(ByVal arr As Variant) As dependente
+    me_key = arr(1, 1)
+    me_nome = arr(1, 2)
+    me_dataNascimento = arr(1, 3)
+    me_escolaridade = arr(1, 4)
+    me_parentesco = arr(1, 5)
+    Set me_assistido = arr(1, 6)
+    
+    Set CreateFromArray = Me
+End Function
+
 Public Property Get getKey() As Integer
     getKey = me_key
 End Property
@@ -79,12 +90,27 @@ Public Function toArray() As Variant
     Dim enum_parentesco As New EnumParentesco
     Dim enum_escolaridade As New EnumEscolaridade
     
-   toArray = Array(me_key, _
-                   me_nome, _
-                   me_dataNascimento, _
-                   enum_escolaridade.EnumInterface_getNum(me_escolaridade), _
-                   enum_parentesco.EnumInterface_getNum(me_parentesco), _
-                   me_assistido.getKey)
+    toArray = Array(me_key, _
+                    me_nome, _
+                    me_dataNascimento, _
+                    enum_escolaridade.Enums_getNum(me_escolaridade), _
+                    enum_parentesco.Enums_getNum(me_parentesco), _
+                    me_assistido.getKey)
+End Function
+
+Public Function toString(Optional ByVal showExtra As Boolean = True) As String
+    Dim escolaridade As New EnumEscolaridade
+    Dim parentesco As New EnumParentesco
+    
+    toString = "Key             = " & me_key & ", " & vbNewLine & _
+               "Nome            = " & me_nome & ", " & vbNewLine & _
+               "Data Nascimento = " & me_dataNascimento & ", " & vbNewLine & _
+               "Escolaridade    = " & escolaridade.Enums_getNome(me_escolaridade) & ", " & vbNewLine & _
+               "Parentesco      = " & parentesco.Enums_getNome(me_parentesco) & vbNewLine
+
+    If showExtra Then
+        toString = toString & vbNewLine & "ASSISTIDO: " & vbNewLine & me_assistido.toString(False)
+    End If
 End Function
 
 

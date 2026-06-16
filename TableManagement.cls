@@ -25,22 +25,28 @@ Public Function Create(ByRef tbl As ListObject) As TableManagement
     Set Create = Me
 End Function
 
-Public Property Get getTbl() As ListObject
-    Set getTbl = me_tbl
+Public Property Get Repository_getTbl() As ListObject
+    Set Repository_getTbl = me_tbl
 End Property
 
-Public Property Get getListRow(ByVal key As Integer) As ListRow
+Public Function getListColumn(ByVal index As Variant) As ListColumn
+    Set getListColumn = me_tbl.ListColumns(index)
+End Function
+
+Public Function getListRow(ByVal key As Integer, Optional keyColName As String = "Key") As ListRow
     Dim lr As ListRow
     Dim current_key As Integer
     
     For Each lr In me_tbl.ListRows
-        current_key = CInt(lr.Range(1, me_tbl.ListColumns.item(1).index).Value)
+        current_key = CInt(lr.Range(1, me_tbl.ListColumns.item("Key").index).Value)
         If current_key = key Then
             Set getListRow = lr
-            Exit Property
+            Exit Function
         End If
     Next lr
-End Property
+    
+    Err.Raise errInvalidKey, "TableManagement.getListRow(key=" & key & ")", "Chave inválida!"
+End Function
 
 Public Property Get getLastRow() As Range
     With me_tbl.ListRows
@@ -88,5 +94,27 @@ Public Function getLastKey() As Integer
     lastKey = Application.WorksheetFunction.Max(me_tbl.ListColumns(1).DataBodyRange)
     
     getLastKey = lastKey
+End Function
+
+Public Function getCellData(ByVal lr As ListRow, ByVal colName As String) As Variant
+    getCellData = lr.Range(1, lr.Parent.ListColumns(colName).index).Value
+End Function
+
+Public Function getArrayAssociations(ByVal fkey As Integer, ByVal colName As String) As Variant
+    Dim tempArr() As Variant
+    Dim count As Integer
+    Dim lr As ListRow
+    
+    count = 1
+    
+    For Each lr In me_tbl.ListRows
+        If getCellData(lr, colName) = fkey Then
+            ReDim Preserve tempArr(1 To count)
+            Set tempArr(count) = lr
+            count = count + 1
+        End If
+    Next lr
+    
+    getArrayAssociations = tempArr
 End Function
 

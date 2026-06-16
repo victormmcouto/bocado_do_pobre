@@ -39,6 +39,19 @@ Public Function Create(ByVal nome As String, _
     Set Create = Me
 End Function
 
+Public Function CreateFromArray(ByVal arr As Variant) As assistido
+    me_key = arr(1, 1)
+    me_nome = arr(1, 2)
+    me_dataNascimento = arr(1, 3)
+    me_escolaridade = arr(1, 4)
+    me_estadoCivil = arr(1, 5)
+    me_profissao = arr(1, 6)
+    me_cpf = arr(1, 7)
+    me_telefone = arr(1, 8)
+    
+    Set CreateFromArray = Me
+End Function
+
 Public Property Get getKey() As Integer
     getKey = me_key
 End Property
@@ -114,10 +127,35 @@ Public Function toArray() As Variant
    toArray = Array(me_key, _
                    me_nome, _
                    me_dataNascimento, _
-                   enum_escolaridade.EnumInterface_getNum(me_escolaridade), _
+                   enum_escolaridade.Enums_getNum(me_escolaridade), _
                    me_estadoCivil, _
                    me_profissao, _
                    me_cpf, _
                    me_telefone)
 End Function
 
+Public Function toString(Optional ByVal showExtra As Boolean = True) As String
+    Dim escolaridade As New EnumEscolaridade
+    
+    toString = "Key             = " & me_key & ", " & vbNewLine & _
+               "Nome            = " & me_nome & ", " & vbNewLine & _
+               "Data Nascimento = " & me_dataNascimento & ", " & vbNewLine & _
+               "Escolaridade    = " & escolaridade.Enums_getNome(me_escolaridade) & ", " & vbNewLine & _
+               "Estado Civil    = " & me_estadoCivil & ", " & vbNewLine & _
+               "Profissao       = " & me_profissao & ", " & vbNewLine & _
+               "CPF             = " & me_cpf & ", " & vbNewLine & _
+               "Telefone        = " & me_telefone & vbNewLine
+                
+    If showExtra Then
+        Dim dpnt As dependente
+        Dim count As Integer
+        
+        count = 1
+        
+        For Each dpnt In me_dependentes
+            toString = toString & vbNewLine & vbTab & "DEPENDENTE - " & count & vbNewLine & _
+                       dpnt.toString(False) & vbNewLine
+            count = count + 1
+        Next dpnt
+    End If
+End Function
