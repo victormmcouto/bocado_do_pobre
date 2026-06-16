@@ -17,7 +17,7 @@ Private me_parentesco As String
 Public Function Create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
                        ByVal escolaridade As String, _
-                       ByVal parentesco As String) As Dependente
+                       ByVal parentesco As String) As dependente
     
     me_nome = nome
     me_dataNascimento = dataNascimento
@@ -60,7 +60,7 @@ Public Property Let setParentesco(ByVal parentesco As String)
 End Property
 
 Public Function toArray() As Variant
-    Set toArray = Array(me_nome, me_dataNascimento, me_escolaridade, me_parentesco)
+   toArray = Array(0, me_nome, me_dataNascimento, me_escolaridade, me_parentesco)
 End Function
 
 
