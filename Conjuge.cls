@@ -2,14 +2,12 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "Assistido"
+Attribute VB_Name = "Conjuge"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
-
-Private me_key As Integer
 
 Private me_nome As String
 Private me_dataNascimento As Date
@@ -18,9 +16,7 @@ Private me_estadoCivil As Integer
 Private me_profissao As String
 Private me_cpf As String
 Private me_telefone As String
-Private me_conjuge As conjuge
-
-Private me_dependentes As New Collection
+Private me_key As Integer
 
 Public Function Create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
@@ -28,8 +24,7 @@ Public Function Create(ByVal nome As String, _
                        ByVal estadoCivil As Integer, _
                        ByVal profissao As String, _
                        ByVal cpf As String, _
-                       ByVal telefone As String, _
-                       ByVal conjuge_ As conjuge) As assistido
+                       ByVal telefone As String) As conjuge
     
     me_nome = nome
     me_dataNascimento = dataNascimento
@@ -38,12 +33,11 @@ Public Function Create(ByVal nome As String, _
     me_profissao = profissao
     me_cpf = cpf
     me_telefone = telefone
-    Set me_conjuge = conjuge_
     
     Set Create = Me
 End Function
 
-Public Function CreateFromArray(ByVal arr As Variant) As assistido
+Public Function CreateFromArray(ByVal arr As Variant) As conjuge
     me_key = arr(1, 1)
     me_nome = arr(1, 2)
     me_dataNascimento = arr(1, 3)
@@ -52,7 +46,6 @@ Public Function CreateFromArray(ByVal arr As Variant) As assistido
     me_profissao = arr(1, 6)
     me_cpf = arr(1, 7)
     me_telefone = arr(1, 8)
-    Set me_conjuge = arr(1, 9)
     
     Set CreateFromArray = Me
 End Function
@@ -121,28 +114,15 @@ Public Property Let setTelefone(ByVal telefone As String)
     me_telefone = telefone
 End Property
 
-Public Property Get getDependentes() As Collection
-    Set getDependentes = me_dependentes
-End Property
-
-Public Property Get getConjuge() As conjuge
-    Set getKeyConjuge = me_keyConjuge
-End Property
-
-Public Property Set setKeyConjuge(ByVal conjuge_ As conjuge)
-    Set me_conjuge = conjuge_
-End Property
-
 Public Function toArray() As Variant
-    toArray = Array(me_key, _
-                    me_nome, _
-                    me_dataNascimento, _
-                    me_escolaridade, _
-                    me_estadoCivil, _
-                    me_profissao, _
-                    me_cpf, _
-                    me_telefone, _
-                    me_conjuge.getKey)
+   toArray = Array(me_key, _
+                   me_nome, _
+                   me_dataNascimento, _
+                   me_escolaridade, _
+                   me_estadoCivil, _
+                   me_profissao, _
+                   me_cpf, _
+                   me_telefone)
 End Function
 
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
@@ -158,21 +138,8 @@ Public Function toString(Optional ByVal showExtra As Boolean = True) As String
                "CPF             = " & me_cpf & ", " & vbNewLine & _
                "Telefone        = " & me_telefone & vbNewLine
     
-    If Not me_conjuge Is Nothing Then
-        toString = toString & vbNewLine & vbTab & "CÔNJUGE" & vbNewLine & _
-                   me_conjuge.toString(False) & vbNewLine
-    End If
-    
-    If showExtra Then
-        Dim dpnt As dependente
-        Dim count As Integer
-        
-        count = 1
-        
-        For Each dpnt In me_dependentes
-            toString = toString & vbNewLine & vbTab & "DEPENDENTE - " & count & vbNewLine & _
-                       dpnt.toString(False) & vbNewLine
-            count = count + 1
-        Next dpnt
-    End If
+    Set escolaridade = Nothing
+    Set estadoCivil = Nothing
 End Function
+
+

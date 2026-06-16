@@ -115,6 +115,10 @@ Public Function getArrayAssociations(ByVal fkey As Integer, ByVal colName As Str
         End If
     Next lr
     
-    getArrayAssociations = tempArr
+    If Unound(tempArr) = 0 Then
+        Set getArrayAssociations = Nothing
+    Else
+        getArrayAssociations = tempArr
+    End If
 End Function
 
