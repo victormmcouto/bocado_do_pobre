@@ -2,7 +2,7 @@ VERSION 1.0 CLASS
 BEGIN
   MultiUse = -1  'True
 END
-Attribute VB_Name = "Dependente"
+Attribute VB_Name = "Assistido"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
@@ -12,21 +12,29 @@ Option Explicit
 Private me_nome As String
 Private me_dataNascimento As Date
 Private me_escolaridade As String
-Private me_parentesco As String
-Private me_assistido As assistido
+Private me_estadoCivil As String
+Private me_profissao As String
+Private me_cpf As String
+Private me_telefone As String
 Private me_key As Integer
+
+Private me_dependentes As New Collection
 
 Public Function Create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
                        ByVal escolaridade As String, _
-                       ByVal parentesco As String, _
-                       ByRef astd As assistido) As dependente
+                       ByVal estadoCivil As String, _
+                       ByVal profissao As String, _
+                       ByVal cpf As String, _
+                       ByVal telefone As String) As assistido
     
     me_nome = nome
     me_dataNascimento = dataNascimento
     me_escolaridade = escolaridade
-    me_parentesco = parentesco
-    Set me_assistido = astd
+    me_estadoCivil = estadoCivil
+    me_profissao = profissao
+    me_cpf = cpf
+    me_telefone = telefone
     
     Set Create = Me
 End Function
@@ -63,16 +71,40 @@ Public Property Let setEscolaridade(ByVal escolaridade As String)
     me_escolaridade = escolaridade
 End Property
 
-Public Property Get getParentesco() As String
-    getParentesco = me_parentesco
+Public Property Get getEstadoCivil() As String
+    getEstadoCivil = me_estadoCivil
 End Property
 
-Public Property Let setParentesco(ByVal parentesco As String)
-    me_parentesco = parentesco
+Public Property Let setEstadoCivil(ByVal estadoCivil As String)
+    me_estadoCivil = estadoCivil
 End Property
 
-Public Property Get getAssistido() As assistido
-    getAssistido = me_assistido
+Public Property Get getProfissao() As String
+    getProfissao = me_profissao
+End Property
+
+Public Property Let setProfissao(ByVal profissao As String)
+    me_profissao = profissao
+End Property
+
+Public Property Get getCpf() As String
+    getCpf = me_cpf
+End Property
+
+Public Property Let setCpf(ByVal cpf As String)
+    me_cpf = cpf
+End Property
+
+Public Property Get getTelefone() As String
+    getTelefone = me_telefone
+End Property
+
+Public Property Let setTelefone(ByVal telefone As String)
+    me_telefone = telefone
+End Property
+
+Public Property Get getDependentes() As Collection
+    Set getDependentes = me_dependentes
 End Property
 
 Public Function toArray() As Variant
@@ -83,8 +115,9 @@ Public Function toArray() As Variant
                    me_nome, _
                    me_dataNascimento, _
                    enum_escolaridade.EnumInterface_getNum(me_escolaridade), _
-                   enum_parentesco.EnumInterface_getNum(me_parentesco), _
-                   me_assistido.getKey)
+                   me_estadoCivil, _
+                   me_profissao, _
+                   me_cpf, _
+                   me_telefone)
 End Function
-
 

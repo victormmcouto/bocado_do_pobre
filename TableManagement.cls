@@ -74,11 +74,11 @@ Public Property Get getTotalColumns() As Integer
     getTotalColumns = me_tbl.ListColumns.count
 End Property
 
-Public Sub InsertDataRow(ByVal arr As Variant)
+Public Sub InsertDataRow(ByRef obj As Object)
     If Not LastRowIsEmpty Then AddRows 1
     With getLastRow
-        .Value = arr
-        .Cells(1, 1).Value = getLastKey + 1
+        obj.setKey = getLastKey + 1
+        .Value = obj.toArray
     End With
 End Sub
 
