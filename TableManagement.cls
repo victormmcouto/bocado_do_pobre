@@ -11,8 +11,17 @@ Option Explicit
 
 Private me_tbl As ListObject
 
-Public Function Create(ByRef tbl) As TableManagement
+Public Sub StartTable()
+    On Error Resume Next
+    Dim rows As Integer
+    rows = me_tbl.ListRows.count
+    If Err.Number <> 0 Then AddRows 1
+    On Error GoTo 0
+End Sub
+
+Public Function Create(ByRef tbl As ListObject) As TableManagement
     Set me_tbl = tbl
+    StartTable
     Set Create = Me
 End Function
 
@@ -65,10 +74,17 @@ Public Property Get getTotalColumns() As Integer
     getTotalColumns = me_tbl.ListColumns.count
 End Property
 
-Public Sub InsertData(ByVal obj As Object)
-    Select Case obj
-        Case TypeName("Assistido"):
-            
-    End Select
+Public Sub InsertDataRow(ByVal lr As ListRow, ByVal arr As Variant)
+    If Not LastRowIsEmpty Then AddRows 1
+    lr.Range.Value = arr
+    lr.Range(1, 1).Value = getLastKey + 1
 End Sub
+
+Public Function getLastKey() As Integer
+    Dim lastKey As Integer
+    
+    lastKey = Application.WorksheetFunction.Max(me_tbl.ListColumns(1).DataBodyRange)
+    
+    getLastKey = lastKey
+End Function
 
