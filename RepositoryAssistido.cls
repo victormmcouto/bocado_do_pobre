@@ -20,7 +20,7 @@ End Function
 
 Public Function Repository_factory(ByVal key As Integer) As Object
     Dim lr As ListRow
-    Dim astd As New assistido
+    Dim astd As New Assistido
     Dim tempArr() As Variant
     
     Set lr = tblmgmt.getListRow(key)
@@ -41,7 +41,7 @@ Public Function Repository_factory(ByVal key As Integer) As Object
     
     If UBound(arrAsso) <> 0 Then
         For qnt = 1 To UBound(arrAsso)
-            Dim dpnt As New dependente
+            Dim dpnt As New Dependente
             
             ReDim tempArr(1 To 1, 1 To UBound(arrAsso))
             tempArr = arrAsso(qnt).Range.Value
@@ -63,7 +63,7 @@ Public Function Repository_factory(ByVal key As Integer) As Object
     
     If UBound(arrAsso) <> 0 Then
         ReDim tempArr(1 To 1, 1 To arrAsso(1).Range.count)
-        Dim cnjg As New conjuge
+        Dim cnjg As New Conjuge
         
         tempArr = arrAsso(1).Range.Value
         

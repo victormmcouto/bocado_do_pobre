@@ -20,7 +20,7 @@ End Function
 
 Public Function Repository_factory(ByVal key As Integer) As Object
     Dim lr As ListRow
-    Dim dpnt As New dependente
+    Dim dpnt As New Dependente
     Dim tempArr() As Variant
     
     Set lr = tblmgmt.getListRow(key)
@@ -30,7 +30,7 @@ Public Function Repository_factory(ByVal key As Integer) As Object
     tempArr = lr.Range.Value
     
     Dim repoAstd As New RepositoryAssistido
-    Dim astd As New assistido
+    Dim astd As New Assistido
     Dim locInfo As Integer
     Dim keyAstd As Integer
     Dim arrAsso As Variant

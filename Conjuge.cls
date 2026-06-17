@@ -24,7 +24,7 @@ Public Function Create(ByVal nome As String, _
                        ByVal estadoCivil As Integer, _
                        ByVal profissao As String, _
                        ByVal cpf As String, _
-                       ByVal telefone As String) As conjuge
+                       ByVal telefone As String) As Conjuge
     
     me_nome = nome
     me_dataNascimento = dataNascimento
@@ -37,7 +37,7 @@ Public Function Create(ByVal nome As String, _
     Set Create = Me
 End Function
 
-Public Function CreateFromArray(ByVal arr As Variant) As conjuge
+Public Function CreateFromArray(ByVal arr As Variant) As Conjuge
     me_key = arr(1, 1)
     me_nome = arr(1, 2)
     me_dataNascimento = arr(1, 3)

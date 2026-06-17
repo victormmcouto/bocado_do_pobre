@@ -13,14 +13,14 @@ Private me_nome As String
 Private me_dataNascimento As Date
 Private me_escolaridade As Integer
 Private me_parentesco As Integer
-Private me_assistido As assistido
+Private me_assistido As Assistido
 Private me_key As Integer
 
 Public Function Create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
                        ByVal escolaridade As Integer, _
                        ByVal parentesco As Integer, _
-                       ByRef astd As assistido) As dependente
+                       ByRef astd As Assistido) As Dependente
     
     me_nome = nome
     me_dataNascimento = dataNascimento
@@ -31,7 +31,7 @@ Public Function Create(ByVal nome As String, _
     Set Create = Me
 End Function
 
-Public Function CreateFromArray(ByVal arr As Variant) As dependente
+Public Function CreateFromArray(ByVal arr As Variant) As Dependente
     me_key = arr(1, 1)
     me_nome = arr(1, 2)
     me_dataNascimento = arr(1, 3)
@@ -81,11 +81,11 @@ Public Property Let setParentesco(ByVal parentesco As Integer)
     me_parentesco = parentesco
 End Property
 
-Public Property Get getAssistido() As assistido
+Public Property Get getAssistido() As Assistido
     getAssistido = me_assistido
 End Property
 
-Public Property Set setAssistido(ByVal astd As assistido)
+Public Property Set setAssistido(ByVal astd As Assistido)
     Set me_assistido = astd
 End Property
 

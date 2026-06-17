@@ -18,7 +18,7 @@ Private me_estadoCivil As Integer
 Private me_profissao As String
 Private me_cpf As String
 Private me_telefone As String
-Private me_conjuge As conjuge
+Private me_conjuge As Conjuge
 
 Private me_dependentes As New Collection
 
@@ -29,7 +29,7 @@ Public Function Create(ByVal nome As String, _
                        ByVal profissao As String, _
                        ByVal cpf As String, _
                        ByVal telefone As String, _
-                       ByVal conjuge_ As conjuge) As assistido
+                       ByRef conjuge_ As Conjuge) As Assistido
     
     me_nome = nome
     me_dataNascimento = dataNascimento
@@ -43,7 +43,7 @@ Public Function Create(ByVal nome As String, _
     Set Create = Me
 End Function
 
-Public Function CreateFromArray(ByVal arr As Variant) As assistido
+Public Function CreateFromArray(ByVal arr As Variant) As Assistido
     me_key = arr(1, 1)
     me_nome = arr(1, 2)
     me_dataNascimento = arr(1, 3)
@@ -124,11 +124,11 @@ Public Property Get getDependentes() As Collection
     Set getDependentes = me_dependentes
 End Property
 
-Public Property Get getConjuge() As conjuge
+Public Property Get getConjuge() As Conjuge
     Set getConjuge = me_conjuge
 End Property
 
-Public Property Set setConjuge(ByVal conjuge_ As conjuge)
+Public Property Set setConjuge(ByVal conjuge_ As Conjuge)
     Set me_conjuge = conjuge_
 End Property
 
@@ -163,7 +163,7 @@ Public Function toString(Optional ByVal showExtra As Boolean = True) As String
                        me_conjuge.toString(False) & vbNewLine
         End If
         
-        Dim dpnt As dependente
+        Dim dpnt As Dependente
         Dim count As Integer
         
         count = 1

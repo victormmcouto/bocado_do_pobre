@@ -20,7 +20,7 @@ End Function
 
 Public Function Repository_factory(ByVal key As Integer) As Object
     Dim lr As ListRow
-    Dim cnjg As New conjuge
+    Dim cnjg As New Conjuge
     Dim tempArr() As Variant
     
     Set lr = tblmgmt.getListRow(key)
