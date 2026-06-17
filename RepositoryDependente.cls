@@ -18,7 +18,7 @@ Public Function Repository_Create(ByVal tbl As ListObject) As Repository
     Set Repository_Create = Me
 End Function
 
-Public Function Repository_factory(ByVal key As Integer) As Object
+Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
     Dim lr As ListRow
     Dim dpnt As New Dependente
     Dim tempArr() As Variant
@@ -29,19 +29,21 @@ Public Function Repository_factory(ByVal key As Integer) As Object
     
     tempArr = lr.Range.Value
     
-    Dim repoAstd As New RepositoryAssistido
-    Dim astd As New Assistido
-    Dim locInfo As Integer
-    Dim keyAstd As Integer
-    Dim arrAsso As Variant
-    
-    Set repoAstd = repoAstd.Repository_Create(wksASSISTIDO.ListObjects(1))
-    
-    keyAstd = repoAstd.Repository_getTbl.getCellData(lr, "KeyAssistido")
-    locInfo = tblmgmt.getListColumn("KeyAssistido").index
-    
-    Set dpnt.setAssistido = repoAstd.Repository_factory(keyAstd)
+    If complete Then
+        Dim repoAstd As New RepositoryAssistido
+        Dim astd As New Assistido
+        Dim locInfo As Integer
+        Dim keyAstd As Integer
+        Dim arrAsso As Variant
         
+        Set repoAstd = repoAstd.Repository_Create(wksASSISTIDO.ListObjects(1))
+        
+        keyAstd = repoAstd.Repository_getTbl.getCellData(lr, "KeyAssistido")
+        locInfo = tblmgmt.getListColumn("KeyAssistido").index
+        
+        Set dpnt.setAssistido = repoAstd.Repository_factory(keyAstd, False)
+    End If
+    
     Set Repository_factory = dpnt.CreateFromArray(tempArr)
 End Function
 

@@ -12,7 +12,7 @@ Option Explicit
 Public Function Create(ByVal tbl As ListObject) As Repository
 End Function
 
-Public Function factory(ByVal key As Integer) As Object
+Public Function factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
 End Function
 
 Public Function getTbl() As TableManagement

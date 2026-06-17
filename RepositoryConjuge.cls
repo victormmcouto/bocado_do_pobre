@@ -18,7 +18,7 @@ Public Function Repository_Create(ByVal tbl As ListObject) As Repository
     Set Repository_Create = Me
 End Function
 
-Public Function Repository_factory(ByVal key As Integer) As Object
+Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
     Dim lr As ListRow
     Dim cnjg As New Conjuge
     Dim tempArr() As Variant

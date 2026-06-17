@@ -18,7 +18,7 @@ Public Function Repository_Create(ByVal tbl As ListObject) As Repository
     Set Repository_Create = Me
 End Function
 
-Public Function Repository_factory(ByVal key As Integer) As Object
+Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
     Dim repoAstd As New RepositoryAssistido
     Dim repoCnjg As New RepositoryConjuge
     Dim lr As ListRow
@@ -35,9 +35,12 @@ Public Function Repository_factory(ByVal key As Integer) As Object
     
     arrDados = lr.Range.Value
     
-    Set astd = repoAstd.Repository_factory(tblmgmt.getCellData(lr, "KeyAssistido"))
     Set cdst = cdst.CreateFromArray(arrDados)
-    Set cdst.setAssistido = astd
+    
+    If complete Then
+        Set astd = repoAstd.Repository_factory(tblmgmt.getCellData(lr, "KeyAssistido"), True)
+        Set cdst.setAssistido = astd
+    End If
     
     Set Repository_factory = cdst
 End Function

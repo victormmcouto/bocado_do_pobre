@@ -90,15 +90,20 @@ Public Property Set setAssistido(ByVal astd As Assistido)
 End Property
 
 Public Function toArray() As Variant
-    Dim enum_parentesco As New EnumParentesco
-    Dim enum_escolaridade As New EnumEscolaridade
+    Dim keyAstd As Integer
+    
+    If Not me_assistido Is Nothing Then
+        keyAstd = me_assistido.getKey
+    Else
+        keyAstd = 0
+    End If
     
     toArray = Array(me_key, _
                     me_nome, _
                     me_dataNascimento, _
                     me_escolaridade, _
                     me_parentesco, _
-                    me_assistido.getKey)
+                    keyAstd)
 End Function
 
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
@@ -111,7 +116,7 @@ Public Function toString(Optional ByVal showExtra As Boolean = True) As String
                "Escolaridade    = " & escolaridade.Enums_getNome(me_escolaridade) & ", " & vbNewLine & _
                "Parentesco      = " & parentesco.Enums_getNome(me_parentesco) & vbNewLine
 
-    If showExtra Then
+    If showExtra And Not me_assistido Is Nothing Then
         toString = toString & vbNewLine & "ASSISTIDO: " & vbNewLine & me_assistido.toString(False)
     End If
 End Function

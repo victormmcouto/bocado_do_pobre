@@ -133,6 +133,14 @@ Public Property Set setConjuge(ByVal conjuge_ As Conjuge)
 End Property
 
 Public Function toArray() As Variant
+    Dim keyConjg As Integer
+    
+    If Not me_conjuge Is Nothing Then
+        keyConjg = me_conjuge.getKey
+    Else
+        keyConjg = 0
+    End If
+    
     toArray = Array(me_key, _
                     me_nome, _
                     me_dataNascimento, _
@@ -141,7 +149,7 @@ Public Function toArray() As Variant
                     me_profissao, _
                     me_cpf, _
                     me_telefone, _
-                    me_conjuge.getKey)
+                    keyConjg)
 End Function
 
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
