@@ -22,7 +22,7 @@ Private me_conjuge As Conjuge
 
 Private me_dependentes As New Collection
 
-Public Function Create(ByVal nome As String, _
+Public Function create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
                        ByVal escolaridade As Integer, _
                        ByVal estadoCivil As Integer, _
@@ -40,7 +40,7 @@ Public Function Create(ByVal nome As String, _
     me_telefone = telefone
     Set me_conjuge = conjuge_
     
-    Set Create = Me
+    Set create = Me
 End Function
 
 Public Function CreateFromArray(ByVal arr As Variant) As Assistido
@@ -120,10 +120,6 @@ Public Property Let setTelefone(ByVal telefone As String)
     me_telefone = telefone
 End Property
 
-Public Property Get getDependentes() As Collection
-    Set getDependentes = me_dependentes
-End Property
-
 Public Property Get getConjuge() As Conjuge
     Set getConjuge = me_conjuge
 End Property
@@ -131,6 +127,19 @@ End Property
 Public Property Set setConjuge(ByVal conjuge_ As Conjuge)
     Set me_conjuge = conjuge_
 End Property
+
+Public Function getTotalDependentes() As Integer
+    getTotalDependentes = me_dependentes.count
+End Function
+
+Public Sub AddDependente(ByRef dpnt As Dependente)
+    Set dpnt.setAssistido = Me
+    me_dependentes.Add dpnt
+End Sub
+
+Public Function getDependente(ByVal index As Integer) As Dependente
+    Set getDependente = me_dependentes(index)
+End Function
 
 Public Function toArray() As Variant
     Dim keyConjg As Integer

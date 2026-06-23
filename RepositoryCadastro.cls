@@ -12,11 +12,11 @@ Option Explicit
 Implements Repository
 
 Dim tblmgmt As New TableManagement
+Dim repoAssistido As New RepositoryAssistido
 
-Public Function Repository_Create(ByVal tbl As ListObject) As Repository
-    Set tblmgmt = tblmgmt.Create(tbl)
-    Set Repository_Create = Me
-End Function
+Private Sub Class_Initialize()
+    Set tblmgmt = tblmgmt.create(wksCADASTRO.ListObjects(1))
+End Sub
 
 Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
     Dim repoAstd As New RepositoryAssistido
@@ -26,8 +26,8 @@ Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete
     Dim cdst As New Cadastro
     Dim arrDados() As Variant
     
-    Set repoAstd = repoAstd.Repository_Create(wksASSISTIDO.ListObjects(1))
-    Set repoCnjg = repoCnjg.Repository_Create(wksCONJUGE.ListObjects(1))
+    Set repoAstd = repoAstd.Repository_create(wksASSISTIDO.ListObjects(1))
+    Set repoCnjg = repoCnjg.Repository_create(wksCONJUGE.ListObjects(1))
     
     Set lr = tblmgmt.getListRow(key)
     
@@ -46,5 +46,22 @@ Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete
 End Function
 
 Public Function Repository_getTbl() As TableManagement
+    Set Repository_getTbl = tblmgmt
 End Function
 
+Public Function Repository_save(ByRef obj As Object) As Boolean
+    repoAssistido.Repository_save obj.getAssistido
+    
+    tblmgmt.InsertDataRow obj
+    
+    Repository_save = True
+End Function
+
+Public Function Repository_read() As Object
+End Function
+
+Public Function Repository_update(ByRef obj As Object) As Boolean
+End Function
+
+Public Function Repository_delete(ByRef obj As Object) As Boolean
+End Function

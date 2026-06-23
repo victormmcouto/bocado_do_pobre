@@ -19,10 +19,10 @@ Public Sub StartTable()
     On Error GoTo 0
 End Sub
 
-Public Function Create(ByRef tbl As ListObject) As TableManagement
+Public Function create(ByRef tbl As ListObject) As TableManagement
     Set me_tbl = tbl
     StartTable
-    Set Create = Me
+    Set create = Me
 End Function
 
 Public Property Get Repository_getTbl() As ListObject

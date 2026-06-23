@@ -9,11 +9,21 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public Function Create(ByVal tbl As ListObject) As Repository
-End Function
-
 Public Function factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
 End Function
 
 Public Function getTbl() As TableManagement
 End Function
+
+Public Function save(ByRef obj As Object) As Boolean
+End Function
+
+Public Function read() As Object
+End Function
+
+Public Function update(ByRef obj As Object) As Boolean
+End Function
+
+Public Function delete(ByRef obj As Object) As Boolean
+End Function
+

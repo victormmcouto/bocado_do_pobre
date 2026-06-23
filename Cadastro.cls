@@ -18,12 +18,12 @@ Private me_cidade As String
 Private me_dataSindicancia As Date
 Private me_nomeVisitador As String
 Private me_participaProgGov As Boolean
-Private me_progGov As Boolean
+Private me_progGov As String
 Private me_tipoMoradia As Integer
 Private me_nDependentes As Integer
 Private me_recebeCesta As Boolean
 
-Public Function Create(ByRef astd As Assistido, _
+Public Function create(ByRef astd As Assistido, _
                        ByVal logradouro As String, _
                        ByVal numero As String, _
                        ByVal bairro As String, _
@@ -49,7 +49,7 @@ Public Function Create(ByRef astd As Assistido, _
     me_nDependentes = nDependentes
     me_recebeCesta = recebeCesta
     
-    Set Create = Me
+    Set create = Me
 End Function
 
 Public Function CreateFromArray(ByVal arr As Variant) As Cadastro
@@ -92,6 +92,10 @@ Public Function toArray() As Variant
                     me_nDependentes, _
                     me_recebeCesta)
 End Function
+
+Public Property Let setKey(ByVal key As Integer)
+    me_key = key
+End Property
 
 Public Function toString(ByVal showExtra As Boolean) As String
     Dim tipoMoradia As New EnumTipoMoradia

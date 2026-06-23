@@ -13,10 +13,9 @@ Implements Repository
 
 Private tblmgmt As New TableManagement
 
-Public Function Repository_Create(ByVal tbl As ListObject) As Repository
-    Set tblmgmt = tblmgmt.Create(tbl)
-    Set Repository_Create = Me
-End Function
+Private Sub Class_Initialize()
+    Set tblmgmt = tblmgmt.create(wksCONJUGE.ListObjects(1))
+End Sub
 
 Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
     Dim lr As ListRow
@@ -38,3 +37,16 @@ Public Function Repository_getTbl() As TableManagement
     Set Repository_getTbl = tblmgmt
 End Function
 
+Public Function Repository_save(ByRef obj As Object) As Boolean
+    tblmgmt.InsertDataRow obj
+    Repository_save = True
+End Function
+
+Public Function Repository_read() As Object
+End Function
+
+Public Function Repository_update(ByRef obj As Object) As Boolean
+End Function
+
+Public Function Repository_delete(ByRef obj As Object) As Boolean
+End Function

@@ -18,7 +18,7 @@ Private me_cpf As String
 Private me_telefone As String
 Private me_key As Integer
 
-Public Function Create(ByVal nome As String, _
+Public Function create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
                        ByVal escolaridade As Integer, _
                        ByVal estadoCivil As Integer, _
@@ -34,7 +34,7 @@ Public Function Create(ByVal nome As String, _
     me_cpf = cpf
     me_telefone = telefone
     
-    Set Create = Me
+    Set create = Me
 End Function
 
 Public Function CreateFromArray(ByVal arr As Variant) As Conjuge

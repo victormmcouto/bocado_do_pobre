@@ -16,19 +16,17 @@ Private me_parentesco As Integer
 Private me_assistido As Assistido
 Private me_key As Integer
 
-Public Function Create(ByVal nome As String, _
+Public Function create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
                        ByVal escolaridade As Integer, _
-                       ByVal parentesco As Integer, _
-                       ByRef astd As Assistido) As Dependente
+                       ByVal parentesco As Integer) As Dependente
     
     me_nome = nome
     me_dataNascimento = dataNascimento
     me_escolaridade = escolaridade
     me_parentesco = parentesco
-    Set me_assistido = astd
     
-    Set Create = Me
+    Set create = Me
 End Function
 
 Public Function CreateFromArray(ByVal arr As Variant) As Dependente
