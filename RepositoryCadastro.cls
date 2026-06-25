@@ -12,22 +12,21 @@ Option Explicit
 Implements Repository
 
 Dim tblmgmt As New TableManagement
-Dim repoAssistido As New RepositoryAssistido
+Dim me_repoAssistido As RepositoryAssistido
 
 Private Sub Class_Initialize()
     Set tblmgmt = tblmgmt.create(wksCADASTRO.ListObjects(1))
 End Sub
 
+Public Property Set setRepoAssistiddo(ByRef repoAssistido As Repository)
+    Set me_repoAssistido = repoAssistido
+End Property
+
 Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
-    Dim repoAstd As New RepositoryAssistido
-    Dim repoCnjg As New RepositoryConjuge
     Dim lr As ListRow
     Dim astd As New Assistido
     Dim cdst As New Cadastro
     Dim arrDados() As Variant
-    
-    Set repoAstd = repoAstd.Repository_create(wksASSISTIDO.ListObjects(1))
-    Set repoCnjg = repoCnjg.Repository_create(wksCONJUGE.ListObjects(1))
     
     Set lr = tblmgmt.getListRow(key)
     
@@ -38,7 +37,7 @@ Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete
     Set cdst = cdst.CreateFromArray(arrDados)
     
     If complete Then
-        Set astd = repoAstd.Repository_factory(tblmgmt.getCellData(lr, "KeyAssistido"), True)
+        Set astd = me_repoAssistido.Repository_factory(tblmgmt.getCellData(lr, "KeyAssistido"), True)
         Set cdst.setAssistido = astd
     End If
     
@@ -50,18 +49,31 @@ Public Function Repository_getTbl() As TableManagement
 End Function
 
 Public Function Repository_save(ByRef obj As Object) As Boolean
-    repoAssistido.Repository_save obj.getAssistido
+    me_repoAssistido.Repository_save obj.getAssistido
     
     tblmgmt.InsertDataRow obj
     
     Repository_save = True
 End Function
 
-Public Function Repository_read() As Object
+Public Function Repository_readById(ByVal key As Integer) As Object
 End Function
 
 Public Function Repository_update(ByRef obj As Object) As Boolean
 End Function
 
-Public Function Repository_delete(ByRef obj As Object) As Boolean
+Public Function Repository_deleteById(ByVal key As Integer) As Boolean
+    If tblmgmt.hasKey(key) Then
+        me_repoAssistido.Repository_deleteById tblmgmt.getCellData(tblmgmt.getListRow(key), "KeyAssistido")
+        tblmgmt.getListRow(key).delete
+        Repository_deleteById = True
+    Else
+        Repository_deleteById = False
+        Err.Raise errInvalidKey, _
+                  "RepositoryDependente.Repository_delebyId(key:=" & key & ")", _
+                  "ID não encontrado!"
+    End If
+End Function
+
+Public Function Repository_deleteFkey(ByVal fk As Integer, ByVal fkName As String) As Boolean
 End Function

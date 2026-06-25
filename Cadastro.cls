@@ -104,6 +104,7 @@ Public Function toString(ByVal showExtra As Boolean) As String
     
     toString = toString & _
                "Key                               = " & me_key & "," & vbNewLine & _
+               "Key Assistido                     = " & getAssistido.getKey & "," & vbNewLine & _
                "Logradouro                        = " & me_logradouro & "," & vbNewLine & _
                "Número                            = " & me_numero & "," & vbNewLine & _
                "Bairro                            = " & me_bairro & "," & vbNewLine & _

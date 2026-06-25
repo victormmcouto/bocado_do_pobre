@@ -164,6 +164,11 @@ End Function
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
     Dim escolaridade As New EnumEscolaridade
     Dim estadoCivil As New EnumEstadoCivil
+    Dim keyCnjg As Integer
+    
+    If Not getConjuge Is Nothing Then
+        keyCnjg = getConjuge.getKey
+    End If
     
     toString = "Key             = " & me_key & ", " & vbNewLine & _
                "Nome            = " & me_nome & ", " & vbNewLine & _
@@ -172,7 +177,8 @@ Public Function toString(Optional ByVal showExtra As Boolean = True) As String
                "Estado Civil    = " & estadoCivil.Enums_getNome(me_estadoCivil) & ", " & vbNewLine & _
                "Profissao       = " & me_profissao & ", " & vbNewLine & _
                "CPF             = " & me_cpf & ", " & vbNewLine & _
-               "Telefone        = " & me_telefone & vbNewLine
+               "Telefone        = " & me_telefone & ", " & vbNewLine & _
+               "Key Conjuge     = " & keyCnjg & vbNewLine
     
     If showExtra Then
         If Not me_conjuge Is Nothing Then

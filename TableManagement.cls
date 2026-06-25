@@ -37,15 +37,14 @@ Public Function getListRow(ByVal key As Integer, Optional keyColName As String =
     Dim lr As ListRow
     Dim current_key As Integer
     
-    For Each lr In me_tbl.ListRows
-        current_key = CInt(lr.Range(1, me_tbl.ListColumns.item("Key").index).Value)
-        If current_key = key Then
-            Set getListRow = lr
-            Exit Function
-        End If
-    Next lr
-    
-    Err.Raise errInvalidKey, "TableManagement.getListRow(key=" & key & ")", "Chave inválida!"
+    If hasKey(key) Then
+        With me_tbl
+            Set getListRow = .ListRows.item(getListColumn(keyColName).DataBodyRange.Find(key).Row - 1)
+            'getListRow.Range.Select
+        End With
+    Else
+        Err.Raise errInvalidKey, "TableManagement.getListRow(key:=" & key & ")", "Chave inválida!"
+    End If
 End Function
 
 Public Property Get getLastRow() As Range
@@ -100,12 +99,18 @@ Public Function getCellData(ByVal lr As ListRow, ByVal colName As String) As Var
     getCellData = lr.Range(1, lr.Parent.ListColumns(colName).index).Value
 End Function
 
+Public Function setCellData(ByVal lr As ListRow, ByVal colName As String, ByVal newValue As Variant) As Variant
+    lr.Range(1, lr.Parent.ListColumns(colName).index).Value = newValue
+End Function
+
 Public Function getArrayAssociations(ByVal fkey As Integer, ByVal colName As String) As Variant
-    Dim tempArr() As Variant
+    Dim tempArr() As ListRow
     Dim count As Integer
     Dim lr As ListRow
     
     count = 1
+    
+    'me_tbl.DataBodyRange.Select
     
     For Each lr In me_tbl.ListRows
         If getCellData(lr, colName) = fkey Then
@@ -118,3 +123,6 @@ Public Function getArrayAssociations(ByVal fkey As Integer, ByVal colName As Str
     getArrayAssociations = tempArr
 End Function
 
+Public Function hasKey(ByVal key As Integer) As Boolean
+    hasKey = Not getListColumn("Key").DataBodyRange.Find(key) Is Nothing
+End Function

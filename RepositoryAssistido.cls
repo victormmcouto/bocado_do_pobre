@@ -12,12 +12,20 @@ Option Explicit
 Implements Repository
 
 Private tblmgmt As New TableManagement
-Private repoCnjg As New RepositoryConjuge
-Private repoDpnt As New RepositoryDependente
+Private me_repoCnjg As RepositoryConjuge
+Private me_repoDpnt As RepositoryDependente
 
 Private Sub Class_Initialize()
     Set tblmgmt = tblmgmt.create(wksASSISTIDO.ListObjects(1))
 End Sub
+
+Public Property Set setRepoConjuge(ByRef repoCnjg As Repository)
+    Set me_repoCnjg = repoCnjg
+End Property
+
+Public Property Set setRepoDependente(ByRef repoDpnt As Repository)
+    Set me_repoDpnt = repoDpnt
+End Property
 
 Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
     Dim lr As ListRow
@@ -35,28 +43,23 @@ Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete
     If complete Then
         Dim qnt As Integer
         Dim arrAsso() As Variant
-        Dim repoDpnt As New RepositoryDependente
         
-        Set repoDpnt = repoDpnt.Repository_create(wksDEPENDENTE.ListObjects(1))
-        
-        arrAsso = repoDpnt.Repository_getTbl.getArrayAssociations(tblmgmt.getCellData(lr, "Key"), "KeyAssistido")
+        arrAsso = me_repoDpnt.Repository_getTbl.getArrayAssociations(tblmgmt.getCellData(lr, "Key"), "KeyAssistido")
         
         If UBound(arrAsso) <> 0 Then
             For qnt = 1 To UBound(arrAsso)
                 Dim dpnt As New Dependente
                 
-                Set dpnt = repoDpnt.Repository_factory(repoDpnt.Repository_getTbl.getCellData(arrAsso(qnt), "Key"), False)
-                astd.getDependentes.Add dpnt
+                Set dpnt = me_repoDpnt.Repository_factory(me_repoDpnt.Repository_getTbl.getCellData(arrAsso(qnt), "Key"), False)
+                astd.AddDependente dpnt
                 
                 Set dpnt = Nothing
             Next qnt
         End If
         
-        Dim repoCnjg As New RepositoryConjuge
         Dim keyCnjg As Integer
-        Set repoCnjg = repoCnjg.Repository_create(wksCONJUGE.ListObjects(1))
         keyCnjg = tblmgmt.getCellData(lr, "KeyConjuge")
-        If keyCnjg <> 0 Then Set astd.setConjuge = repoCnjg.Repository_factory(keyCnjg, False)
+        If keyCnjg <> 0 Then Set astd.setConjuge = me_repoCnjg.Repository_factory(keyCnjg, False)
     End If
     
     Set Repository_factory = astd
@@ -68,7 +71,7 @@ End Function
 
 Public Function Repository_save(ByRef obj As Object) As Boolean
     If Not obj.getConjuge Is Nothing Then
-        repoCnjg.Repository_save obj.getConjuge
+        me_repoCnjg.Repository_save obj.getConjuge
     End If
     
     tblmgmt.InsertDataRow obj
@@ -77,18 +80,52 @@ Public Function Repository_save(ByRef obj As Object) As Boolean
         Dim index As Integer
         
         For index = 1 To obj.getTotalDependentes
-            repoDpnt.Repository_save obj.getDependente(index)
+            me_repoDpnt.Repository_save obj.getDependente(index)
         Next index
     End If
     
     Repository_save = True
 End Function
 
-Public Function Repository_read() As Object
+Public Function Repository_readById(ByVal key As Integer) As Object
 End Function
 
 Public Function Repository_update(ByRef obj As Object) As Boolean
 End Function
 
-Public Function Repository_delete(ByRef obj As Object) As Boolean
+Public Function Repository_deleteById(ByVal key As Integer) As Boolean
+    If tblmgmt.hasKey(key) Then
+        Dim arrAssociation As Variant
+        
+        arrAssociation = me_repoDpnt.Repository_getTbl.getArrayAssociations(key, "KeyAssistido")
+    
+        If UBound(arrAssociation) > 0 Then
+            Dim lrIndex As Integer
+            
+            For lrIndex = UBound(arrAssociation) To 1 Step -1
+                arrAssociation(lrIndex).delete
+            Next lrIndex
+        End If
+        
+        Dim keyCnjg As Integer
+        
+        keyCnjg = tblmgmt.getCellData(tblmgmt.getListRow(key), "KeyConjuge")
+        
+        If keyCnjg <> 0 Then
+            me_repoCnjg.Repository_deleteById keyCnjg
+        End If
+        
+        tblmgmt.getListRow(key).delete
+        
+        Repository_deleteById = True
+    Else
+        Repository_deleteById = False
+        Err.Raise errInvalidKey, _
+                  "RepositoryDependente.Repository_delebyId(key:=" & key & ")", _
+                  "ID não encontrado!"
+    End If
+End Function
+
+Public Function Repository_deleteFkey(ByVal fk As Integer, ByVal fkName As String) As Boolean
+    tblmgmt.setCellData tblmgmt.getListRow(fk, fkName), fkName, 0
 End Function

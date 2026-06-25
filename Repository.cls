@@ -18,12 +18,15 @@ End Function
 Public Function save(ByRef obj As Object) As Boolean
 End Function
 
-Public Function read() As Object
+Public Function readById(ByVal key As Integer) As Object
 End Function
 
 Public Function update(ByRef obj As Object) As Boolean
 End Function
 
-Public Function delete(ByRef obj As Object) As Boolean
+Public Function deleteById(ByVal key As Integer) As Boolean
+End Function
+
+Public Function deleteFkey(ByVal fk As Integer, ByVal fkName As String) As Boolean
 End Function
 
