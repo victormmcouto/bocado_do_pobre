@@ -39,7 +39,7 @@ Public Function getListRow(ByVal key As Integer, Optional keyColName As String =
     
     If hasKey(key) Then
         With me_tbl
-            Set getListRow = .ListRows.item(getListColumn(keyColName).DataBodyRange.Find(key).Row - 1)
+            Set getListRow = .ListRows.item(getListColumn(keyColName).DataBodyRange.Find(key, LookAt:=xlWhole).Row - 1)
             'getListRow.Range.Select
         End With
     Else
@@ -79,10 +79,10 @@ Public Property Get getTotalColumns() As Integer
     getTotalColumns = me_tbl.ListColumns.count
 End Property
 
-Public Sub InsertDataRow(ByRef obj As Object)
+Public Sub InsertDataRow(ByRef obj As Object, ByVal autoIncrement As Boolean)
     If Not LastRowIsEmpty Then AddRows 1
     With getLastRow
-        obj.setKey = getLastKey + 1
+        If autoIncrement Then obj.setKey = getLastKey + 1
         .Value = obj.toArray
     End With
 End Sub
@@ -95,15 +95,15 @@ Public Function getLastKey() As Integer
     getLastKey = lastKey
 End Function
 
-Public Function getCellData(ByVal lr As ListRow, ByVal colName As String) As Variant
-    getCellData = lr.Range(1, lr.Parent.ListColumns(colName).index).Value
+Public Function getCellData(ByVal lr As ListRow, ByVal colNAme As String) As Variant
+    getCellData = lr.Range(1, lr.Parent.ListColumns(colNAme).index).Value
 End Function
 
-Public Function setCellData(ByVal lr As ListRow, ByVal colName As String, ByVal newValue As Variant) As Variant
-    lr.Range(1, lr.Parent.ListColumns(colName).index).Value = newValue
+Public Function setCellData(ByVal lr As ListRow, ByVal colNAme As String, ByVal newValue As Variant) As Variant
+    lr.Range(1, lr.Parent.ListColumns(colNAme).index).Value = newValue
 End Function
 
-Public Function getArrayAssociations(ByVal fkey As Integer, ByVal colName As String) As Variant
+Public Function getArrayAssociations(ByVal fkey As Integer, ByVal colNAme As String) As Variant
     Dim tempArr() As ListRow
     Dim count As Integer
     Dim lr As ListRow
@@ -113,7 +113,7 @@ Public Function getArrayAssociations(ByVal fkey As Integer, ByVal colName As Str
     'me_tbl.DataBodyRange.Select
     
     For Each lr In me_tbl.ListRows
-        If getCellData(lr, colName) = fkey Then
+        If getCellData(lr, colNAme) = fkey Then
             ReDim Preserve tempArr(1 To count)
             Set tempArr(count) = lr
             count = count + 1
@@ -126,3 +126,18 @@ End Function
 Public Function hasKey(ByVal key As Integer) As Boolean
     hasKey = Not getListColumn("Key").DataBodyRange.Find(key) Is Nothing
 End Function
+
+Public Sub updateRow(ByVal key As Integer, ByRef obj As Object)
+    getListRow(key).Range.Value = obj.toArray()
+End Sub
+
+Public Sub deleteAssosciations(ByVal key As Integer, ByVal colNAme As String)
+    Dim index As Integer
+    Dim assosciations As Variant
+    
+    assosciations = getArrayAssociations(key, colNAme)
+    
+    For index = UBound(assosciations) To 1 Step -1
+        assosciations(index).delete
+    Next index
+End Sub

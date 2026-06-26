@@ -42,7 +42,7 @@ Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete
     
     If complete Then
         Dim qnt As Integer
-        Dim arrAsso() As Variant
+        Dim arrAsso As Variant
         
         arrAsso = me_repoDpnt.Repository_getTbl.getArrayAssociations(tblmgmt.getCellData(lr, "Key"), "KeyAssistido")
         
@@ -69,18 +69,22 @@ Public Function Repository_getTbl() As TableManagement
     Set Repository_getTbl = tblmgmt
 End Function
 
-Public Function Repository_save(ByRef obj As Object) As Boolean
+Public Function Repository_save(ByRef obj As Object, Optional ByVal autoIncrement As Boolean = True) As Boolean
     If Not obj.getConjuge Is Nothing Then
-        me_repoCnjg.Repository_save obj.getConjuge
+        me_repoCnjg.Repository_save obj.getConjuge, autoIncrement
     End If
     
-    tblmgmt.InsertDataRow obj
+    tblmgmt.InsertDataRow obj, autoIncrement
         
     If obj.getTotalDependentes > 0 Then
         Dim index As Integer
         
         For index = 1 To obj.getTotalDependentes
-            me_repoDpnt.Repository_save obj.getDependente(index)
+            If obj.getDependente(index).getKey = 0 Then
+                me_repoDpnt.Repository_save obj.getDependente(index), True
+            Else
+                me_repoDpnt.Repository_save obj.getDependente(index), False
+            End If
         Next index
     End If
     
@@ -90,7 +94,15 @@ End Function
 Public Function Repository_readById(ByVal key As Integer) As Object
 End Function
 
-Public Function Repository_update(ByRef obj As Object) As Boolean
+Public Function Repository_updateById(ByVal key As Integer, ByRef obj As Object) As Boolean
+    If tblmgmt.hasKey(key) Then
+        Repository_deleteById key
+        Repository_save obj, False
+    Else
+        Err.Raise errInvalidKey, _
+        "RepositoryDependente.Repository_delebyId(key:=" & key & ")", _
+        "ID não encontrado!"
+    End If
 End Function
 
 Public Function Repository_deleteById(ByVal key As Integer) As Boolean

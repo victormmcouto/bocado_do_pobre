@@ -114,6 +114,17 @@ Public Property Let setTelefone(ByVal telefone As String)
     me_telefone = telefone
 End Property
 
+Public Function Equals(ByRef outro As Conjuge) As Boolean
+    If outro Is Nothing Then Exit Function
+    
+    If Me.getKey = 0 Or outro.getKey = 0 Then
+        Equals = (Me Is outro)
+        Exit Function
+    End If
+    
+    Equals = (Me.getKey = outro.getKey)
+End Function
+
 Public Function toArray() As Variant
    toArray = Array(me_key, _
                    me_nome, _

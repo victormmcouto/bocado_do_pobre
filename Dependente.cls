@@ -87,6 +87,25 @@ Public Property Set setAssistido(ByVal astd As Assistido)
     Set me_assistido = astd
 End Property
 
+Public Function clone() As Dependente
+    Dim novo As New Dependente
+    
+    novo.CreateFromArray Me.toArray
+    
+    Set clone = novo
+End Function
+
+Public Function Equals(ByRef outro As Dependente) As Boolean
+    If outro Is Nothing Then Exit Function
+    
+    If Me.getKey = 0 Or outro.getKey = 0 Then
+        Equals = (Me Is outro)
+        Exit Function
+    End If
+    
+    Equals = (Me.getKey = outro.getKey)
+End Function
+
 Public Function toArray() As Variant
     Dim keyAstd As Integer
     

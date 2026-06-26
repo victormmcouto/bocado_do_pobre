@@ -48,10 +48,10 @@ Public Function Repository_getTbl() As TableManagement
     Set Repository_getTbl = tblmgmt
 End Function
 
-Public Function Repository_save(ByRef obj As Object) As Boolean
+Public Function Repository_save(ByRef obj As Object, Optional ByVal autoIncrement As Boolean = True) As Boolean
     me_repoAssistido.Repository_save obj.getAssistido
     
-    tblmgmt.InsertDataRow obj
+    tblmgmt.InsertDataRow obj, autoIncrement
     
     Repository_save = True
 End Function
@@ -59,7 +59,15 @@ End Function
 Public Function Repository_readById(ByVal key As Integer) As Object
 End Function
 
-Public Function Repository_update(ByRef obj As Object) As Boolean
+Public Function Repository_updateById(ByVal key As Integer, ByRef obj As Object) As Boolean
+    If tblmgmt.hasKey(key) Then
+        Repository_deleteById key
+        Repository_save obj, False
+    Else
+        Err.Raise errInvalidKey, _
+        "RepositoryDependente.Repository_delebyId(key:=" & key & ")", _
+        "ID não encontrado!"
+    End If
 End Function
 
 Public Function Repository_deleteById(ByVal key As Integer) As Boolean

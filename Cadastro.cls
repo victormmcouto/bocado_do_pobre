@@ -97,6 +97,17 @@ Public Property Let setKey(ByVal key As Integer)
     me_key = key
 End Property
 
+Public Function Equals(ByRef outro As Cadastro) As Boolean
+    If outro Is Nothing Then Exit Function
+    
+    If Me.getKey = 0 Or outro.getKey = 0 Then
+        Equals = (Me Is outro)
+        Exit Function
+    End If
+    
+    Equals = (Me.getKey = outro.getKey)
+End Function
+
 Public Function toString(ByVal showExtra As Boolean) As String
     Dim tipoMoradia As New EnumTipoMoradia
     

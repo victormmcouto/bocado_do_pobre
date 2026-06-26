@@ -79,8 +79,8 @@ End Property
 Public Property Get CUNHADO_A() As Integer
     CUNHADO_A = me_CUNHADO_A
 End Property
-Public Property Get OUTRO() As Integer
-    OUTRO = me_OUTRO
+Public Property Get outro() As Integer
+    outro = me_OUTRO
 End Property
 
 Public Function Enums_getNome(ByVal num As Integer) As String

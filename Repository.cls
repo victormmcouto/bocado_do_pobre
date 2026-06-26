@@ -15,13 +15,13 @@ End Function
 Public Function getTbl() As TableManagement
 End Function
 
-Public Function save(ByRef obj As Object) As Boolean
+Public Function save(ByRef obj As Object, Optional ByVal autoIncrement As Boolean = True) As Boolean
 End Function
 
 Public Function readById(ByVal key As Integer) As Object
 End Function
 
-Public Function update(ByRef obj As Object) As Boolean
+Public Function updateById(ByVal key As Integer, ByRef obj As Object) As Boolean
 End Function
 
 Public Function deleteById(ByVal key As Integer) As Boolean

@@ -141,6 +141,51 @@ Public Function getDependente(ByVal index As Integer) As Dependente
     Set getDependente = me_dependentes(index)
 End Function
 
+Public Function getDependentesKeys() As Dictionary
+    Dim dpnt As Dependente
+    For Each dpnt In me_dependentes
+        getDependentesKeys.Add dpnt.getKey, ""
+    Next dpnt
+End Function
+
+Public Function Equals(ByRef outro As Assistido) As Boolean
+    If outro Is Nothing Then Exit Function
+    
+    If Me.getKey = 0 Or outro.getKey = 0 Then
+        Equals = (Me Is outro)
+        Exit Function
+    End If
+    
+    Equals = (Me.getKey = outro.getKey)
+End Function
+
+Public Function dependentesEqual(ByRef outros As Collection) As Boolean
+    If me_dependentes.count <> outros.count Then
+        dependentesEqual = False
+    Else
+        Dim index As Integer
+        
+        For index = 1 To me_dependentes.count
+            If me_dependentes(index).Equals(outros(index)) Then
+               dependentesEqual = True
+            Else
+                dependentesEqual = False
+                Exit For
+            End If
+        Next index
+    End If
+End Function
+
+Public Function GetDpntCopy() As Collection
+    Dim dpnt As Dependente
+
+    Set GetDpntCopy = New Collection
+
+    For Each dpnt In me_dependentes
+        GetDpntCopy.Add dpnt.clone
+    Next dpnt
+End Function
+
 Public Function toArray() As Variant
     Dim keyConjg As Integer
     
