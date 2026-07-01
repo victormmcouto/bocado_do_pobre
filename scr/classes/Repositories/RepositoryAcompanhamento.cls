@@ -36,13 +36,28 @@ End Function
 
 Public Function Repository_save(ByRef obj As Object, Optional ByVal autoIncrement As Boolean = True) As Boolean
     obj.setKey = CLng(obj.getAno & obj.getKeyCadastro)
-    tblmgmt.InsertDataRow obj, autoIncrement
+    tblmgmt.InsertDataRow obj, False
 End Function
 
 Public Function Repository_updateById(ByVal key As Long, ByRef obj As Object) As Boolean
+    If tblmgmt.hasKey(key) Then
+        Repository_deleteById key
+        Repository_save obj, False
+    Else
+        Err.Raise errInvalidKey, _
+        "RepositoryDependente.Repository_delebyId(key:=" & key & ")", _
+        "ID não encontrado!"
+    End If
 End Function
 
 Public Function Repository_deleteById(ByVal key As Long) As Boolean
+    If tblmgmt.hasKey(key) Then
+        tblmgmt.getListRow(key).Range.delete
+    Else
+        Err.Raise errInvalidKey, _
+        "RepositoryDependente.Repository_delebyId(key:=" & key & ")", _
+        "ID não encontrado!"
+    End If
 End Function
 
 Public Function Repository_deleteFkey(ByVal fk As Long, ByVal fkName As String) As Boolean

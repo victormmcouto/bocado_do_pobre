@@ -387,6 +387,26 @@ Public Sub test20()
     Reposiotiryacmpmnt.Repository_save acmpmnt, False
 End Sub
 
+Public Sub test21()
+    Debug.Print "TESTE 21 de rpository acompanhamento delete" & vbNewLine
+    
+    Dim Reposiotiryacmpmnt As New RepositoryAcompanhamento
+    
+    Reposiotiryacmpmnt.Repository_deleteById 20268
+End Sub
+
+Public Sub test22()
+    Debug.Print "TESTE 22 de rpository acompanhamento update" & vbNewLine
+    
+    Dim Reposiotiryacmpmnt As New RepositoryAcompanhamento
+    Dim acmpmnt As New Acompanhamento
+     
+    Set acmpmnt = Reposiotiryacmpmnt.Repository_readByKey(20267)
+    acmpmnt.marcarEntrega 6
+    
+    Reposiotiryacmpmnt.Repository_updateById acmpmnt.getKey, acmpmnt
+End Sub
+
 Public Function createAssistido() As Assistido
     Dim astd As New Assistido
     Dim escolaridade As New EnumEscolaridade
