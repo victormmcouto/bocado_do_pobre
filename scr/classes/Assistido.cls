@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Private me_key As Integer
+Private me_key As Long
 
 Private me_nome As String
 Private me_dataNascimento As Date
@@ -56,11 +56,11 @@ Public Function CreateFromArray(ByVal arr As Variant) As Assistido
     Set CreateFromArray = Me
 End Function
 
-Public Property Get getKey() As Integer
+Public Property Get getKey() As Long
     getKey = me_key
 End Property
 
-Public Property Let setKey(ByVal key As Integer)
+Public Property Let setKey(ByVal key As Long)
     me_key = key
 End Property
 
@@ -187,7 +187,7 @@ Public Function GetDpntCopy() As Collection
 End Function
 
 Public Function toArray() As Variant
-    Dim keyConjg As Integer
+    Dim keyConjg As Long
     
     If Not me_conjuge Is Nothing Then
         keyConjg = me_conjuge.getKey
@@ -209,7 +209,7 @@ End Function
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
     Dim escolaridade As New EnumEscolaridade
     Dim estadoCivil As New EnumEstadoCivil
-    Dim keyCnjg As Integer
+    Dim keyCnjg As Long
     
     If Not getConjuge Is Nothing Then
         keyCnjg = getConjuge.getKey

@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Public Function factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
+Public Function readByKey(ByVal key As Long, Optional ByVal complete As Boolean = True) As Object
 End Function
 
 Public Function getTbl() As TableManagement
@@ -18,15 +18,12 @@ End Function
 Public Function save(ByRef obj As Object, Optional ByVal autoIncrement As Boolean = True) As Boolean
 End Function
 
-Public Function readById(ByVal key As Integer) As Object
+Public Function updateById(ByVal key As Long, ByRef obj As Object) As Boolean
 End Function
 
-Public Function updateById(ByVal key As Integer, ByRef obj As Object) As Boolean
+Public Function deleteById(ByVal key As Long) As Boolean
 End Function
 
-Public Function deleteById(ByVal key As Integer) As Boolean
-End Function
-
-Public Function deleteFkey(ByVal fk As Integer, ByVal fkName As String) As Boolean
+Public Function deleteFkey(ByVal fk As Long, ByVal fkName As String) As Boolean
 End Function
 

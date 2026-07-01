@@ -1,14 +1,14 @@
 VERSION 5.00
-Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Acompanhamento 
+Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} Acompanhamentos 
    Caption         =   "ACOMPANHAMENTO DE ASSISTIDOS"
    ClientHeight    =   2355
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   7845
-   OleObjectBlob   =   "Acompanhamento.frx":0000
+   OleObjectBlob   =   "Acompanhamentos.frx":0000
    StartUpPosition =   1  'CenterOwner
 End
-Attribute VB_Name = "Acompanhamento"
+Attribute VB_Name = "Acompanhamentos"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
@@ -84,7 +84,7 @@ Private Sub combNomeAssistido_Change()
     
     frmCestasMes.Enabled = True
     
-    Cadastro = CadastroVazio
+    cadastro = CadastroVazio
     
     Set listRowComparativo = GetCadastroListRow(combNomeAssistido.Text)
             
@@ -93,9 +93,9 @@ Private Sub combNomeAssistido_Change()
         
         PopulateTypeCadastro
         
-        txtbTelefone.Value = Cadastro.Assistido.Telefone
-        txtbEndereco.Value = Cadastro.Endereco.Logradouro & ", " & Cadastro.Endereco.NumeroCasa
-        txtbBairro.Value = Cadastro.Endereco.Bairro
+        txtbTelefone.Value = cadastro.Assistido.telefone
+        txtbEndereco.Value = cadastro.Endereco.logradouro & ", " & cadastro.Endereco.NumeroCasa
+        txtbBairro.Value = cadastro.Endereco.bairro
         
         ChangeValueMesesTo , True
     Else
@@ -142,7 +142,7 @@ End Sub
 Private Sub ChangeValueMesesTo(Optional ByVal state As Boolean, Optional ByVal typeMeses As Boolean = False)
     IgnorarEventos = True
     If typeMeses Then
-        With Cadastro.Acompanhamento
+        With cadastro.Acompanhamento
             ckbJan.Value = .Jan
             ckbFev.Value = .Fev
             ckbMar.Value = .Mar
@@ -197,7 +197,7 @@ Private Function ValidateCheckBox(ckb As MSForms.CheckBox) As Boolean
 End Function
 
 Private Sub ChangeCheckBoxMesState(ByVal strNomeMes As String, ByVal state As Boolean)
-    With Cadastro.Acompanhamento
+    With cadastro.Acompanhamento
         Select Case strNomeMes
             Case "jan": .Jan = state
             Case "fev": .Fev = state

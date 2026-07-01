@@ -1,8 +1,8 @@
-~*.xlsm
+*.xlsm
 *.jpeg
 *.png
 *.pdf
-!Images/
-!Images/**
+!Assets/
+!Assets/**
 *.mp4
 *.tmp

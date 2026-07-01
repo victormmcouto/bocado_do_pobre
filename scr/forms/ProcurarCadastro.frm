@@ -26,7 +26,7 @@ Private Sub cbttProcurar_Click()
     
     If combNomeAssistido.Text = "" Then Exit Sub
     
-    nomeAProcurar = Cadastro.Assistido.Nome
+    nomeAProcurar = cadastro.Assistido.nome
     
     For Each lr In tblCadastros.ListRows
         nomeAtual = lr.Range(1, tblCadastros.ListColumns("NomeAssistido").index).Value
@@ -50,7 +50,7 @@ Private Sub cbttProcurar_Click()
 End Sub
 
 Private Sub combNomeAssistido_Change()
-    Cadastro.Assistido.Nome = combNomeAssistido.Value
+    cadastro.Assistido.nome = combNomeAssistido.Value
 End Sub
 
 Public Sub UserForm_Initialize()

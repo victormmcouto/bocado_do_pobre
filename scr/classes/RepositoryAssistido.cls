@@ -27,7 +27,7 @@ Public Property Set setRepoDependente(ByRef repoDpnt As Repository)
     Set me_repoDpnt = repoDpnt
 End Property
 
-Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
+Public Function Repository_readByKey(ByVal key As Long, Optional ByVal complete As Boolean = True) As Object
     Dim lr As ListRow
     Dim astd As New Assistido
     Dim tempArr() As Variant
@@ -50,19 +50,19 @@ Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete
             For qnt = 1 To UBound(arrAsso)
                 Dim dpnt As New Dependente
                 
-                Set dpnt = me_repoDpnt.Repository_factory(me_repoDpnt.Repository_getTbl.getCellData(arrAsso(qnt), "Key"), False)
+                Set dpnt = me_repoDpnt.Repository_readByKey(me_repoDpnt.Repository_getTbl.getCellData(arrAsso(qnt), "Key"), False)
                 astd.AddDependente dpnt
                 
                 Set dpnt = Nothing
             Next qnt
         End If
         
-        Dim keyCnjg As Integer
+        Dim keyCnjg As Long
         keyCnjg = tblmgmt.getCellData(lr, "KeyConjuge")
-        If keyCnjg <> 0 Then Set astd.setConjuge = me_repoCnjg.Repository_factory(keyCnjg, False)
+        If keyCnjg <> 0 Then Set astd.setConjuge = me_repoCnjg.Repository_readByKey(keyCnjg, False)
     End If
     
-    Set Repository_factory = astd
+    Set Repository_readByKey = astd
 End Function
 
 Public Function Repository_getTbl() As TableManagement
@@ -91,10 +91,10 @@ Public Function Repository_save(ByRef obj As Object, Optional ByVal autoIncremen
     Repository_save = True
 End Function
 
-Public Function Repository_readById(ByVal key As Integer) As Object
+Public Function Repository_readById(ByVal key As Long) As Object
 End Function
 
-Public Function Repository_updateById(ByVal key As Integer, ByRef obj As Object) As Boolean
+Public Function Repository_updateById(ByVal key As Long, ByRef obj As Object) As Boolean
     If tblmgmt.hasKey(key) Then
         Repository_deleteById key
         Repository_save obj, False
@@ -105,7 +105,7 @@ Public Function Repository_updateById(ByVal key As Integer, ByRef obj As Object)
     End If
 End Function
 
-Public Function Repository_deleteById(ByVal key As Integer) As Boolean
+Public Function Repository_deleteById(ByVal key As Long) As Boolean
     If tblmgmt.hasKey(key) Then
         Dim arrAssociation As Variant
         
@@ -119,7 +119,7 @@ Public Function Repository_deleteById(ByVal key As Integer) As Boolean
             Next lrIndex
         End If
         
-        Dim keyCnjg As Integer
+        Dim keyCnjg As Long
         
         keyCnjg = tblmgmt.getCellData(tblmgmt.getListRow(key), "KeyConjuge")
         
@@ -138,6 +138,6 @@ Public Function Repository_deleteById(ByVal key As Integer) As Boolean
     End If
 End Function
 
-Public Function Repository_deleteFkey(ByVal fk As Integer, ByVal fkName As String) As Boolean
+Public Function Repository_deleteFkey(ByVal fk As Long, ByVal fkName As String) As Boolean
     tblmgmt.setCellData tblmgmt.getListRow(fk, fkName), fkName, 0
 End Function

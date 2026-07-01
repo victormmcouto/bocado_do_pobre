@@ -9,7 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Private me_key As Integer
+Private me_key As Long
 Private me_assistido As Assistido
 Private me_logradouro As String
 Private me_numero As String
@@ -23,6 +23,8 @@ Private me_tipoMoradia As Integer
 Private me_nDependentes As Integer
 Private me_recebeCesta As Boolean
 
+Private me_acompanhamentos As Dictionary
+
 Public Function create(ByRef astd As Assistido, _
                        ByVal logradouro As String, _
                        ByVal numero As String, _
@@ -34,7 +36,7 @@ Public Function create(ByRef astd As Assistido, _
                        ByVal progGov As String, _
                        ByVal tipoMoradia As Integer, _
                        ByVal nDependentes As Integer, _
-                       ByVal recebeCesta As Boolean) As Cadastro
+                       ByVal recebeCesta As Boolean) As cadastro
     
     Set me_assistido = astd
     me_logradouro = logradouro
@@ -52,7 +54,7 @@ Public Function create(ByRef astd As Assistido, _
     Set create = Me
 End Function
 
-Public Function CreateFromArray(ByVal arr As Variant) As Cadastro
+Public Function CreateFromArray(ByVal arr As Variant) As cadastro
     me_key = arr(1, 1)
     me_logradouro = arr(1, 3)
     me_numero = arr(1, 4)
@@ -93,11 +95,11 @@ Public Function toArray() As Variant
                     me_recebeCesta)
 End Function
 
-Public Property Let setKey(ByVal key As Integer)
+Public Property Let setKey(ByVal key As Long)
     me_key = key
 End Property
 
-Public Function Equals(ByRef outro As Cadastro) As Boolean
+Public Function Equals(ByRef outro As cadastro) As Boolean
     If outro Is Nothing Then Exit Function
     
     If Me.getKey = 0 Or outro.getKey = 0 Then

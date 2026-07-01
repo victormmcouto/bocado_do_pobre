@@ -16,7 +16,7 @@ Private me_estadoCivil As Integer
 Private me_profissao As String
 Private me_cpf As String
 Private me_telefone As String
-Private me_key As Integer
+Private me_key As Long
 
 Public Function create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
@@ -50,11 +50,11 @@ Public Function CreateFromArray(ByVal arr As Variant) As Conjuge
     Set CreateFromArray = Me
 End Function
 
-Public Property Get getKey() As Integer
+Public Property Get getKey() As Long
     getKey = me_key
 End Property
 
-Public Property Let setKey(ByVal key As Integer)
+Public Property Let setKey(ByVal key As Long)
     me_key = key
 End Property
 

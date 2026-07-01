@@ -18,14 +18,14 @@ Option Explicit
 Private Sub SpinButtonParente_Change()
     Me.Frame1.Caption = "Parente " & SpinButtonParente.Value
     
-    With Cadastro.parentes(SpinButtonParente.Value)
-        txtbNomeParente.Value = .Nome
-        combEscolaridadeParente.Value = .Escolaridade
+    With cadastro.parentes(SpinButtonParente.Value)
+        txtbNomeParente.Value = .nome
+        combEscolaridadeParente.Value = .escolaridade
         combGrauParentescoParente.Value = .GrauParentesco
-        If .DataNascimento = 0 Then
+        If .dataNascimento = 0 Then
             txtbDataNascimentoParente.Value = ""
         Else
-            txtbDataNascimentoParente.Value = .DataNascimento
+            txtbDataNascimentoParente.Value = .dataNascimento
         End If
     End With
 End Sub
@@ -36,7 +36,7 @@ Private Sub txtbDataNascimentoParente_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarDataCompleta(.Value) Then
-            Cadastro.parentes(SpinButtonParente.Value).DataNascimento = Format(.Value, "dd/mm/yyyy")
+            cadastro.parentes(SpinButtonParente.Value).dataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -47,15 +47,15 @@ ErrHandler:
 End Sub
 
 Private Sub txtbNomeParente_Change()
-    Cadastro.parentes(SpinButtonParente.Value).Nome = txtbNomeParente.Value
+    cadastro.parentes(SpinButtonParente.Value).nome = txtbNomeParente.Value
 End Sub
 
 Private Sub combEscolaridadeParente_Change()
-    Cadastro.parentes(SpinButtonParente.Value).Escolaridade = combEscolaridadeParente.Value
+    cadastro.parentes(SpinButtonParente.Value).escolaridade = combEscolaridadeParente.Value
 End Sub
 
 Private Sub combGrauParentescoParente_Change()
-    Cadastro.parentes(SpinButtonParente.Value).GrauParentesco = combGrauParentescoParente.Value
+    cadastro.parentes(SpinButtonParente.Value).GrauParentesco = combGrauParentescoParente.Value
 End Sub
 
 Private Sub UserForm_Initialize()
@@ -63,7 +63,7 @@ Private Sub UserForm_Initialize()
     
     SpinButtonParente.Value = 1
     SpinButtonParente.Min = 1
-    SpinButtonParente.Max = Cadastro.DemaisInfo.NPessoasNaCasa
+    SpinButtonParente.Max = cadastro.DemaisInfo.NPessoasNaCasa
     
     Call PopulateComboBoxes
 End Sub

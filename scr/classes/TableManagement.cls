@@ -33,9 +33,9 @@ Public Function getListColumn(ByVal index As Variant) As ListColumn
     Set getListColumn = me_tbl.ListColumns(index)
 End Function
 
-Public Function getListRow(ByVal key As Integer, Optional keyColName As String = "Key") As ListRow
+Public Function getListRow(ByVal key As Long, Optional keyColName As String = "Key") As ListRow
     Dim lr As ListRow
-    Dim current_key As Integer
+    Dim current_key As Long
     
     If hasKey(key) Then
         With me_tbl
@@ -87,8 +87,8 @@ Public Sub InsertDataRow(ByRef obj As Object, ByVal autoIncrement As Boolean)
     End With
 End Sub
 
-Public Function getLastKey() As Integer
-    Dim lastKey As Integer
+Public Function getLastKey() As Long
+    Dim lastKey As Long
     
     lastKey = Application.WorksheetFunction.Max(me_tbl.ListColumns(1).DataBodyRange)
     
@@ -103,7 +103,7 @@ Public Function setCellData(ByVal lr As ListRow, ByVal colNAme As String, ByVal 
     lr.Range(1, lr.Parent.ListColumns(colNAme).index).Value = newValue
 End Function
 
-Public Function getArrayAssociations(ByVal fkey As Integer, ByVal colNAme As String) As Variant
+Public Function getArrayAssociations(ByVal fkey As Long, ByVal colNAme As String) As Variant
     Dim tempArr() As ListRow
     Dim count As Integer
     Dim lr As ListRow
@@ -123,15 +123,15 @@ Public Function getArrayAssociations(ByVal fkey As Integer, ByVal colNAme As Str
     getArrayAssociations = tempArr
 End Function
 
-Public Function hasKey(ByVal key As Integer) As Boolean
+Public Function hasKey(ByVal key As Long) As Boolean
     hasKey = Not getListColumn("Key").DataBodyRange.Find(key) Is Nothing
 End Function
 
-Public Sub updateRow(ByVal key As Integer, ByRef obj As Object)
+Public Sub updateRow(ByVal key As Long, ByRef obj As Object)
     getListRow(key).Range.Value = obj.toArray()
 End Sub
 
-Public Sub deleteAssosciations(ByVal key As Integer, ByVal colNAme As String)
+Public Sub deleteAssosciations(ByVal key As Long, ByVal colNAme As String)
     Dim index As Integer
     Dim assosciations As Variant
     

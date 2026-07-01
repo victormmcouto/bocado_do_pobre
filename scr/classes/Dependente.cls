@@ -14,7 +14,7 @@ Private me_dataNascimento As Date
 Private me_escolaridade As Integer
 Private me_parentesco As Integer
 Private me_assistido As Assistido
-Private me_key As Integer
+Private me_key As Long
 
 Public Function create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
@@ -39,11 +39,11 @@ Public Function CreateFromArray(ByVal arr As Variant) As Dependente
     Set CreateFromArray = Me
 End Function
 
-Public Property Get getKey() As Integer
+Public Property Get getKey() As Long
     getKey = me_key
 End Property
 
-Public Property Let setKey(ByVal key As Integer)
+Public Property Let setKey(ByVal key As Long)
     me_key = key
 End Property
 
@@ -107,7 +107,7 @@ Public Function Equals(ByRef outro As Dependente) As Boolean
 End Function
 
 Public Function toArray() As Variant
-    Dim keyAstd As Integer
+    Dim keyAstd As Long
     
     If Not me_assistido Is Nothing Then
         keyAstd = me_assistido.getKey

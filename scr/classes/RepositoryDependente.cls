@@ -22,7 +22,7 @@ Public Property Set setRepoAssistido(ByRef repoAssistido As Repository)
     Set me_repoAssistido = repoAssistido
 End Property
 
-Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete As Boolean = True) As Object
+Public Function Repository_readByKey(ByVal key As Long, Optional ByVal complete As Boolean = True) As Object
     Dim lr As ListRow
     Dim dpnt As New Dependente
     Dim tempArr() As Variant
@@ -41,10 +41,10 @@ Public Function Repository_factory(ByVal key As Integer, Optional ByVal complete
         keyAstd = me_repoAssistido.Repository_getTbl.getCellData(lr, "KeyAssistido")
         'locInfo = tblmgmt.getListColumn("KeyAssistido").index
         
-        Set dpnt.setAssistido = me_repoAssistido.Repository_factory(keyAstd, False)
+        Set dpnt.setAssistido = me_repoAssistido.Repository_readByKey(keyAstd, False)
     End If
     
-    Set Repository_factory = dpnt.CreateFromArray(tempArr)
+    Set Repository_readByKey = dpnt.CreateFromArray(tempArr)
 End Function
 
 Public Function Repository_getTbl() As TableManagement
@@ -56,7 +56,7 @@ Public Function Repository_save(ByRef obj As Object, Optional ByVal autoIncremen
     Repository_save = True
 End Function
 
-Public Function Repository_updateById(ByVal key As Integer, ByRef obj As Object) As Boolean
+Public Function Repository_updateById(ByVal key As Long, ByRef obj As Object) As Boolean
     If tblmgmt.hasKey(key) Then
         Repository_deleteById key
         If key = 0 Then
@@ -71,7 +71,7 @@ Public Function Repository_updateById(ByVal key As Integer, ByRef obj As Object)
     End If
 End Function
 
-Public Function Repository_deleteById(ByVal key As Integer) As Boolean
+Public Function Repository_deleteById(ByVal key As Long) As Boolean
     If tblmgmt.hasKey(key) Then
         tblmgmt.getListRow(key).delete
         Repository_deleteById = True
@@ -83,5 +83,5 @@ Public Function Repository_deleteById(ByVal key As Integer) As Boolean
     End If
 End Function
 
-Public Function Repository_deleteFkey(ByVal fk As Integer, ByVal fkName As String) As Boolean
+Public Function Repository_deleteFkey(ByVal fk As Long, ByVal fkName As String) As Boolean
 End Function

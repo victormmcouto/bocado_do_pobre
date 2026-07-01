@@ -39,7 +39,7 @@ Private Sub cbttCadastrar_Click()
             
             If result = vbYes Then
                 Call LimparEntradas(frmDadosCadastrais)
-                Cadastro = CadastroVazio
+                cadastro = CadastroVazio
             Else
                 Unload Me
             End If
@@ -61,15 +61,15 @@ End Sub
 ' ============================================================================================================
 
 Private Sub txtbNomeAssistido_Change()
-    Cadastro.Assistido.Nome = txtbNomeAssistido.Value
+    cadastro.Assistido.nome = txtbNomeAssistido.Value
 End Sub
 
 Private Sub combProfissaoAssistido_Change()
-    Cadastro.Assistido.Profissao = combProfissaoAssistido.Value
+    cadastro.Assistido.profissao = combProfissaoAssistido.Value
 End Sub
 
 Private Sub combEscolaridadeAssistido_Change()
-    Cadastro.Assistido.Escolaridade = combEscolaridadeAssistido.Value
+    cadastro.Assistido.escolaridade = combEscolaridadeAssistido.Value
 End Sub
 
 Private Sub txtbCPFAssistido_AfterUpdate()
@@ -78,7 +78,7 @@ Private Sub txtbCPFAssistido_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarCPF(.Value) Then
-            Cadastro.Assistido.CPF = .Value
+            cadastro.Assistido.cpf = .Value
         End If
         
         Exit Sub
@@ -94,7 +94,7 @@ Private Sub txtbTelefoneAssistido_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarFormatacaoNumTel(.Value) Then
-            Cadastro.Assistido.Telefone = .Value
+            cadastro.Assistido.telefone = .Value
         End If
         
         Exit Sub
@@ -110,7 +110,7 @@ Private Sub txtbDataNascimentoAssistido_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarMaiorDeIdade(.Value) Then
-            Cadastro.Assistido.DataNascimento = Format(.Value, "dd/mm/yyyy")
+            cadastro.Assistido.dataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -132,7 +132,7 @@ Private Sub combEstadoCivilAssistido_Change()
         End If
     End With
     
-    Cadastro.Assistido.EstadoCivil = combEstadoCivilAssistido.Value
+    cadastro.Assistido.estadoCivil = combEstadoCivilAssistido.Value
 End Sub
 
 ' ============================================================================================================
@@ -140,19 +140,19 @@ End Sub
 ' ============================================================================================================
 
 Private Sub txtbNomeconjuge_Change()
-    Cadastro.conjuge.Nome = txtbNomeConjuge.Value
+    cadastro.Conjuge.nome = txtbNomeConjuge.Value
 End Sub
 
 Private Sub combProfissaoconjuge_Change()
-    Cadastro.conjuge.Profissao = combProfissaoConjuge.Value
+    cadastro.Conjuge.profissao = combProfissaoConjuge.Value
 End Sub
 
 Private Sub combEstadoCivilconjuge_Change()
-    Cadastro.conjuge.EstadoCivil = combEstadoCivilConjuge.Value
+    cadastro.Conjuge.estadoCivil = combEstadoCivilConjuge.Value
 End Sub
 
 Private Sub combEscolaridadeconjuge_Change()
-    Cadastro.conjuge.Escolaridade = combEscolaridadeConjuge.Value
+    cadastro.Conjuge.escolaridade = combEscolaridadeConjuge.Value
 End Sub
 
 Private Sub txtbCPFconjuge_AfterUpdate()
@@ -161,7 +161,7 @@ Private Sub txtbCPFconjuge_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarCPF(.Value) Then
-            Cadastro.conjuge.CPF = .Value
+            cadastro.Conjuge.cpf = .Value
         End If
         
         Exit Sub
@@ -177,7 +177,7 @@ Private Sub txtbTelefoneconjuge_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarFormatacaoNumTel(.Value) Then
-            Cadastro.conjuge.Telefone = .Value
+            cadastro.Conjuge.telefone = .Value
         End If
         
         Exit Sub
@@ -193,7 +193,7 @@ Private Sub txtbDataDeNascimentoconjuge_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarMaiorDeIdade(.Value) Then
-            Cadastro.conjuge.DataNascimento = Format(.Value, "dd/mm/yyyy")
+            cadastro.Conjuge.dataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -208,7 +208,7 @@ End Sub
 ' ============================================================================================================
 
 Private Sub optParticipaProgramaGovSIM_Click()
-    Cadastro.DemaisInfo.ParticipaProgramaGov = optParticipaProgramaGovSIM.Value
+    cadastro.DemaisInfo.ParticipaProgramaGov = optParticipaProgramaGovSIM.Value
     If optParticipaProgramaGovNAO Then
         Call EnableFrameControls(frmProgGov, False)
     Else
@@ -221,19 +221,19 @@ Private Sub optParticipaProgramaGovNAO_Click()
 End Sub
 
 Private Sub combProgramaGov_Change()
-    Cadastro.DemaisInfo.ProgramaGov = combProgramaGov.Value
+    cadastro.DemaisInfo.ProgramaGov = combProgramaGov.Value
 End Sub
 
 Private Sub combTipoMoradia_Change()
-    Cadastro.DemaisInfo.TipoMoradia = combTipoMoradia.Value
+    cadastro.DemaisInfo.tipoMoradia = combTipoMoradia.Value
 End Sub
 
 Private Sub txtbNPessoasNaCasa_Change()
-    Cadastro.DemaisInfo.NPessoasNaCasa = txtbNPessoasNaCasa.Value
+    cadastro.DemaisInfo.NPessoasNaCasa = txtbNPessoasNaCasa.Value
 End Sub
 
 Private Sub optRecebeCestaSIM_Click()
-    Cadastro.DemaisInfo.RecebeCesta = optRecebeCestaSIM.Value
+    cadastro.DemaisInfo.recebeCesta = optRecebeCestaSIM.Value
 End Sub
 
 Private Sub optRecebeCestaNAO_Click()
@@ -241,11 +241,11 @@ Private Sub optRecebeCestaNAO_Click()
 End Sub
 
 Private Sub txtbDataSindicancia_Change()
-    Cadastro.DemaisInfo.DataSindicancia = txtbDataSindicancia.Value
+    cadastro.DemaisInfo.dataSindicancia = txtbDataSindicancia.Value
 End Sub
 
 Private Sub txtbNomeVisitador_Change()
-    Cadastro.DemaisInfo.NomeVisitador = txtbNomeVisitador.Value
+    cadastro.DemaisInfo.nomeVisitador = txtbNomeVisitador.Value
 End Sub
 
 Private Sub SpinButtonNPessoas_Change()
@@ -257,18 +257,18 @@ Private Sub SpinButtonNPessoas_Change()
     
     If totalPessoas > 0 Then
         If Not ParentesInicializado() Then 'Inicializa o array de parentes caso não tenha sido inicializado
-            ReDim Cadastro.parentes(1 To totalPessoas)
-        ElseIf UBound(Cadastro.parentes) < totalPessoas Then 'Redimenciona o array de parentes caso o total mude
-            ReDim Preserve Cadastro.parentes(1 To totalPessoas)
+            ReDim cadastro.parentes(1 To totalPessoas)
+        ElseIf UBound(cadastro.parentes) < totalPessoas Then 'Redimenciona o array de parentes caso o total mude
+            ReDim Preserve cadastro.parentes(1 To totalPessoas)
         End If
         
         cbttAddParentes.Enabled = True
     Else
         cbttAddParentes.Enabled = False
-        Erase Cadastro.parentes
+        Erase cadastro.parentes
     End If
     
-    Cadastro.DemaisInfo.NPessoasNaCasa = totalPessoas
+    cadastro.DemaisInfo.NPessoasNaCasa = totalPessoas
 End Sub
 
 ' ============================================================================================================
@@ -276,19 +276,19 @@ End Sub
 ' ============================================================================================================
 
 Private Sub txtbLogradouro_Change()
-    Cadastro.Endereco.Logradouro = txtbLogradouro.Value
+    cadastro.Endereco.logradouro = txtbLogradouro.Value
 End Sub
 
 Private Sub txtbNumeroLogradouro_Change()
-    Cadastro.Endereco.NumeroCasa = txtbNumeroLogradouro.Value
+    cadastro.Endereco.NumeroCasa = txtbNumeroLogradouro.Value
 End Sub
 
 Private Sub txtbBairro_Change()
-    Cadastro.Endereco.Bairro = txtbBairro.Value
+    cadastro.Endereco.bairro = txtbBairro.Value
 End Sub
 
 Private Sub txtbCidade_Change()
-    Cadastro.Endereco.Cidade = txtbCidade.Value
+    cadastro.Endereco.cidade = txtbCidade.Value
 End Sub
 
 Private Sub UserForm_Initialize()
@@ -299,7 +299,7 @@ Private Sub UserForm_Initialize()
     If boolCadastrar Then
         With txtbDataSindicancia
             .Value = Format(Date, "dd/mm/yyyy")
-            Cadastro.DemaisInfo.DataSindicancia = .Value
+            cadastro.DemaisInfo.dataSindicancia = .Value
         End With
         lblNPessoasNaCasa.Caption = 0
         cbttCadastrar.Caption = "CADASTRAR"
@@ -309,10 +309,10 @@ Private Sub UserForm_Initialize()
         Call PreencherCampos(Me)
     End If
     
-    If Not Cadastro.Assistido.EstadoCivil Like "*Casado*" Then
+    If Not cadastro.Assistido.estadoCivil Like "*Casado*" Then
         EnableFrameControls FrameConjuge, False
     End If
-    If Cadastro.DemaisInfo.NPessoasNaCasa = 0 Then
+    If cadastro.DemaisInfo.NPessoasNaCasa = 0 Then
         cbttAddParentes.Enabled = False
     Else
         cbttAddParentes.Enabled = True
