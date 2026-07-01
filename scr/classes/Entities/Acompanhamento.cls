@@ -15,7 +15,7 @@ Private me_ano As Integer
 Private me_meses(1 To 12) As Boolean
 
 Public Function create(ByVal meses As Variant, _
-                       ByVal ano As Integer) As Acompanhamento
+                       ByVal ano As Integer) As acompanhamento
     
     Dim index As Integer
     
@@ -28,7 +28,7 @@ Public Function create(ByVal meses As Variant, _
     Set create = Me
 End Function
 
-Public Function CreateFromArray(ByVal arr As Variant) As Acompanhamento
+Public Function CreateFromArray(ByVal arr As Variant) As acompanhamento
     me_key = arr(1, 1)
     me_ano = arr(1, 2)
     me_keyCadastro = arr(1, 3)
@@ -84,7 +84,7 @@ Public Function foiEntregue(ByVal mesNum As Integer) As Boolean
     foiEntregue = me_meses(mesNum)
 End Function
 
-Public Function Equals(ByRef outro As Acompanhamento) As Boolean
+Public Function Equals(ByRef outro As acompanhamento) As Boolean
     If outro Is Nothing Then Exit Function
     
     If Me.getKey = 0 Or outro.getKey = 0 Then

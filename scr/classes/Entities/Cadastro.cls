@@ -23,7 +23,7 @@ Private me_tipoMoradia As Integer
 Private me_nDependentes As Integer
 Private me_recebeCesta As Boolean
 
-Private me_acompanhamentos As Dictionary
+Private me_acompanhamentos As Collection
 
 Public Function create(ByRef astd As Assistido, _
                        ByVal logradouro As String, _
@@ -79,6 +79,26 @@ Public Property Set setAssistido(ByVal astd As Assistido)
     Set me_assistido = astd
 End Property
 
+Public Property Set setAcompanhamentos(ByRef acompanhamentos As Collection)
+    Set setAcompanhamentos = acompanhamentos
+End Property
+
+Public Property Let setKey(ByVal key As Long)
+    me_key = key
+End Property
+
+Public Property Get getKey() As Long
+    getKey = me_key
+End Property
+
+Public Sub AddAcompanhamento(ByRef acompanhamento As acompanhamento)
+    me_acompanhamentos.Add acompanhamento, acompanhamento.getAno
+End Sub
+
+Public Function getAcompanhamento(ByVal ano As Integer) As acompanhamento
+    Set getAcompanhamento = me_acompanhamentos(CStr(ano))
+End Function
+
 Public Function toArray() As Variant
     toArray = Array(me_key, _
                     me_assistido.getKey, _
@@ -94,10 +114,6 @@ Public Function toArray() As Variant
                     me_nDependentes, _
                     me_recebeCesta)
 End Function
-
-Public Property Let setKey(ByVal key As Long)
-    me_key = key
-End Property
 
 Public Function Equals(ByRef outro As cadastro) As Boolean
     If outro Is Nothing Then Exit Function

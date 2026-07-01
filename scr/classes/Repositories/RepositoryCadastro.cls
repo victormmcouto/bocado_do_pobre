@@ -13,6 +13,7 @@ Implements Repository
 
 Dim tblmgmt As New TableManagement
 Dim me_repoAssistido As RepositoryAssistido
+Dim me_repoAcompanhamento As RepositoryAcompanhamento
 
 Private Sub Class_Initialize()
     Set tblmgmt = tblmgmt.create(wksCADASTRO.ListObjects(1))
@@ -22,23 +23,23 @@ Public Property Set setRepoAssistiddo(ByRef repoAssistido As Repository)
     Set me_repoAssistido = repoAssistido
 End Property
 
+Public Property Set setRepoAcompanhamento(ByRef repoAcompanhamento As Repository)
+    Set me_repoAcompanhamento = repoAcompanhamento
+End Property
+
 Public Function Repository_readByKey(ByVal key As Long, Optional ByVal complete As Boolean = True) As Object
     Dim lr As ListRow
     Dim astd As New Assistido
     Dim cdst As New cadastro
-    Dim arrDados() As Variant
     
     Set lr = tblmgmt.getListRow(key)
     
-    ReDim arrDados(1 To 1, 1 To lr.Range.Columns.count)
-    
-    arrDados = lr.Range.Value
-    
-    Set cdst = cdst.CreateFromArray(arrDados)
+    Set cdst = cdst.CreateFromArray(lr.Range.Value)
     
     If complete Then
         Set astd = me_repoAssistido.Repository_readByKey(tblmgmt.getCellData(lr, "KeyAssistido"), True)
         Set cdst.setAssistido = astd
+        Set cdst.setAcompanhamentos = me_repoAcompanhamento.Repository_associacoes(cdst.getKey, "KeyCadastro")
     End If
     
     Set Repository_readByKey = cdst

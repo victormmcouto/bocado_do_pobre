@@ -21,14 +21,11 @@ End Sub
 
 Public Function Repository_readByKey(ByVal key As Long, Optional ByVal complete As Boolean = True) As Object
     Dim lr As ListRow
-    Dim arr As Variant
-    Dim acmpmnt As New Acompanhamento
+    Dim acmpmnt As New acompanhamento
     
     Set lr = tblmgmt.getListRow(key)
     
-    arr = lr.Range.Value
-    
-    Set Repository_readByKey = acmpmnt.CreateFromArray(arr)
+    Set Repository_readByKey = acmpmnt.CreateFromArray(lr.Range.Value)
 End Function
 
 Public Function Repository_getTbl() As TableManagement
@@ -61,6 +58,14 @@ Public Function Repository_deleteById(ByVal key As Long) As Boolean
 End Function
 
 Public Function Repository_deleteFkey(ByVal fk As Long, ByVal fkName As String) As Boolean
+End Function
+
+Public Function Repository_associacoes(ByVal fk As Long, ByVal fkColName As String) As Collection
+    Dim lr As ListRow
+    
+    For Each lr In tblmgmt.getListRow(fk, fkColName)
+        Repository_associacoes.Add Repository_readByKey(tblmgmt.getCellData(lr, "Key")), tblmgmt.getCellData(lr, "Ano")
+    Next lr
 End Function
 
 
