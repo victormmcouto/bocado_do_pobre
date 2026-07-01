@@ -366,11 +366,25 @@ Public Sub test18()
 End Sub
 
 Public Sub test19()
-    Debug.Print "TESTE 19 de rpository acompanhamento" & vbNewLine
+    Debug.Print "TESTE 19 de rpository acompanhamento readByKey" & vbNewLine
     
     Dim Reposiotiryacmpmnt As New RepositoryAcompanhamento
     
     Debug.Print Reposiotiryacmpmnt.Repository_readByKey(CLng(2026 & 6)).toString
+End Sub
+
+Public Sub test20()
+    Debug.Print "TESTE 20 de rpository acompanhamento save" & vbNewLine
+    
+    Dim Reposiotiryacmpmnt As New RepositoryAcompanhamento
+    Dim acmpmnt As New Acompanhamento
+    Dim arr(1 To 12) As Boolean
+    
+    Set acmpmnt = acmpmnt.create(arr, 2027)
+    
+    acmpmnt.setKeyCadastro = 99
+    
+    Reposiotiryacmpmnt.Repository_save acmpmnt, False
 End Sub
 
 Public Function createAssistido() As Assistido
