@@ -80,15 +80,7 @@ Public Property Set setAssistido(ByVal astd As Assistido)
 End Property
 
 Public Property Set setAcompanhamentos(ByRef acompanhamentos As Collection)
-    Set setAcompanhamentos = acompanhamentos
-End Property
-
-Public Property Let setKey(ByVal key As Long)
-    me_key = key
-End Property
-
-Public Property Get getKey() As Long
-    getKey = me_key
+    Set me_acompanhamentos = acompanhamentos
 End Property
 
 Public Sub AddAcompanhamento(ByRef acompanhamento As acompanhamento)
@@ -115,6 +107,14 @@ Public Function toArray() As Variant
                     me_recebeCesta)
 End Function
 
+Public Property Let setKey(ByVal key As Long)
+    me_key = key
+End Property
+
+Public Property Get getKey() As Long
+    getKey = me_key
+End Property
+
 Public Function Equals(ByRef outro As cadastro) As Boolean
     If outro Is Nothing Then Exit Function
     
@@ -126,7 +126,7 @@ Public Function Equals(ByRef outro As cadastro) As Boolean
     Equals = (Me.getKey = outro.getKey)
 End Function
 
-Public Function toString(ByVal showExtra As Boolean) As String
+Public Function toString(Optional ByVal showExtra As Boolean = True) As String
     Dim tipoMoradia As New EnumTipoMoradia
     
     toString = "DADOS CADASTRAIS:" & vbNewLine
@@ -146,5 +146,13 @@ Public Function toString(ByVal showExtra As Boolean) As String
                "Nº dependentes                    = " & me_nDependentes & "," & vbNewLine & _
                "Recebe cesta básica?              = " & me_recebeCesta & vbNewLine & vbNewLine
     
-    toString = toString & me_assistido.toString(True)
+    If showExtra Then
+        toString = toString & me_assistido.toString(True) & vbNewLine & vbNewLine
+        
+        Dim acmpmnt As acompanhamento
+        
+        For Each acmpmnt In me_acompanhamentos
+            toString = toString & acmpmnt.toString(True) & vbNewLine & vbNewLine
+        Next acmpmnt
+    End If
 End Function

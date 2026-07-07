@@ -5,6 +5,7 @@ Private repoCadastro As RepositoryCadastro
 Private repoAssistido As RepositoryAssistido
 Private repoConjuge As RepositoryConjuge
 Private repoDependente As RepositoryDependente
+Private repoAcompanhamento As RepositoryAcompanhamento
 
 'Teste da classe Dependente e da Persistência de dados para ADD
 Sub test1()
@@ -30,7 +31,7 @@ Sub test1()
                                        "314523424"))
     astd.setKey = 5
                            
-    Set tblmgmt = tblmgmt.create(wksDEPENDENTE.ListObjects(1))
+    Set tblmgmt = tblmgmt.create(dbDEPENDENTE.ListObjects(1))
     
     tblmgmt.InsertDataRow dpnt
 End Sub
@@ -80,8 +81,8 @@ Sub test4()
                          astd)
     End With
     
-    Set tblmgmt1 = tblmgmt1.create(wksASSISTIDO.ListObjects(1))
-    Set tblmgmt2 = tblmgmt2.create(wksDEPENDENTE.ListObjects(1))
+    Set tblmgmt1 = tblmgmt1.create(dbASSISTIDO.ListObjects(1))
+    Set tblmgmt2 = tblmgmt2.create(dbDEPENDENTE.ListObjects(1))
     
     tblmgmt1.InsertDataRow astd
     tblmgmt2.InsertDataRow dpnt
@@ -97,7 +98,7 @@ Sub test5()
     Dim repoDpnt As New RepositoryDependente
     
     
-    Set repoDpnt = repoDpnt.Repository_create(wksDEPENDENTE.ListObjects(1))
+    Set repoDpnt = repoDpnt.Repository_create(dbDEPENDENTE.ListObjects(1))
     Set dpnt = repoDpnt.Repository_readByKey(9)
     
     With dpnt
@@ -117,8 +118,8 @@ Sub test6()
     Dim repoDpnt As New RepositoryDependente
     Dim repoAstd As New RepositoryAssistido
     
-    Set repoDpnt = repoDpnt.Repository_create(wksDEPENDENTE.ListObjects(1))
-    Set repoAstd = repoAstd.Repository_create(wksASSISTIDO.ListObjects(1))
+    Set repoDpnt = repoDpnt.Repository_create(dbDEPENDENTE.ListObjects(1))
+    Set repoAstd = repoAstd.Repository_create(dbASSISTIDO.ListObjects(1))
     
     Set dpnt = repoDpnt.Repository_readByKey(25, True)
     Set astd = repoAstd.Repository_readByKey(2, True)
@@ -137,7 +138,7 @@ Sub test7()
     Dim escolaridade As New EnumEscolaridade
     Dim estadoCivil As New EnumEstadoCivil
         
-    Set repoCnjg = repoCnjg.Repository_create(wksCONJUGE.ListObjects(1))
+    Set repoCnjg = repoCnjg.Repository_create(dbCONJUGE.ListObjects(1))
     
     Set cnjg = repoCnjg.Repository_readByKey(2)
     
@@ -347,7 +348,7 @@ End Sub
 Public Sub test18()
     Debug.Print "TESTE 18 de acompanhamento"
     
-    Dim acmpmnt As New Acompanhamento
+    Dim acmpmnt As New acompanhamento
     
     acmpmnt.create Array(True, _
                          True, _
@@ -377,7 +378,7 @@ Public Sub test20()
     Debug.Print "TESTE 20 de rpository acompanhamento save" & vbNewLine
     
     Dim Reposiotiryacmpmnt As New RepositoryAcompanhamento
-    Dim acmpmnt As New Acompanhamento
+    Dim acmpmnt As New acompanhamento
     Dim arr(1 To 12) As Boolean
     
     Set acmpmnt = acmpmnt.create(arr, 2027)
@@ -399,12 +400,28 @@ Public Sub test22()
     Debug.Print "TESTE 22 de rpository acompanhamento update" & vbNewLine
     
     Dim Reposiotiryacmpmnt As New RepositoryAcompanhamento
-    Dim acmpmnt As New Acompanhamento
+    Dim acmpmnt As New acompanhamento
      
     Set acmpmnt = Reposiotiryacmpmnt.Repository_readByKey(20267)
     acmpmnt.marcarEntrega 6
     
     Reposiotiryacmpmnt.Repository_updateById acmpmnt.getKey, acmpmnt
+End Sub
+
+Public Sub test23()
+    On Error GoTo ErrHandler
+    Debug.Print "TESTE 23 de criação de cadastro completo"
+    
+    Dim cdst As cadastro
+    
+    startRepos
+    Set cdst = repoCadastro.Repository_readByKey(1, True)
+    Debug.Print cdst.toString
+    exitRepos
+    
+    Exit Sub
+ErrHandler:
+    MsgBox Err.Description, vbCritical, Err.Source
 End Sub
 
 Public Function createAssistido() As Assistido
@@ -477,8 +494,10 @@ Public Sub startRepos()
     Set repoAssistido = New RepositoryAssistido
     Set repoConjuge = New RepositoryConjuge
     Set repoDependente = New RepositoryDependente
+    Set repoAcompanhamento = New RepositoryAcompanhamento
     
     Set repoCadastro.setRepoAssistiddo = repoAssistido
+    Set repoCadastro.setRepoAcompanhamento = repoAcompanhamento
     
     Set repoAssistido.setRepoConjuge = repoConjuge
     Set repoAssistido.setRepoDependente = repoDependente
@@ -493,5 +512,6 @@ Public Sub exitRepos()
     Set repoAssistido = Nothing
     Set repoConjuge = Nothing
     Set repoDependente = Nothing
+    Set repoAcompanhamento = Nothing
 End Sub
 

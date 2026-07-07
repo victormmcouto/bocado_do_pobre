@@ -16,7 +16,7 @@ Dim me_repoAssistido As RepositoryAssistido
 Dim me_repoAcompanhamento As RepositoryAcompanhamento
 
 Private Sub Class_Initialize()
-    Set tblmgmt = tblmgmt.create(wksCADASTRO.ListObjects(1))
+    Set tblmgmt = tblmgmt.create(dbCADASTRO.ListObjects(1))
 End Sub
 
 Public Property Set setRepoAssistiddo(ByRef repoAssistido As Repository)

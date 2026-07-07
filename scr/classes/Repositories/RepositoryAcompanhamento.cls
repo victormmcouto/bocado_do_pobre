@@ -16,7 +16,7 @@ Private me_repoCnjg As RepositoryConjuge
 Private me_repoDpnt As RepositoryDependente
 
 Private Sub Class_Initialize()
-    Set tblmgmt = tblmgmt.create(wksACOMPANHAMENTO.ListObjects(1))
+    Set tblmgmt = tblmgmt.create(dbACOMPANHAMENTO.ListObjects(1))
 End Sub
 
 Public Function Repository_readByKey(ByVal key As Long, Optional ByVal complete As Boolean = True) As Object
@@ -61,11 +61,22 @@ Public Function Repository_deleteFkey(ByVal fk As Long, ByVal fkName As String) 
 End Function
 
 Public Function Repository_associacoes(ByVal fk As Long, ByVal fkColName As String) As Collection
-    Dim lr As ListRow
+    Dim index As Integer
+    Dim arr As Variant
+    Dim acmpmnt As acompanhamento
+    Dim ano As Integer
+    Dim tempCollection As New Collection
     
-    For Each lr In tblmgmt.getListRow(fk, fkColName)
-        Repository_associacoes.Add Repository_readByKey(tblmgmt.getCellData(lr, "Key")), tblmgmt.getCellData(lr, "Ano")
-    Next lr
+    arr = tblmgmt.getArrayAssociations(fk, fkColName)
+    
+    For index = 1 To UBound(arr)
+        Set acmpmnt = Repository_readByKey(tblmgmt.getCellData(arr(index), "Key"))
+        'Debug.Print acmpmnt.toString
+        ano = tblmgmt.getCellData(arr(index), "Ano")
+        tempCollection.Add acmpmnt, CStr(ano)
+    Next index
+    
+    Set Repository_associacoes = tempCollection
 End Function
 
 

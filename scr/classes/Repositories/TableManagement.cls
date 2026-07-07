@@ -37,7 +37,7 @@ Public Function getListRow(ByVal key As Long, Optional keyColName As String = "K
     Dim lr As ListRow
     Dim current_key As Long
     
-    If hasKey(key) Then
+    If hasKey(key, keyColName) Then
         With me_tbl
             Set getListRow = .ListRows.item(getListColumn(keyColName).DataBodyRange.Find(key, LookAt:=xlWhole).Row - 1)
             'getListRow.Range.Select
@@ -123,8 +123,8 @@ Public Function getArrayAssociations(ByVal fkey As Long, ByVal colNAme As String
     getArrayAssociations = tempArr
 End Function
 
-Public Function hasKey(ByVal key As Long) As Boolean
-    hasKey = Not getListColumn("Key").DataBodyRange.Find(key) Is Nothing
+Public Function hasKey(ByVal key As Long, Optional keyColName As String = "Key") As Boolean
+    hasKey = Not getListColumn(keyColName).DataBodyRange.Find(key) Is Nothing
 End Function
 
 Public Sub updateRow(ByVal key As Long, ByRef obj As Object)
