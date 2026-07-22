@@ -33,7 +33,7 @@ End Function
 
 Public Function Repository_save(ByRef obj As Object, Optional ByVal autoIncrement As Boolean = True) As Boolean
     obj.setKey = CLng(obj.getAno & obj.getKeyCadastro)
-    tblmgmt.InsertDataRow obj, False
+    tblmgmt.InsertDataRow obj, autoIncrement
 End Function
 
 Public Function Repository_updateById(ByVal key As Long, ByRef obj As Object) As Boolean

@@ -14,6 +14,24 @@ Private me_keyCadastro As Long
 Private me_ano As Integer
 Private me_meses(1 To 12) As Boolean
 
+Private Sub Class_Initialize()
+    me_key = 0
+    me_keyCadastro = 0
+    me_ano = 0
+    me_meses(1) = False
+    me_meses(2) = False
+    me_meses(3) = False
+    me_meses(4) = False
+    me_meses(5) = False
+    me_meses(6) = False
+    me_meses(7) = False
+    me_meses(8) = False
+    me_meses(9) = False
+    me_meses(10) = False
+    me_meses(11) = False
+    me_meses(12) = False
+End Sub
+
 Public Function create(ByVal meses As Variant, _
                        ByVal ano As Integer) As acompanhamento
     
@@ -65,7 +83,8 @@ Public Property Get getAno() As Integer
 End Property
 
 Public Property Let setAno(ByVal ano As Long)
-    setAno = ano
+    me_ano = ano
+    'me_key = CLng(CStr(ano) & CStr(me_keyCadastro))
 End Property
 
 Public Property Get getKeyCadastro() As Long
@@ -74,6 +93,7 @@ End Property
 
 Public Property Let setKeyCadastro(ByVal keyCadastro As Long)
     me_keyCadastro = keyCadastro
+    'me_key = CLng(CStr(me_ano) & CStr(keyCadastro))
 End Property
 
 Public Sub marcarEntrega(ByVal mesNum As Integer)

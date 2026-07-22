@@ -31,7 +31,7 @@ Private Sub cbttCadastrar_Click()
             
             If result = vbNo Then Exit Sub
             
-            Call RealizarCadastro
+            repoCadastro.Repository_save cdst
             
             result = MsgBox("Cadastro Realizado! Deseja realizar outro cadastro?", _
                             vbInformation + vbYesNo + vbMsgBoxSetForeground, _
@@ -39,7 +39,7 @@ Private Sub cbttCadastrar_Click()
             
             If result = vbYes Then
                 Call LimparEntradas(frmDadosCadastrais)
-                cadastro = CadastroVazio
+                Set cdst = New Cadastro
             Else
                 Unload Me
             End If
@@ -61,15 +61,15 @@ End Sub
 ' ============================================================================================================
 
 Private Sub txtbNomeAssistido_Change()
-    cadastro.Assistido.nome = txtbNomeAssistido.Value
+    cdst.getAssistido.setNome = txtbNomeAssistido.Value
 End Sub
 
 Private Sub combProfissaoAssistido_Change()
-    cadastro.Assistido.profissao = combProfissaoAssistido.Value
+    cdst.getAssistido.setProfissao = combProfissaoAssistido.Value
 End Sub
 
 Private Sub combEscolaridadeAssistido_Change()
-    cadastro.Assistido.escolaridade = combEscolaridadeAssistido.Value
+    cdst.getAssistido.setEscolaridade = enumEscolaridade.Enums_getNum(combEscolaridadeAssistido.Value)
 End Sub
 
 Private Sub txtbCPFAssistido_AfterUpdate()
@@ -78,7 +78,7 @@ Private Sub txtbCPFAssistido_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarCPF(.Value) Then
-            cadastro.Assistido.cpf = .Value
+            cdst.getAssistido.setCpf = .Value
         End If
         
         Exit Sub
@@ -94,7 +94,7 @@ Private Sub txtbTelefoneAssistido_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarFormatacaoNumTel(.Value) Then
-            cadastro.Assistido.telefone = .Value
+            cdst.getAssistido.setTelefone = .Value
         End If
         
         Exit Sub
@@ -110,7 +110,7 @@ Private Sub txtbDataNascimentoAssistido_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarMaiorDeIdade(.Value) Then
-            cadastro.Assistido.dataNascimento = Format(.Value, "dd/mm/yyyy")
+            cdst.getAssistido.setDataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -122,7 +122,7 @@ End Sub
 
 Private Sub combEstadoCivilAssistido_Change()
     With combEstadoCivilAssistido
-        If Not (.Value Like "*Casado*" Or .Value = "") Then
+        If Not (.Value Like "*Casado*") Then
             Call EnableFrameControls(FrameConjuge, False)
             combEstadoCivilConjuge.Value = ""
         Else
@@ -132,7 +132,7 @@ Private Sub combEstadoCivilAssistido_Change()
         End If
     End With
     
-    cadastro.Assistido.estadoCivil = combEstadoCivilAssistido.Value
+    cdst.getAssistido.setEstadoCivil = enumEstadoCivil.Enums_getNum(combEstadoCivilAssistido.Value)
 End Sub
 
 ' ============================================================================================================
@@ -140,19 +140,19 @@ End Sub
 ' ============================================================================================================
 
 Private Sub txtbNomeconjuge_Change()
-    cadastro.Conjuge.nome = txtbNomeConjuge.Value
+    cdst.getAssistido.getConjuge.setNome = txtbNomeConjuge.Value
 End Sub
 
 Private Sub combProfissaoconjuge_Change()
-    cadastro.Conjuge.profissao = combProfissaoConjuge.Value
+    cdst.getAssistido.getConjuge.setProfissao = combProfissaoConjuge.Value
 End Sub
 
 Private Sub combEstadoCivilconjuge_Change()
-    cadastro.Conjuge.estadoCivil = combEstadoCivilConjuge.Value
+    cdst.getAssistido.getConjuge.setEstadoCivil = enumEstadoCivil.Enums_getNum(combEstadoCivilConjuge.Value)
 End Sub
 
 Private Sub combEscolaridadeconjuge_Change()
-    cadastro.Conjuge.escolaridade = combEscolaridadeConjuge.Value
+    cdst.getAssistido.getConjuge.setEscolaridade = enumEscolaridade.Enums_getNum(combEscolaridadeConjuge.Value)
 End Sub
 
 Private Sub txtbCPFconjuge_AfterUpdate()
@@ -161,7 +161,7 @@ Private Sub txtbCPFconjuge_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarCPF(.Value) Then
-            cadastro.Conjuge.cpf = .Value
+            cdst.getAssistido.getConjuge.setCpf = .Value
         End If
         
         Exit Sub
@@ -177,7 +177,7 @@ Private Sub txtbTelefoneconjuge_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarFormatacaoNumTel(.Value) Then
-            cadastro.Conjuge.telefone = .Value
+            cdst.getAssistido.getConjuge.setTelefone = .Value
         End If
         
         Exit Sub
@@ -193,7 +193,7 @@ Private Sub txtbDataDeNascimentoconjuge_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarMaiorDeIdade(.Value) Then
-            cadastro.Conjuge.dataNascimento = Format(.Value, "dd/mm/yyyy")
+            cdst.getAssistido.getConjuge.setDataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -208,7 +208,7 @@ End Sub
 ' ============================================================================================================
 
 Private Sub optParticipaProgramaGovSIM_Click()
-    cadastro.DemaisInfo.ParticipaProgramaGov = optParticipaProgramaGovSIM.Value
+    cdst.setParticipaProgGov = optParticipaProgramaGovSIM.Value
     If optParticipaProgramaGovNAO Then
         Call EnableFrameControls(frmProgGov, False)
     Else
@@ -221,19 +221,19 @@ Private Sub optParticipaProgramaGovNAO_Click()
 End Sub
 
 Private Sub combProgramaGov_Change()
-    cadastro.DemaisInfo.ProgramaGov = combProgramaGov.Value
+    cdst.setProgGov = combProgramaGov.Value
 End Sub
 
 Private Sub combTipoMoradia_Change()
-    cadastro.DemaisInfo.tipoMoradia = combTipoMoradia.Value
+    cdst.setTipoMoradia = enumTipoMoradia.Enums_getNum(combTipoMoradia.Value)
 End Sub
 
-Private Sub txtbNPessoasNaCasa_Change()
-    cadastro.DemaisInfo.NPessoasNaCasa = txtbNPessoasNaCasa.Value
-End Sub
+'Private Sub txtbNPessoasNaCasa_Change()
+'    cdst.setNDependentes = CInt(txtbNPessoasNaCasa.Value)
+'End Sub
 
 Private Sub optRecebeCestaSIM_Click()
-    cadastro.DemaisInfo.recebeCesta = optRecebeCestaSIM.Value
+    cdst.setRecebeCesta = optRecebeCestaSIM.Value
 End Sub
 
 Private Sub optRecebeCestaNAO_Click()
@@ -241,11 +241,11 @@ Private Sub optRecebeCestaNAO_Click()
 End Sub
 
 Private Sub txtbDataSindicancia_Change()
-    cadastro.DemaisInfo.dataSindicancia = txtbDataSindicancia.Value
+    cdst.setDataSindicancia = CDate(txtbDataSindicancia.Value)
 End Sub
 
 Private Sub txtbNomeVisitador_Change()
-    cadastro.DemaisInfo.nomeVisitador = txtbNomeVisitador.Value
+    cdst.setNomeVisitador = txtbNomeVisitador.Value
 End Sub
 
 Private Sub SpinButtonNPessoas_Change()
@@ -255,20 +255,20 @@ Private Sub SpinButtonNPessoas_Change()
      
     lblNPessoasNaCasa.Caption = totalPessoas
     
-    If totalPessoas > 0 Then
-        If Not ParentesInicializado() Then 'Inicializa o array de parentes caso não tenha sido inicializado
-            ReDim cadastro.parentes(1 To totalPessoas)
-        ElseIf UBound(cadastro.parentes) < totalPessoas Then 'Redimenciona o array de parentes caso o total mude
-            ReDim Preserve cadastro.parentes(1 To totalPessoas)
-        End If
-        
-        cbttAddParentes.Enabled = True
-    Else
+    If totalPessoas = 0 Then
         cbttAddParentes.Enabled = False
-        Erase cadastro.parentes
+        cdst.getAssistido.RemoveDependentes cdst.getAssistido.getTotalDependentes
+    Else
+        cbttAddParentes.Enabled = True
+        
+        If cdst.getAssistido.getTotalDependentes < totalPessoas Then
+            cdst.getAssistido.AddDependentes 1
+        ElseIf cdst.getAssistido.getTotalDependentes > totalPessoas Then
+            cdst.getAssistido.RemoveDependentes 1
+        End If
     End If
     
-    cadastro.DemaisInfo.NPessoasNaCasa = totalPessoas
+    'cdst.setNDependentes = totalPessoas
 End Sub
 
 ' ============================================================================================================
@@ -276,47 +276,19 @@ End Sub
 ' ============================================================================================================
 
 Private Sub txtbLogradouro_Change()
-    cadastro.Endereco.logradouro = txtbLogradouro.Value
+    cdst.setLogradouro = txtbLogradouro.Value
 End Sub
 
 Private Sub txtbNumeroLogradouro_Change()
-    cadastro.Endereco.NumeroCasa = txtbNumeroLogradouro.Value
+    cdst.setNumero = txtbNumeroLogradouro.Value
 End Sub
 
 Private Sub txtbBairro_Change()
-    cadastro.Endereco.bairro = txtbBairro.Value
+    cdst.setBairro = txtbBairro.Value
 End Sub
 
 Private Sub txtbCidade_Change()
-    cadastro.Endereco.cidade = txtbCidade.Value
-End Sub
-
-Private Sub UserForm_Initialize()
-    Call PopulateComboBoxes                                 'Popula as combo box com os valores armazenados nas tabelas de dados
-    txtbDataSindicancia.Enabled = False
-    CamposObrigatorios
-    
-    If boolCadastrar Then
-        With txtbDataSindicancia
-            .Value = Format(Date, "dd/mm/yyyy")
-            cadastro.DemaisInfo.dataSindicancia = .Value
-        End With
-        lblNPessoasNaCasa.Caption = 0
-        cbttCadastrar.Caption = "CADASTRAR"
-        EnableFrameControls frmProgGov, False
-    Else
-        cbttCadastrar.Caption = "ATUALIZAR"
-        Call PreencherCampos(Me)
-    End If
-    
-    If Not cadastro.Assistido.estadoCivil Like "*Casado*" Then
-        EnableFrameControls FrameConjuge, False
-    End If
-    If cadastro.DemaisInfo.NPessoasNaCasa = 0 Then
-        cbttAddParentes.Enabled = False
-    Else
-        cbttAddParentes.Enabled = True
-    End If
+    cdst.setCidade = txtbCidade.Value
 End Sub
 
 Private Sub CamposObrigatorios()
@@ -340,30 +312,52 @@ Private Sub OptBttProgramaGovFedNAO_Click()
 End Sub
 
 Public Sub PopulateComboBoxes()
-    Dim tblProfissoes As ListObject
-    Dim tblEstadosCivis As ListObject
-    Dim tblEscolaridades As ListObject
-    Dim tblProgramaGov As ListObject
-    Dim tblTipoMoradia As ListObject
+    Dim profissoes As Variant
     
-    With ThisWorkbook
-        Set tblProfissoes = wksPROFISSOES.ListObjects(1)
-        Set tblEstadosCivis = wksESTADOS_CIVIS.ListObjects(1)
-        Set tblEscolaridades = wksESCOLARIDADES.ListObjects(1)
-        Set tblProgramaGov = wksPROGRAMAS_GOV.ListObjects(1)
-        Set tblTipoMoradia = wksTIPO_MORADIA.ListObjects(1)
-    End With
+    profissoes = appendArrays(ValoresUnicos(repoAssistido.Repository_getTbl.getListColumn("profissao").DataBodyRange), _
+                              ValoresUnicos(repoConjuge.Repository_getTbl.getListColumn("profissao").DataBodyRange))
+
     
-    Populate tblProfissoes.DataBodyRange, combProfissaoAssistido
-    Populate tblProfissoes.DataBodyRange, combProfissaoConjuge
+    combProfissaoAssistido.List = profissoes
+    combProfissaoConjuge.List = profissoes
     
-    Populate tblEstadosCivis.DataBodyRange, combEstadoCivilAssistido
-    Populate tblEstadosCivis.DataBodyRange, combEstadoCivilConjuge
+    combEstadoCivilAssistido.List = enumEstadoCivil.Enums_getArray
+    combEstadoCivilConjuge.List = enumEstadoCivil.Enums_getArray
     
-    Populate tblEscolaridades.DataBodyRange, combEscolaridadeAssistido
-    Populate tblEscolaridades.DataBodyRange, combEscolaridadeConjuge
+    combEscolaridadeAssistido.List = enumEscolaridade.Enums_getArray
+    combEscolaridadeConjuge.List = enumEscolaridade.Enums_getArray
     
-    Populate tblProgramaGov.DataBodyRange, combProgramaGov
+    combTipoMoradia.List = enumTipoMoradia.Enums_getArray
     
-    Populate tblTipoMoradia.DataBodyRange, combTipoMoradia
+    combProgramaGov.List = ValoresUnicos(repoCadastro.Repository_getTbl.getListColumn("ProgGov").DataBodyRange)
+End Sub
+
+Private Sub UserForm_Initialize()
+    Call PopulateComboBoxes                                 'Popula as combo box com os valores armazenados nas tabelas de dados
+    txtbDataSindicancia.Enabled = False
+    CamposObrigatorios
+    
+    If boolCadastrar Then
+        With txtbDataSindicancia
+            .Value = Format(Date, "dd/mm/yyyy")
+            'cdst.setDataSindicancia = .Value
+        End With
+        lblNPessoasNaCasa.Caption = 0
+        cbttCadastrar.Caption = "CADASTRAR"
+        EnableFrameControls frmProgGov, False
+    Else
+        cbttCadastrar.Caption = "ATUALIZAR"
+        Call PreencherCampos(Me)
+    End If
+    
+    If Not cdst.getAssistido Is Nothing Then
+        If cdst.getAssistido.getEstadoCivil <> enumEstadoCivil.CASADO_A Then
+            EnableFrameControls FrameConjuge, False
+        End If
+    End If
+    If cdst.getAssistido.getTotalDependentes = 0 Then
+        cbttAddParentes.Enabled = False
+    Else
+        cbttAddParentes.Enabled = True
+    End If
 End Sub

@@ -30,7 +30,7 @@ End Property
 Public Function Repository_readByKey(ByVal key As Long, Optional ByVal complete As Boolean = True) As Object
     Dim lr As ListRow
     Dim astd As New Assistido
-    Dim cdst As New cadastro
+    Dim cdst As New Cadastro
     
     Set lr = tblmgmt.getListRow(key)
     
@@ -50,9 +50,22 @@ Public Function Repository_getTbl() As TableManagement
 End Function
 
 Public Function Repository_save(ByRef obj As Object, Optional ByVal autoIncrement As Boolean = True) As Boolean
+    Dim index As Integer
+    
     me_repoAssistido.Repository_save obj.getAssistido
     
     tblmgmt.InsertDataRow obj, autoIncrement
+    
+    For index = 1 To obj.getAcompanhamentoTotais
+        With obj.getAcompanhamento(index)
+            If .getAno = 0 Then
+                .setAno = Year(obj.getDataSindicancia)
+                .setKeyCadastro = obj.getKey
+            End If
+            
+            me_repoAcompanhamento.Repository_save obj.getAcompanhamento(index), False
+        End With
+    Next index
     
     Repository_save = True
 End Function

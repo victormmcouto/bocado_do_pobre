@@ -11,6 +11,7 @@ Option Explicit
 
 Implements Enums
 
+Const me_NULO As Integer = 0
 Const me_FILHO_A As Integer = 1
 Const me_NETO_A As Integer = 2
 Const me_BISNETO_A As Integer = 3
@@ -25,22 +26,23 @@ Const me_ENTEADO_A As Integer = 11
 Const me_CUNHADO_A As Integer = 12
 Const me_OUTRO As Integer = 13
 
-Private arr(1 To 13) As Variant
+Private arr(0 To 13) As Variant
 
 Private Sub Class_Initialize()
-        arr(1) = "Filho(a)"
-        arr(2) = "Neto(a)"
-        arr(3) = "Bisneto(a)"
-        arr(4) = "Pai/Mãe"
-        arr(5) = "Avô/Avó"
-        arr(6) = "Bisavô/Bisavó"
-        arr(7) = "Irmão/Irmã"
-        arr(8) = "Tio/Tia"
-        arr(9) = "Sobrinho/Sobrinha"
-        arr(10) = "Primo/Prima"
-        arr(11) = "Enteado/Enteada"
-        arr(12) = "Cunhado/Cunhada"
-        arr(13) = "Outro"
+    arr(0) = vbNullString
+    arr(1) = "Filho(a)"
+    arr(2) = "Neto(a)"
+    arr(3) = "Bisneto(a)"
+    arr(4) = "Pai/Mãe"
+    arr(5) = "Avô/Avó"
+    arr(6) = "Bisavô/Bisavó"
+    arr(7) = "Irmão/Irmã"
+    arr(8) = "Tio/Tia"
+    arr(9) = "Sobrinho/Sobrinha"
+    arr(10) = "Primo/Prima"
+    arr(11) = "Enteado/Enteada"
+    arr(12) = "Cunhado/Cunhada"
+    arr(13) = "Outro"
 End Sub
 
 Public Property Get FILHO_A() As Integer
@@ -82,6 +84,9 @@ End Property
 Public Property Get outro() As Integer
     outro = me_OUTRO
 End Property
+Public Property Get NULO() As Integer
+    NULO = me_NULO
+End Property
 
 Public Function Enums_getNome(ByVal num As Integer) As String
     Enums_getNome = arr(num)
@@ -90,7 +95,7 @@ End Function
 Public Function Enums_getNum(ByVal nome As String) As Integer
     Dim index As Integer
     
-    For index = 1 To UBound(arr)
+    For index = 0 To UBound(arr)
         If arr(index) = nome Then Enums_getNum = index: Exit Function
     Next index
 End Function

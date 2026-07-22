@@ -15,7 +15,7 @@ Private tblmgmt As New TableManagement
 Private me_repoAssistido As RepositoryAssistido
 
 Private Sub Class_Initialize()
-    Set tblmgmt = tblmgmt.create(wksDEPENDENTE.ListObjects(1))
+    Set tblmgmt = tblmgmt.create(dbDEPENDENTE.ListObjects(1))
 End Sub
 
 Public Property Set setRepoAssistido(ByRef repoAssistido As Repository)
@@ -33,16 +33,16 @@ Public Function Repository_readByKey(ByVal key As Long, Optional ByVal complete 
     
     tempArr = lr.Range.Value
     
-    If complete Then
-        'Dim locInfo As Integer
-        Dim keyAstd As Integer
-        'Dim arrAsso As Variant
-        
-        keyAstd = me_repoAssistido.Repository_getTbl.getCellData(lr, "KeyAssistido")
-        'locInfo = tblmgmt.getListColumn("KeyAssistido").index
-        
-        Set dpnt.setAssistido = me_repoAssistido.Repository_readByKey(keyAstd, False)
-    End If
+'    If complete Then
+'        'Dim locInfo As Integer
+'        Dim keyAstd As Integer
+'        'Dim arrAsso As Variant
+'
+'        keyAstd = me_repoAssistido.Repository_getTbl.getCellData(lr, "KeyAssistido")
+'        'locInfo = tblmgmt.getListColumn("KeyAssistido").index
+'
+'        dpnt.setKeyAssistido = me_repoAssistido.Repository_readByKey(keyAstd, False)
+'    End If
     
     Set Repository_readByKey = dpnt.CreateFromArray(tempArr)
 End Function

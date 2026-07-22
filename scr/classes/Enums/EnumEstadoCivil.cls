@@ -11,15 +11,17 @@ Option Explicit
 
 Implements Enums
 
+Const me_NULO As Integer = 0
 Const me_SOLTEIRO_A As Integer = 1
 Const me_CASADO_A As Integer = 2
 Const me_SEPARADO_JUDI As Integer = 3
 Const me_DIVORCIADO_A As Integer = 4
 Const me_VIUVO_A As Integer = 5
 
-Private arr(1 To 5) As Variant
+Private arr(0 To 5) As Variant
 
 Private Sub Class_Initialize()
+    arr(0) = vbNullString
     arr(1) = "Solteiro(a)"
     arr(2) = "Casado(a)"
     arr(3) = "Separado(a) Judicialmente"
@@ -42,6 +44,9 @@ End Property
 Public Property Get VIUVO_A() As Integer
     VIUVO_A = me_VIUVO_A
 End Property
+Public Property Get NULO() As Integer
+    NULO = me_NULO
+End Property
 
 Public Function Enums_getNome(ByVal num As Integer) As String
     Enums_getNome = arr(num)
@@ -50,7 +55,7 @@ End Function
 Public Function Enums_getNum(ByVal nome As String) As Integer
     Dim index As Integer
     
-    For index = 1 To UBound(arr)
+    For index = 0 To UBound(arr)
         If arr(index) = nome Then Enums_getNum = index: Exit Function
     Next index
 End Function

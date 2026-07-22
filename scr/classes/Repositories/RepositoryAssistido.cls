@@ -16,7 +16,7 @@ Private me_repoCnjg As RepositoryConjuge
 Private me_repoDpnt As RepositoryDependente
 
 Private Sub Class_Initialize()
-    Set tblmgmt = tblmgmt.create(wksASSISTIDO.ListObjects(1))
+    Set tblmgmt = tblmgmt.create(dbASSISTIDO.ListObjects(1))
 End Sub
 
 Public Property Set setRepoConjuge(ByRef repoCnjg As Repository)
@@ -81,6 +81,7 @@ Public Function Repository_save(ByRef obj As Object, Optional ByVal autoIncremen
         
         For index = 1 To obj.getTotalDependentes
             If obj.getDependente(index).getKey = 0 Then
+                obj.getDependente(index).setKeyAssistido = obj.getKey
                 me_repoDpnt.Repository_save obj.getDependente(index), True
             Else
                 me_repoDpnt.Repository_save obj.getDependente(index), False
@@ -141,3 +142,4 @@ End Function
 Public Function Repository_deleteFkey(ByVal fk As Long, ByVal fkName As String) As Boolean
     tblmgmt.setCellData tblmgmt.getListRow(fk, fkName), fkName, 0
 End Function
+

@@ -15,7 +15,7 @@ Private tblmgmt As New TableManagement
 Private me_repoAssistido As RepositoryAssistido
 
 Private Sub Class_Initialize()
-    Set tblmgmt = tblmgmt.create(wksCONJUGE.ListObjects(1))
+    Set tblmgmt = tblmgmt.create(dbCONJUGE.ListObjects(1))
 End Sub
 
 Public Property Set setRepoAssistido(ByRef repoAssistido As Repository)

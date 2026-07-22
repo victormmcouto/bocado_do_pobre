@@ -13,8 +13,17 @@ Private me_nome As String
 Private me_dataNascimento As Date
 Private me_escolaridade As Integer
 Private me_parentesco As Integer
-Private me_assistido As Assistido
+Private me_keyAssistido As Long
 Private me_key As Long
+
+Private Sub Class_Initialize()
+    me_nome = vbNullString
+    me_dataNascimento = 0
+    me_escolaridade = 0
+    me_parentesco = 0
+    me_keyAssistido = 0
+    me_key = 0
+End Sub
 
 Public Function create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
@@ -35,6 +44,7 @@ Public Function CreateFromArray(ByVal arr As Variant) As Dependente
     me_dataNascimento = arr(1, 3)
     me_escolaridade = arr(1, 4)
     me_parentesco = arr(1, 5)
+    me_keyAssistido = arr(1, 6)
     
     Set CreateFromArray = Me
 End Function
@@ -79,12 +89,12 @@ Public Property Let setParentesco(ByVal parentesco As Integer)
     me_parentesco = parentesco
 End Property
 
-Public Property Get getAssistido() As Assistido
-    getAssistido = me_assistido
+Public Property Get getKeyAssistido() As Long
+    getKeyAssistido = me_keyAssistido
 End Property
 
-Public Property Set setAssistido(ByVal astd As Assistido)
-    Set me_assistido = astd
+Public Property Let setKeyAssistido(ByVal key As Long)
+    me_keyAssistido = key
 End Property
 
 Public Function clone() As Dependente
@@ -108,34 +118,25 @@ End Function
 
 Public Function toArray() As Variant
     Dim keyAstd As Long
-    
-    If Not me_assistido Is Nothing Then
-        keyAstd = me_assistido.getKey
-    Else
-        keyAstd = 0
-    End If
-    
+       
     toArray = Array(me_key, _
                     me_nome, _
                     me_dataNascimento, _
                     me_escolaridade, _
                     me_parentesco, _
-                    keyAstd)
+                    me_keyAssistido)
 End Function
 
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
-    Dim escolaridade As New EnumEscolaridade
-    Dim parentesco As New EnumParentesco
+    Dim escolaridade As New enumEscolaridade
+    Dim parentesco As New enumParentesco
     
     toString = "Key             = " & me_key & ", " & vbNewLine & _
                "Nome            = " & me_nome & ", " & vbNewLine & _
                "Data Nascimento = " & me_dataNascimento & ", " & vbNewLine & _
                "Escolaridade    = " & escolaridade.Enums_getNome(me_escolaridade) & ", " & vbNewLine & _
-               "Parentesco      = " & parentesco.Enums_getNome(me_parentesco) & vbNewLine
-
-    If showExtra And Not me_assistido Is Nothing Then
-        toString = toString & vbNewLine & "ASSISTIDO: " & vbNewLine & me_assistido.toString(False)
-    End If
+               "Parentesco      = " & parentesco.Enums_getNome(me_parentesco) & ", " & vbNewLine & _
+               "Key Assistido   = " & me_keyAssistido & vbNewLine
 End Function
 
 

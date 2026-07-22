@@ -18,14 +18,14 @@ Option Explicit
 Private Sub SpinButtonParente_Change()
     Me.Frame1.Caption = "Parente " & SpinButtonParente.Value
     
-    With cadastro.parentes(SpinButtonParente.Value)
-        txtbNomeParente.Value = .nome
-        combEscolaridadeParente.Value = .escolaridade
-        combGrauParentescoParente.Value = .GrauParentesco
-        If .dataNascimento = 0 Then
+    With cdst.getAssistido.getDependente(SpinButtonParente.Value)
+        txtbNomeParente.Value = .getNome
+        combEscolaridadeParente.Value = enumEscolaridade.Enums_getNome(.getEscolaridade)
+        combGrauParentescoParente.Value = enumParentesco.Enums_getNome(.getParentesco)
+        If .getDataNascimento = 0 Then
             txtbDataNascimentoParente.Value = ""
         Else
-            txtbDataNascimentoParente.Value = .dataNascimento
+            txtbDataNascimentoParente.Value = .getDataNascimento
         End If
     End With
 End Sub
@@ -36,7 +36,7 @@ Private Sub txtbDataNascimentoParente_AfterUpdate()
         On Error GoTo ErrHandler
         
         If ValidarDataCompleta(.Value) Then
-            cadastro.parentes(SpinButtonParente.Value).dataNascimento = Format(.Value, "dd/mm/yyyy")
+            cdst.getAssistido.getDependente(SpinButtonParente.Value).setDataNascimento = Format(.Value, "dd/mm/yyyy")
         End If
         
         Exit Sub
@@ -47,15 +47,15 @@ ErrHandler:
 End Sub
 
 Private Sub txtbNomeParente_Change()
-    cadastro.parentes(SpinButtonParente.Value).nome = txtbNomeParente.Value
+    cdst.getAssistido.getDependente(SpinButtonParente.Value).setNome = txtbNomeParente.Value
 End Sub
 
 Private Sub combEscolaridadeParente_Change()
-    cadastro.parentes(SpinButtonParente.Value).escolaridade = combEscolaridadeParente.Value
+    cdst.getAssistido.getDependente(SpinButtonParente.Value).setEscolaridade = enumEscolaridade.Enums_getNum(combEscolaridadeParente.Value)
 End Sub
 
 Private Sub combGrauParentescoParente_Change()
-    cadastro.parentes(SpinButtonParente.Value).GrauParentesco = combGrauParentescoParente.Value
+    cdst.getAssistido.getDependente(SpinButtonParente.Value).setParentesco = enumParentesco.Enums_getNum(combGrauParentescoParente.Value)
 End Sub
 
 Private Sub UserForm_Initialize()
@@ -63,22 +63,9 @@ Private Sub UserForm_Initialize()
     
     SpinButtonParente.Value = 1
     SpinButtonParente.Min = 1
-    SpinButtonParente.Max = cadastro.DemaisInfo.NPessoasNaCasa
+    SpinButtonParente.Max = cdst.getAssistido.getTotalDependentes
     
-    Call PopulateComboBoxes
-End Sub
-
-Private Sub PopulateComboBoxes()
-    Dim tblEscolaridadeParente As ListObject
-    Dim tblGrausParentesco As ListObject
-    
-    With ThisWorkbook
-        Set tblEscolaridadeParente = wksESCOLARIDADES.ListObjects(1)
-        Set tblGrausParentesco = wksGRAUS_PARENTESCO.ListObjects(1)
-    End With
-    
-    Populate tblEscolaridadeParente.DataBodyRange, combEscolaridadeParente
-    
-    Populate tblGrausParentesco.DataBodyRange, combGrauParentescoParente
+    combEscolaridadeParente.List = enumEscolaridade.Enums_getArray
+    combGrauParentescoParente.List = enumParentesco.Enums_getArray
 End Sub
 

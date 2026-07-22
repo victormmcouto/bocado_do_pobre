@@ -22,6 +22,18 @@ Private me_conjuge As Conjuge
 
 Private me_dependentes As New Collection
 
+Private Sub Class_Initialize()
+    me_nome = vbNullString
+    me_dataNascimento = 0
+    me_escolaridade = 0
+    me_estadoCivil = 0
+    me_profissao = vbNullString
+    me_cpf = vbNullString
+    me_telefone = vbNullString
+    Set me_conjuge = New Conjuge
+    me_key = 0
+End Sub
+
 Public Function create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
                        ByVal escolaridade As Integer, _
@@ -132,9 +144,28 @@ Public Function getTotalDependentes() As Integer
     getTotalDependentes = me_dependentes.count
 End Function
 
+Public Sub AddDependentes(ByVal qnt As Integer)
+    Dim index As Integer
+    Dim dpnt As Dependente
+    
+    For index = 1 To qnt
+        Set dpnt = New Dependente
+        'dpnt.setKeyAssistido = Me.getKey
+        me_dependentes.Add dpnt
+        Set dpnt = Nothing
+    Next index
+End Sub
+
 Public Sub AddDependente(ByRef dpnt As Dependente)
-    Set dpnt.setAssistido = Me
     me_dependentes.Add dpnt
+End Sub
+
+Public Sub RemoveDependentes(ByVal qnt As Integer)
+    Dim index As Integer
+    
+    For index = me_dependentes.count To (me_dependentes.count - qnt + 1) Step -1
+        me_dependentes.Remove index
+    Next index
 End Sub
 
 Public Function getDependente(ByVal index As Integer) As Dependente
@@ -176,7 +207,7 @@ Public Function dependentesEqual(ByRef outros As Collection) As Boolean
     End If
 End Function
 
-Public Function GetDpntCopy() As Collection
+Public Function GetDependentes() As Collection
     Dim dpnt As Dependente
 
     Set GetDpntCopy = New Collection
@@ -207,8 +238,8 @@ Public Function toArray() As Variant
 End Function
 
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
-    Dim escolaridade As New EnumEscolaridade
-    Dim estadoCivil As New EnumEstadoCivil
+    Dim escolaridade As New enumEscolaridade
+    Dim estadoCivil As New enumEstadoCivil
     Dim keyCnjg As Long
     
     If Not getConjuge Is Nothing Then

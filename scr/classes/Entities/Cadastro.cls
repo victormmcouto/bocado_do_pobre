@@ -20,10 +20,27 @@ Private me_nomeVisitador As String
 Private me_participaProgGov As Boolean
 Private me_progGov As String
 Private me_tipoMoradia As Integer
-Private me_nDependentes As Integer
+'Private me_nDependentes As Integer
 Private me_recebeCesta As Boolean
 
-Private me_acompanhamentos As Collection
+Private me_acompanhamentos As New Collection
+
+Private Sub Class_Initialize()
+    me_key = 0
+    Set me_assistido = New Assistido
+    me_logradouro = vbNullString
+    me_numero = vbNullString
+    me_bairro = vbNullString
+    me_cidade = vbNullString
+    me_dataSindicancia = Format(Date, "dd/mm/yyyy")
+    me_nomeVisitador = vbNullString
+    me_participaProgGov = False
+    me_progGov = vbNullString
+    me_tipoMoradia = 0
+    'me_nDependentes = 0
+    me_recebeCesta = False
+    me_acompanhamentos.Add New acompanhamento
+End Sub
 
 Public Function create(ByRef astd As Assistido, _
                        ByVal logradouro As String, _
@@ -35,8 +52,7 @@ Public Function create(ByRef astd As Assistido, _
                        ByVal participaProgGov As Boolean, _
                        ByVal progGov As String, _
                        ByVal tipoMoradia As Integer, _
-                       ByVal nDependentes As Integer, _
-                       ByVal recebeCesta As Boolean) As cadastro
+                       ByVal recebeCesta As Boolean) As Cadastro
     
     Set me_assistido = astd
     me_logradouro = logradouro
@@ -48,13 +64,13 @@ Public Function create(ByRef astd As Assistido, _
     me_participaProgGov = participaProgGov
     me_progGov = progGov
     me_tipoMoradia = tipoMoradia
-    me_nDependentes = nDependentes
+    'me_nDependentes = nDependentes
     me_recebeCesta = recebeCesta
     
     Set create = Me
 End Function
 
-Public Function CreateFromArray(ByVal arr As Variant) As cadastro
+Public Function CreateFromArray(ByVal arr As Variant) As Cadastro
     me_key = arr(1, 1)
     me_logradouro = arr(1, 3)
     me_numero = arr(1, 4)
@@ -65,8 +81,8 @@ Public Function CreateFromArray(ByVal arr As Variant) As cadastro
     me_participaProgGov = arr(1, 9)
     me_progGov = arr(1, 10)
     me_tipoMoradia = arr(1, 11)
-    me_nDependentes = arr(1, 12)
-    me_recebeCesta = arr(1, 13)
+    'me_nDependentes = arr(1, 12)
+    me_recebeCesta = arr(1, 12)
     
     Set CreateFromArray = Me
 End Function
@@ -88,7 +104,12 @@ Public Sub AddAcompanhamento(ByRef acompanhamento As acompanhamento)
 End Sub
 
 Public Function getAcompanhamento(ByVal ano As Integer) As acompanhamento
-    Set getAcompanhamento = me_acompanhamentos(CStr(ano))
+    Set getAcompanhamento = me_acompanhamentos(ano)
+    'Set getAcompanhamento = me_acompanhamentos(CStr(ano))
+End Function
+
+Public Function getAcompanhamentoTotais() As Integer
+    getAcompanhamentoTotais = me_acompanhamentos.count
 End Function
 
 Public Function toArray() As Variant
@@ -103,8 +124,8 @@ Public Function toArray() As Variant
                     me_participaProgGov, _
                     me_progGov, _
                     me_tipoMoradia, _
-                    me_nDependentes, _
                     me_recebeCesta)
+    'me_nDependentes,
 End Function
 
 Public Property Let setKey(ByVal key As Long)
@@ -115,7 +136,95 @@ Public Property Get getKey() As Long
     getKey = me_key
 End Property
 
-Public Function Equals(ByRef outro As cadastro) As Boolean
+Public Property Let setLogradouro(ByVal logradouro As String)
+    me_logradouro = logradouro
+End Property
+
+Public Property Get getLogradouro() As String
+    getLogradouro = me_logradouro
+End Property
+
+Public Property Let setNumero(ByVal numero As String)
+    me_numero = numero
+End Property
+
+Public Property Get getNumero() As String
+    getNumero = me_numero
+End Property
+
+Public Property Let setBairro(ByVal bairro As String)
+    me_bairro = bairro
+End Property
+
+Public Property Get getBairro() As String
+    getBairro = me_bairro
+End Property
+
+Public Property Let setCidade(ByVal cidade As String)
+    me_cidade = cidade
+End Property
+
+Public Property Get getCidade() As String
+    getCidade = me_cidade
+End Property
+
+Public Property Let setDataSindicancia(ByVal dataSindicancia As Date)
+    me_dataSindicancia = dataSindicancia
+End Property
+
+Public Property Get getDataSindicancia() As Date
+    getDataSindicancia = me_dataSindicancia
+End Property
+
+Public Property Let setNomeVisitador(ByVal nomeVisitador As String)
+    me_nomeVisitador = nomeVisitador
+End Property
+
+Public Property Get getNomeVisitador() As String
+    getNomeVisitador = me_nomeVisitador
+End Property
+
+Public Property Let setParticipaProgGov(ByVal participaProgGov As Boolean)
+    me_participaProgGov = participaProgGov
+End Property
+
+Public Property Get getParticipaProgGov() As Boolean
+    getParticipaProgGov = me_participaProgGov
+End Property
+
+Public Property Let setProgGov(ByVal progGov As String)
+    me_progGov = progGov
+End Property
+
+Public Property Get getProgGov() As String
+    getProgGov = me_progGov
+End Property
+
+Public Property Let setTipoMoradia(ByVal tipoMoradia As Integer)
+    me_tipoMoradia = tipoMoradia
+End Property
+
+Public Property Get getTipoMoradia() As Integer
+    getTipoMoradia = me_tipoMoradia
+End Property
+
+'Public Property Let setNDependentes(ByVal nDependentes As Integer)
+'    me_nDependentes = nDependentes
+'End Property
+'
+'Public Property Get getNDependentes() As Integer
+'    getNDependentes = me_nDependentes
+'End Property
+
+Public Property Let setRecebeCesta(ByVal recebeCesta As Boolean)
+    me_recebeCesta = recebeCesta
+End Property
+
+Public Property Get getRecebeCesta() As Boolean
+    getRecebeCesta = me_recebeCesta
+End Property
+
+Public Function Equals(ByRef outro As Cadastro) As Boolean
     If outro Is Nothing Then Exit Function
     
     If Me.getKey = 0 Or outro.getKey = 0 Then
@@ -127,7 +236,7 @@ Public Function Equals(ByRef outro As cadastro) As Boolean
 End Function
 
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
-    Dim tipoMoradia As New EnumTipoMoradia
+    Dim tipoMoradia As New enumTipoMoradia
     
     toString = "DADOS CADASTRAIS:" & vbNewLine
     
@@ -143,9 +252,10 @@ Public Function toString(Optional ByVal showExtra As Boolean = True) As String
                "Participa de Programa do Governo? = " & me_participaProgGov & "," & vbNewLine & _
                "Programa do Governo               = " & me_progGov & "," & vbNewLine & _
                "Tipo de Moradia                   = " & tipoMoradia.Enums_getNome(me_tipoMoradia) & "," & vbNewLine & _
-               "Nº dependentes                    = " & me_nDependentes & "," & vbNewLine & _
                "Recebe cesta básica?              = " & me_recebeCesta & vbNewLine & vbNewLine
     
+    '"Nº dependentes                    = " & me_nDependentes & "," & vbNewLine &
+
     If showExtra Then
         toString = toString & me_assistido.toString(True) & vbNewLine & vbNewLine
         

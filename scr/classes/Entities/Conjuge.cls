@@ -18,6 +18,17 @@ Private me_cpf As String
 Private me_telefone As String
 Private me_key As Long
 
+Private Sub Class_Initialize()
+    me_nome = vbNullString
+    me_dataNascimento = 0
+    me_escolaridade = 0
+    me_estadoCivil = 0
+    me_profissao = vbNullString
+    me_cpf = vbNullString
+    me_telefone = vbNullString
+    me_key = 0
+End Sub
+
 Public Function create(ByVal nome As String, _
                        ByVal dataNascimento As Date, _
                        ByVal escolaridade As Integer, _
@@ -137,8 +148,8 @@ Public Function toArray() As Variant
 End Function
 
 Public Function toString(Optional ByVal showExtra As Boolean = True) As String
-    Dim escolaridade As New EnumEscolaridade
-    Dim estadoCivil As New EnumEstadoCivil
+    Dim escolaridade As New enumEscolaridade
+    Dim estadoCivil As New enumEstadoCivil
     
     toString = "Key             = " & me_key & ", " & vbNewLine & _
                "Nome            = " & me_nome & ", " & vbNewLine & _
